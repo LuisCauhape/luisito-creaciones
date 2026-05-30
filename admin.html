@@ -1047,7 +1047,7 @@ async function guardarProducto() {
 try {
     const sheetUrl = hojaActual === 'home'
       ? `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`
-      : `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(hojaActual + '!A1')}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
+      : `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
     const sheetMethod = hojaActual === 'home' ? 'PUT' : 'POST';
     const res = await fetch(sheetUrl, {
         method: sheetMethod,
