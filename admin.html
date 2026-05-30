@@ -615,6 +615,17 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
    CONFIGURACIÓN
 ══════════════════════════════ */
 const CLIENT_ID = '267224057278-2h8qksuos2cioraanr4a8m0qbatdl825.apps.googleusercontent.com';
+
+/* ══════════════════════════════
+   EMAILS AUTORIZADOS
+   Agregá o quitá emails de esta lista
+   para controlar quién puede entrar
+══════════════════════════════ */
+const EMAILS_AUTORIZADOS = [
+  'cauhapeeluis@gmail.com',   // dueño del panel
+  'email-cliente@gmail.com',  // ← reemplazá con el email de tu cliente
+  // 'otro-email@gmail.com',  // ← descomentá para agregar más
+];
 const SHEET_ID  = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
 const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
 
@@ -661,6 +672,21 @@ async function obtenerPerfil() {
 }
 
 function mostrarApp() {
+  // Verificar si el email está autorizado
+  const email = userInfo?.email || '';
+  if (!EMAILS_AUTORIZADOS.includes(email)) {
+    accessToken = null;
+    userInfo = null;
+    document.getElementById('loginScreen').style.display = 'flex';
+    // Mostrar mensaje de error
+    const nota = document.querySelector('.login-note');
+    if (nota) {
+      nota.style.color = '#8B2635';
+      nota.style.fontWeight = '600';
+      nota.textContent = '⛔ Tu cuenta (' + email + ') no tiene acceso a este panel. Contactá al administrador.';
+    }
+    return;
+  }
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').classList.add('visible');
   iniciarFormulario();
@@ -849,8 +875,8 @@ async function subirImagen(input, idx) {
       body: JSON.stringify({ role:'reader', type:'anyone' })
     });
 
-    // URL directa de la imagen
-    const imgUrl = `https://drive.google.com/uc?export=view&id=${data.id}`;
+    // URL directa de la imagen (thumbnail format - funciona cross-origin)
+    const imgUrl = `https://lh3.googleusercontent.com/d/${data.id}`;
     imgUrls[idx] = imgUrl;
 
     bar.style.width = '100%';
@@ -997,12 +1023,12 @@ async function guardarProducto() {
   }
 
   try {
-    const url = hojaActual === 'home'
+    const sheetUrl = hojaActual === 'home'
       ? `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:Z?valueInputOption=RAW`
-      : `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
-    const method = hojaActual === 'home' ? 'PUT' : 'POST';
-    const res = await fetch(url, {
-        method,
+      : `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(hojaActual)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
+    const sheetMethod = hojaActual === 'home' ? 'PUT' : 'POST';
+    const res = await fetch(sheetUrl, {
+        method: sheetMethod,
         headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
         body: JSON.stringify({ values })
       }
