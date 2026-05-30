@@ -1037,14 +1037,14 @@ async function guardarProducto() {
       document.getElementById('fDescuento').value.trim(),
       ...tc,
       colores[0]?.hex||'', colores[1]?.hex||'', colores[2]?.hex||'',
-      imgUrls[0], imgUrls[1], imgUrls[2],
+      imgUrls[0],
       document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
     ]];
   }
 
   try {
     const sheetUrl = hojaActual === 'home'
-      ? `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:Z?valueInputOption=RAW`
+      ? `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`
       : `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(hojaActual)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
     const sheetMethod = hojaActual === 'home' ? 'PUT' : 'POST';
     const res = await fetch(sheetUrl, {
