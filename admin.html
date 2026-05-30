@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Carga — Luisito Creaciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F7F2EC;
+  --nude: #EBD9C6;
+  --sand: #D4BFA3;
+  --tan: #B89B7A;
+  --brown: #7A5C3F;
+  --dark: #1C1714;
+  --offwhite: #FDFAF6;
+  --warm-gray: #9E8E80;
+  --accent: #C4956A;
+  --success: #2D6A4F;
+  --error: #8B2635;
+  --sidebar: #18120F;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--offwhite);
+  color: var(--dark);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--sidebar);
+  min-height: 100vh;
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+.sidebar-brand {
+  padding: 32px 28px 28px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.sidebar-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--accent); display: block; margin-bottom: 4px;
+}
+.sidebar-logo span { font-style: italic; color: var(--tan); }
+.sidebar-sub {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); font-weight: 500;
+}
+.sidebar-nav { padding: 24px 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,.45);
+  cursor: pointer; transition: all .2s ease;
+  border: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.8); }
+.nav-item.active { background: var(--accent); color: white; }
+.nav-item .nav-icon { font-size: 16px; flex-shrink: 0; }
+.sidebar-footer {
+  padding: 20px 16px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.sidebar-link {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; font-weight: 500; color: rgba(255,255,255,.3);
+  text-decoration: none; padding: 10px 14px; border-radius: 6px;
+  transition: all .2s ease;
+}
+.sidebar-link:hover { color: rgba(255,255,255,.6); background: rgba(255,255,255,.04); }
+
+/* ── MAIN ── */
+.main {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+.topbar {
+  background: white;
+  border-bottom: 1px solid rgba(212,191,163,.3);
+  padding: 20px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 800; color: var(--dark);
+}
+.topbar-title span { color: var(--accent); font-style: italic; }
+.topbar-actions { display: flex; gap: 12px; align-items: center; }
+.sheet-status {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 500; color: var(--warm-gray);
+  padding: 8px 16px; border: 1px solid var(--sand); border-radius: 20px;
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--sand);
+  transition: background .3s ease;
+}
+.status-dot.ok { background: #52b788; }
+.status-dot.error { background: var(--error); }
+
+/* ── CONTENT ── */
+.content { padding: 36px 40px; flex: 1; }
+
+/* ── TABS ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── FORM CARD ── */
+.form-card {
+  background: white;
+  border: 1px solid rgba(212,191,163,.3);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.form-card-header {
+  padding: 22px 28px;
+  border-bottom: 1px solid rgba(212,191,163,.2);
+  display: flex; align-items: center; gap: 12px;
+}
+.form-card-icon { font-size: 20px; }
+.form-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700; color: var(--dark);
+}
+.form-card-sub { font-size: 12px; color: var(--warm-gray); font-weight: 400; margin-top: 2px; }
+.form-card-body { padding: 28px; }
+
+/* ── FORM GRID ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-full { grid-column: 1 / -1; }
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label {
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; color: var(--warm-gray);
+}
+.field label .req { color: var(--accent); margin-left: 3px; }
+.field input, .field select, .field textarea {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500; color: var(--dark);
+  border: 1.5px solid var(--sand);
+  background: var(--offwhite);
+  padding: 12px 16px; border-radius: 6px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  outline: none; width: 100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(196,149,106,.12);
+  background: white;
+}
+.field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.field select { cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239E8E80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
+}
+.field-hint { font-size: 11px; color: var(--warm-gray); font-weight: 400; margin-top: -4px; }
+
+/* ── CATEGORY SELECTOR ── */
+.cat-selector { display: flex; flex-wrap: wrap; gap: 8px; }
+.cat-btn {
+  padding: 9px 16px; border: 1.5px solid var(--sand);
+  background: white; border-radius: 6px;
+  font-size: 12px; font-weight: 600; color: var(--warm-gray);
+  cursor: pointer; transition: all .2s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+.cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cat-btn.selected { background: var(--dark); color: white; border-color: var(--dark); }
+
+/* ── TALLE SELECTOR ── */
+.talle-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.talle-item {
+  position: relative;
+}
+.talle-item input[type="checkbox"] { display: none; }
+.talle-label {
+  display: flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px;
+  border: 1.5px solid var(--sand); border-radius: 4px;
+  font-size: 13px; font-weight: 700; color: var(--warm-gray);
+  cursor: pointer; transition: all .2s ease;
+  user-select: none;
+}
+.talle-item input:checked + .talle-label {
+  background: var(--dark); color: white; border-color: var(--dark);
+}
+.talle-label:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Talle agotado toggle */
+.talle-agotado-wrap { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.talle-agotado-wrap input[type="checkbox"] { display: none; }
+.talle-agotado-label {
+  font-size: 10px; font-weight: 600; color: var(--warm-gray);
+  cursor: pointer; text-decoration: none;
+  transition: color .2s;
+}
+.talle-item input:checked ~ .talle-agotado-wrap { display: flex; }
+.talle-item:not(:has(input:checked)) .talle-agotado-wrap { display: none; }
+
+/* ── COLOR INPUTS ── */
+.color-fields { display: flex; flex-direction: column; gap: 12px; }
+.color-row { display: flex; align-items: center; gap: 12px; }
+.color-swatch-preview {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 2px solid var(--sand); flex-shrink: 0;
+  transition: background .2s ease;
+}
+.color-row input[type="color"] {
+  width: 40px; height: 40px; border: 1.5px solid var(--sand);
+  border-radius: 50%; cursor: pointer; padding: 2px;
+  background: none; flex-shrink: 0;
+}
+.color-row .color-name-input { flex: 1; }
+.add-color-btn {
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  background: none; border: 1.5px dashed var(--sand);
+  padding: 10px 16px; border-radius: 6px; cursor: pointer;
+  transition: all .2s ease; font-family: 'DM Sans', sans-serif;
+  width: 100%;
+}
+.add-color-btn:hover { border-color: var(--accent); background: rgba(196,149,106,.06); }
+
+/* ── IMAGE INPUTS ── */
+.img-fields { display: flex; flex-direction: column; gap: 10px; }
+.img-row { display: flex; align-items: center; gap: 12px; }
+.img-num {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--dark);
+  color: white; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.img-row input { flex: 1; }
+.img-preview-thumb {
+  width: 44px; height: 54px; border-radius: 4px;
+  object-fit: cover; border: 1.5px solid var(--sand);
+  display: none; flex-shrink: 0;
+}
+.img-preview-thumb.visible { display: block; }
+
+/* ── PREVIEW CARD ── */
+.preview-section {
+  position: sticky; top: 88px;
+}
+.preview-card {
+  background: white;
+  border: 1px solid rgba(212,191,163,.3);
+  border-radius: 12px; overflow: hidden;
+}
+.preview-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(212,191,163,.2);
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--warm-gray);
+  display: flex; align-items: center; gap: 8px;
+}
+.preview-img-wrap {
+  aspect-ratio: 3/4; background: var(--nude); position: relative; overflow: hidden;
+}
+.preview-img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: none;
+}
+.preview-img.visible { display: block; }
+.preview-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: var(--sand);
+}
+.preview-placeholder-icon { font-size: 40px; opacity: .5; }
+.preview-placeholder p { font-size: 12px; font-weight: 500; }
+.preview-info { padding: 16px 20px; }
+.preview-cat-tag {
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  font-weight: 700; color: var(--accent); margin-bottom: 6px;
+}
+.preview-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 6px; line-height: 1.1;
+}
+.preview-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.preview-price { font-size: 20px; font-weight: 700; color: var(--dark); }
+.preview-price-old { font-size: 13px; color: var(--sand); text-decoration: line-through; }
+.preview-desc { font-size: 12px; line-height: 1.65; color: var(--warm-gray); margin-bottom: 12px; }
+.preview-talles { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.preview-talle-chip {
+  font-size: 11px; font-weight: 700; border: 1.5px solid var(--sand);
+  padding: 4px 9px; border-radius: 3px; color: var(--warm-gray);
+}
+.preview-talle-chip.agotado { opacity: .35; text-decoration: line-through; }
+.preview-colors { display: flex; gap: 6px; }
+.preview-color-dot {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid rgba(0,0,0,.1);
+}
+
+/* ── HOJA SELECTOR TABS ── */
+.hoja-tabs { display: flex; gap: 2px; margin-bottom: 28px; }
+.hoja-tab {
+  padding: 10px 20px; border: 1.5px solid var(--sand);
+  background: white; border-radius: 6px;
+  font-size: 12px; font-weight: 700; color: var(--warm-gray);
+  cursor: pointer; transition: all .2s ease;
+  font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; gap: 8px;
+}
+.hoja-tab:hover { border-color: var(--accent); color: var(--dark); }
+.hoja-tab.active { background: var(--dark); color: white; border-color: var(--dark); }
+
+/* ── SUBMIT ── */
+.submit-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 24px 28px;
+  border-top: 1px solid rgba(212,191,163,.2);
+  background: var(--cream);
+}
+.btn-submit {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  background: var(--dark); color: white;
+  border: none; padding: 16px 36px; border-radius: 6px;
+  cursor: pointer; transition: all .3s ease;
+  display: flex; align-items: center; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.btn-submit:hover { background: var(--brown); }
+.btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+.btn-submit .spinner {
+  width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3);
+  border-top-color: white; border-radius: 50%;
+  animation: spin .7s linear infinite; display: none;
+}
+.btn-submit.loading .spinner { display: block; }
+.btn-submit.loading .btn-text { opacity: .6; }
+.btn-clear {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  background: none; color: var(--warm-gray);
+  border: 1.5px solid var(--sand); padding: 16px 24px; border-radius: 6px;
+  cursor: pointer; transition: all .2s ease;
+}
+.btn-clear:hover { border-color: var(--dark); color: var(--dark); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 32px; right: 32px;
+  background: var(--dark); color: white;
+  padding: 16px 24px; border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  display: flex; align-items: center; gap: 12px;
+  transform: translateY(80px); opacity: 0;
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+  z-index: 1000; max-width: 360px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: var(--success); }
+.toast.error { background: var(--error); }
+.toast-icon { font-size: 18px; flex-shrink: 0; }
+
+/* ── RECORDS TABLE ── */
+.records-wrap { overflow-x: auto; }
+.records-table { width: 100%; border-collapse: collapse; }
+.records-table th {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--warm-gray);
+  padding: 12px 16px; text-align: left;
+  border-bottom: 1.5px solid rgba(212,191,163,.3);
+  white-space: nowrap;
+}
+.records-table td {
+  padding: 14px 16px; font-size: 13px; font-weight: 400;
+  border-bottom: 1px solid rgba(212,191,163,.15);
+  vertical-align: middle;
+}
+.records-table tr:hover td { background: rgba(247,242,236,.6); }
+.record-img { width: 40px; height: 50px; object-fit: cover; border-radius: 3px; }
+.record-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; }
+.record-cat {
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; color: var(--accent);
+  background: rgba(196,149,106,.1); padding: 3px 8px; border-radius: 3px;
+  white-space: nowrap;
+}
+.record-price { font-weight: 700; font-size: 14px; }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center; padding: 60px 20px;
+  color: var(--warm-gray);
+}
+.empty-icon { font-size: 48px; margin-bottom: 12px; opacity: .4; }
+.empty-state p { font-size: 14px; font-weight: 500; }
+
+/* ── SETUP ALERT ── */
+.setup-alert {
+  background: #FEF3C7; border: 1.5px solid #F59E0B;
+  border-radius: 8px; padding: 16px 20px;
+  margin-bottom: 24px; display: flex; gap: 14px; align-items: flex-start;
+}
+.setup-alert-icon { font-size: 20px; flex-shrink: 0; }
+.setup-alert-title { font-size: 13px; font-weight: 700; color: #92400E; margin-bottom: 4px; }
+.setup-alert-body { font-size: 12px; font-weight: 400; color: #78350F; line-height: 1.6; }
+.setup-alert code {
+  background: rgba(0,0,0,.08); padding: 2px 6px; border-radius: 3px;
+  font-family: monospace; font-size: 11px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  body { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .topbar { padding: 16px 20px; }
+  .content { padding: 24px 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid.cols3 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── LOGIN OVERLAY ── */
+.login-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  animation: fadeIn .4s ease;
+}
+.login-overlay.hidden {
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s ease;
+}
+.login-box {
+  background: var(--offwhite);
+  width: 100%; max-width: 400px;
+  padding: 48px 40px;
+  position: relative;
+  animation: loginUp .5s cubic-bezier(.16,1,.3,1);
+}
+@keyframes loginUp {
+  from { opacity:0; transform: translateY(28px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.login-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 800;
+  color: var(--dark); margin-bottom: 6px;
+}
+.login-logo span { color: var(--accent); font-style: italic; }
+.login-sub {
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--warm-gray); font-weight: 600; margin-bottom: 40px;
+}
+.login-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.login-field label {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--warm-gray);
+}
+.login-field input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 500; color: var(--dark);
+  border: 1.5px solid var(--sand); background: white;
+  padding: 14px 18px; outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  border-radius: 4px;
+}
+.login-field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(196,149,106,.12);
+}
+.login-btn {
+  width: 100%; margin-top: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  background: var(--dark); color: white;
+  border: none; padding: 16px; cursor: pointer;
+  transition: background .25s ease; border-radius: 4px;
+}
+.login-btn:hover { background: var(--brown); }
+.login-error {
+  font-size: 12px; font-weight: 600; color: var(--error);
+  margin-top: 12px; text-align: center; min-height: 18px;
+  opacity: 0; transition: opacity .2s ease;
+}
+.login-error.show { opacity: 1; }
+.login-lock {
+  font-size: 36px; margin-bottom: 28px; display: block;
+}
+.login-attempts {
+  font-size: 11px; color: var(--warm-gray); text-align: center;
+  margin-top: 20px; font-weight: 400;
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <span class="login-lock">🔐</span>
+    <div class="login-logo">Luisito <span>Creaciones</span></div>
+    <div class="login-sub">Panel de administración</div>
+
+    <div class="login-field">
+      <label>Usuario</label>
+      <input type="text" id="loginUser" placeholder="Ingresá tu usuario"
+        onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()">
+    </div>
+    <div class="login-field">
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter') intentarLogin()">
+    </div>
+
+    <button class="login-btn" onclick="intentarLogin()">Ingresar al panel →</button>
+    <div class="login-error" id="loginError">Usuario o contraseña incorrectos</div>
+    <div class="login-attempts" id="loginAttempts"></div>
+  </div>
+</div>
+
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <span class="sidebar-logo">Luisito <span>Creaciones</span></span>
+    <span class="sidebar-sub">Panel de administración</span>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" onclick="showTab('cargar')">
+      <span class="nav-icon">✦</span> Cargar producto
+    </button>
+    <button class="nav-item" onclick="showTab('ver')">
+      <span class="nav-icon">◈</span> Ver productos
+    </button>
+    <button class="nav-item" onclick="showTab('config')">
+      <span class="nav-icon">⚙</span> Configuración
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="sidebar-link" href="index.html" target="_blank">
+      <span>↗</span> Ver sitio web
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Panel de <span>carga</span></div>
+    </div>
+    <div class="topbar-actions">
+      <div class="sheet-status" id="sheetStatus">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Verificando conexión...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ TAB: CARGAR ══ -->
+    <div class="tab-panel active" id="tab-cargar">
+
+      <div class="setup-alert" id="setupAlert">
+        <span class="setup-alert-icon">⚠️</span>
+        <div>
+          <div class="setup-alert-title">Configuración necesaria</div>
+          <div class="setup-alert-body">
+            Para que el panel pueda guardar en Google Sheets necesitás crear un Google Apps Script.
+            Hacé clic en <strong>Configuración</strong> en el menú para ver los pasos.
+            Mientras tanto podés cargar datos y copiarlos manualmente al Sheet.
+          </div>
+        </div>
+      </div>
+
+      <!-- Selector de hoja -->
+      <div class="hoja-tabs">
+        <button class="hoja-tab active" onclick="setHoja('productos')" data-hoja="productos">📦 Productos / Categorías</button>
+        <button class="hoja-tab" onclick="setHoja('ofertas')" data-hoja="ofertas">🏷 Ofertas</button>
+        <button class="hoja-tab" onclick="setHoja('coleccion')" data-hoja="coleccion">✨ Colección</button>
+        <button class="hoja-tab" onclick="setHoja('home')" data-hoja="home">🏠 Hero / Home</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start;">
+
+        <!-- FORMULARIO -->
+        <div>
+
+          <!-- DATOS BÁSICOS -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-icon">📝</span>
+              <div>
+                <div class="form-card-title">Datos del producto</div>
+                <div class="form-card-sub">Información principal que verá el cliente</div>
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid">
+                <div class="field form-full" id="catField">
+                  <label>Categoría <span class="req">*</span></label>
+                  <div class="cat-selector" id="catSelector">
+                    <button class="cat-btn" onclick="selectCat(this,'zapatos-planos')">👟 Zapatos planos</button>
+                    <button class="cat-btn" onclick="selectCat(this,'tacones')">👠 Tacones</button>
+                    <button class="cat-btn" onclick="selectCat(this,'sandalias')">🩴 Sandalias</button>
+                    <button class="cat-btn" onclick="selectCat(this,'zapatillas')">👟 Zapatillas</button>
+                    <button class="cat-btn" onclick="selectCat(this,'botas-botines')">🥾 Botas y botines</button>
+                    <button class="cat-btn" onclick="selectCat(this,'fiesta')">💃 Fiesta</button>
+                    <button class="cat-btn" onclick="selectCat(this,'verano')">☀️ Verano</button>
+                    <button class="cat-btn" onclick="selectCat(this,'deportivo')">🏃 Deportivo</button>
+                  </div>
+                  <input type="hidden" id="fieldCategoria">
+                </div>
+
+                <div class="field">
+                  <label>Nombre del modelo <span class="req">*</span></label>
+                  <input type="text" id="fieldNombre" placeholder="Ej: Bota Siena" oninput="updatePreview()">
+                </div>
+
+                <div class="field">
+                  <label>Subtítulo <span class="req"></span></label>
+                  <input type="text" id="fieldSubtitulo" placeholder="Ej: Cuero genuino" oninput="updatePreview()">
+                </div>
+
+                <div class="field form-full">
+                  <label>Descripción</label>
+                  <textarea id="fieldDescripcion" placeholder="Describí el modelo: materiales, ocasión, comodidad..." oninput="updatePreview()"></textarea>
+                </div>
+
+                <div class="field form-full">
+                  <label>Materiales</label>
+                  <input type="text" id="fieldMateriales" placeholder="Ej: Cuero vacuno, suela TPR antideslizante">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRECIOS -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-icon">💰</span>
+              <div>
+                <div class="form-card-title">Precio</div>
+                <div class="form-card-sub">Ingresá el precio con el signo $ y los puntos</div>
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid cols3">
+                <div class="field">
+                  <label>Precio actual <span class="req">*</span></label>
+                  <input type="text" id="fieldPrecio" placeholder="$89.000" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                  <label>Precio anterior (si hay oferta)</label>
+                  <input type="text" id="fieldPrecioOld" placeholder="$115.000" oninput="updatePreview()">
+                </div>
+                <div class="field">
+                  <label>Etiqueta de descuento</label>
+                  <input type="text" id="fieldDescuento" placeholder="–22% OFF" oninput="updatePreview()">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TALLES -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-icon">📏</span>
+              <div>
+                <div class="form-card-title">Talles disponibles</div>
+                <div class="form-card-sub">Marcá los talles que tenés en stock</div>
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="talle-grid" id="talleGrid">
+                <!-- generado por JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- COLORES -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-icon">🎨</span>
+              <div>
+                <div class="form-card-title">Colores disponibles</div>
+                <div class="form-card-sub">Hasta 5 colores por producto</div>
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="color-fields" id="colorFields">
+                <!-- generado por JS -->
+              </div>
+              <button class="add-color-btn" onclick="addColor()" id="addColorBtn" style="margin-top:12px">
+                + Agregar color
+              </button>
+            </div>
+          </div>
+
+          <!-- IMÁGENES -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-icon">🖼</span>
+              <div>
+                <div class="form-card-title">Fotos del producto</div>
+                <div class="form-card-sub">Pegá las URLs de las fotos (hasta 4). Podés usar Google Drive, Imgur, o links de Instagram</div>
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="img-fields">
+                <div class="img-row">
+                  <div class="img-num">1</div>
+                  <input type="url" id="img1" placeholder="https://..." oninput="updateImgPreview(this,1); updatePreview()">
+                  <img class="img-preview-thumb" id="thumb1">
+                </div>
+                <div class="img-row">
+                  <div class="img-num">2</div>
+                  <input type="url" id="img2" placeholder="https://..." oninput="updateImgPreview(this,2)">
+                  <img class="img-preview-thumb" id="thumb2">
+                </div>
+                <div class="img-row">
+                  <div class="img-num">3</div>
+                  <input type="url" id="img3" placeholder="https://..." oninput="updateImgPreview(this,3)">
+                  <img class="img-preview-thumb" id="thumb3">
+                </div>
+                <div class="img-row">
+                  <div class="img-num">4</div>
+                  <input type="url" id="img4" placeholder="https://..." oninput="updateImgPreview(this,4)">
+                  <img class="img-preview-thumb" id="thumb4">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WA -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-icon">💬</span>
+              <div>
+                <div class="form-card-title">Link de WhatsApp</div>
+                <div class="form-card-sub">Si lo dejás vacío usa el número por defecto</div>
+              </div>
+            </div>
+            <div class="form-card-body">
+              <div class="field">
+                <label>Número o link completo</label>
+                <input type="text" id="fieldWa" placeholder="2227466087 o https://wa.me/5492227466087">
+                <span class="field-hint">Solo el número sin el +549, o pegá el link completo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBMIT -->
+          <div class="form-card">
+            <div class="submit-row">
+              <button class="btn-submit" id="submitBtn" onclick="guardarProducto()">
+                <div class="spinner"></div>
+                <span class="btn-text">✦ Guardar en Google Sheets</span>
+              </button>
+              <button class="btn-clear" onclick="limpiarFormulario()">Limpiar</button>
+              <span id="submitMsg" style="font-size:13px; color:var(--warm-gray);"></span>
+            </div>
+          </div>
+
+        </div><!-- /form -->
+
+        <!-- PREVIEW -->
+        <div class="preview-section">
+          <div class="preview-card">
+            <div class="preview-header">
+              👁 Vista previa
+            </div>
+            <div class="preview-img-wrap">
+              <img class="preview-img" id="previewImg">
+              <div class="preview-placeholder" id="previewPlaceholder">
+                <div class="preview-placeholder-icon">📸</div>
+                <p>La foto aparece acá</p>
+              </div>
+            </div>
+            <div class="preview-info">
+              <div class="preview-cat-tag" id="prevCat">—</div>
+              <div class="preview-name" id="prevNombre">Nombre del modelo</div>
+              <div class="preview-price-row">
+                <span class="preview-price" id="prevPrecio">$0</span>
+                <span class="preview-price-old" id="prevOld"></span>
+              </div>
+              <div class="preview-desc" id="prevDesc">La descripción aparece acá...</div>
+              <div class="preview-talles" id="prevTalles"></div>
+              <div class="preview-colors" id="prevColors"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+    </div><!-- /tab cargar -->
+
+    <!-- ══ TAB: VER ══ -->
+    <div class="tab-panel" id="tab-ver">
+      <div class="form-card">
+        <div class="form-card-header">
+          <span class="form-card-icon">◈</span>
+          <div>
+            <div class="form-card-title">Productos cargados</div>
+            <div class="form-card-sub" id="verHojaLabel">Mostrando: productos</div>
+          </div>
+        </div>
+        <div style="padding:16px 28px 0; display:flex; gap:8px;">
+          <button class="hoja-tab active" onclick="cargarVista('productos',this)" style="font-size:11px; padding:8px 14px;">📦 Productos</button>
+          <button class="hoja-tab" onclick="cargarVista('ofertas',this)" style="font-size:11px; padding:8px 14px;">🏷 Ofertas</button>
+          <button class="hoja-tab" onclick="cargarVista('coleccion',this)" style="font-size:11px; padding:8px 14px;">✨ Colección</button>
+        </div>
+        <div class="form-card-body">
+          <div class="records-wrap">
+            <div class="empty-state" id="verEmpty">
+              <div class="empty-icon">📋</div>
+              <p>Hacé clic en una pestaña para cargar los productos</p>
+            </div>
+            <table class="records-table" id="verTable" style="display:none">
+              <thead id="verThead"></thead>
+              <tbody id="verTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: CONFIG ══ -->
+    <div class="tab-panel" id="tab-config">
+      <div class="form-card">
+        <div class="form-card-header">
+          <span class="form-card-icon">⚙</span>
+          <div>
+            <div class="form-card-title">Configuración del panel</div>
+            <div class="form-card-sub">Apps Script para conectar con Google Sheets</div>
+          </div>
+        </div>
+        <div class="form-card-body">
+
+          <div class="field" style="margin-bottom:24px">
+            <label>URL del Apps Script (Web App)</label>
+            <input type="url" id="configScriptUrl"
+              placeholder="https://script.google.com/macros/s/TU_ID/exec"
+              oninput="guardarConfig()">
+            <span class="field-hint">Pegá acá la URL que te da Google Apps Script al publicar como Web App</span>
+          </div>
+
+          <div style="background:var(--cream); border-radius:8px; padding:24px; margin-bottom:24px;">
+            <p style="font-family:'Playfair Display',serif; font-size:18px; font-weight:800; margin-bottom:16px;">Cómo crear el Apps Script</p>
+            <ol style="font-size:13px; line-height:2; color:var(--warm-gray); padding-left:20px;">
+              <li>Abrí tu Google Sheet</li>
+              <li>Hacé clic en <strong style="color:var(--dark)">Extensiones → Apps Script</strong></li>
+              <li>Borrá todo el código que aparece y pegá el código de abajo</li>
+              <li>Hacé clic en <strong style="color:var(--dark)">Implementar → Nueva implementación</strong></li>
+              <li>Tipo: <strong style="color:var(--dark)">Aplicación web</strong></li>
+              <li>Ejecutar como: <strong style="color:var(--dark)">Yo</strong></li>
+              <li>Quién tiene acceso: <strong style="color:var(--dark)">Cualquier persona</strong></li>
+              <li>Hacé clic en <strong style="color:var(--dark)">Implementar</strong> y copiá la URL que aparece</li>
+              <li>Pegá esa URL en el campo de arriba</li>
+            </ol>
+          </div>
+
+          <div style="background:#1C1714; border-radius:8px; padding:20px; overflow-x:auto;">
+            <pre style="font-family:monospace; font-size:12px; color:#C4956A; line-height:1.7; white-space:pre-wrap;">const SHEET_ID = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const sheet = SpreadsheetApp.openById(SHEET_ID)
+                    .getSheetByName(data.hoja);
+    
+    if (!sheet) throw new Error('Hoja no encontrada: ' + data.hoja);
+    
+    // Si no hay encabezados, los agrega
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(data.headers);
+    }
+    
+    sheet.appendRow(data.row);
+    
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true, msg: 'Panel Luisito Creaciones activo' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
+          </div>
+
+          <div style="margin-top:20px">
+            <button class="btn-submit" onclick="testConexion()">
+              <span class="btn-text">Probar conexión</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✓</span>
+  <span id="toastMsg">Producto guardado</span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   ESTADO
+═══════════════════════════════════════ */
+const STATE = {
+  hoja: 'productos',
+  categoria: '',
+  colores: [],
+  scriptUrl: localStorage.getItem('luisito_script_url') || ''
+};
+
+const TALLES = [34,35,36,37,38,39,40,41,42];
+
+const SHEET_ID = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
+const SHEET_BASE = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSVUmYHOcXytQ6R2uJjjiajRPMsYgP-HdNIBrIkKLKfR0G6wQRADsZuoX66a_ixK5QUBQBwPUWNOcJt/pub?single=true&output=csv`;
+
+const GID_MAP = {
+  home: '0',
+  ofertas: '860634940',
+  coleccion: '1202954954',
+  productos: '' // ponés el GID cuando lo tengas
+};
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  generarTalles();
+  addColor();
+  addColor();
+  if (STATE.scriptUrl) {
+    document.getElementById('configScriptUrl').value = STATE.scriptUrl;
+    document.getElementById('setupAlert').style.display = 'none';
+    testConexion();
+  }
+  updatePreview();
+});
+
+/* ═══════════════════════════════════════
+   TABS
+═══════════════════════════════════════ */
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* ═══════════════════════════════════════
+   HOJA SELECTOR
+═══════════════════════════════════════ */
+function setHoja(hoja) {
+  STATE.hoja = hoja;
+  document.querySelectorAll('.hoja-tab').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  // Mostrar/ocultar campos según hoja
+  const catField = document.getElementById('catField');
+  catField.style.display = (hoja === 'productos') ? 'flex' : 'none';
+
+  updatePreview();
+}
+
+/* ═══════════════════════════════════════
+   CATEGORÍA
+═══════════════════════════════════════ */
+function selectCat(btn, slug) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  STATE.categoria = slug;
+  document.getElementById('fieldCategoria').value = slug;
+  updatePreview();
+}
+
+/* ═══════════════════════════════════════
+   TALLES
+═══════════════════════════════════════ */
+function generarTalles() {
+  const grid = document.getElementById('talleGrid');
+  grid.innerHTML = '';
+  TALLES.forEach(t => {
+    const wrap = document.createElement('div');
+    wrap.className = 'talle-item';
+    wrap.innerHTML = `
+      <input type="checkbox" id="talle${t}" value="${t}" onchange="updatePreview()">
+      <label class="talle-label" for="talle${t}">${t}</label>
+      <div class="talle-agotado-wrap">
+        <input type="checkbox" id="agotado${t}" title="Agotado">
+        <label class="talle-agotado-label" for="agotado${t}" title="Marcar como agotado" style="font-size:9px; color:var(--error)">agotado</label>
+      </div>
+    `;
+    grid.appendChild(wrap);
+  });
+}
+
+function getTallesStr() {
+  const parts = [];
+  TALLES.forEach(t => {
+    const check = document.getElementById('talle' + t);
+    if (check && check.checked) {
+      const agotado = document.getElementById('agotado' + t)?.checked;
+      parts.push(agotado ? `${t}-agotado` : `${t}`);
+    }
+  });
+  return parts.join(',');
+}
+
+/* ═══════════════════════════════════════
+   COLORES
+═══════════════════════════════════════ */
+let colorCount = 0;
+
+function addColor() {
+  if (colorCount >= 5) return;
+  colorCount++;
+  const idx = colorCount;
+  const wrap = document.getElementById('colorFields');
+  const row = document.createElement('div');
+  row.className = 'color-row';
+  row.id = 'colorRow' + idx;
+  row.innerHTML = `
+    <input type="color" id="colorHex${idx}" value="#7A5C3F"
+      oninput="updateColorPreview(${idx}); updatePreview()" style="cursor:pointer">
+    <input type="text" class="color-name-input field input"
+      id="colorNombre${idx}" placeholder="Nombre del color (ej: Negro)"
+      oninput="updatePreview()"
+      style="border:1.5px solid var(--sand); border-radius:6px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; outline:none;">
+    ${idx > 1 ? `<button onclick="removeColor(${idx})" style="background:none;border:none;cursor:pointer;color:var(--sand);font-size:18px;padding:4px 8px;" title="Quitar color">×</button>` : ''}
+  `;
+  wrap.appendChild(row);
+  if (colorCount >= 5) document.getElementById('addColorBtn').style.display = 'none';
+  updatePreview();
+}
+
+function removeColor(idx) {
+  document.getElementById('colorRow' + idx)?.remove();
+  colorCount--;
+  document.getElementById('addColorBtn').style.display = 'block';
+  updatePreview();
+}
+
+function updateColorPreview(idx) {
+  // nada extra necesario, el color picker se ve solo
+}
+
+function getColoresData() {
+  const cols = [];
+  for (let i = 1; i <= 5; i++) {
+    const hexEl = document.getElementById('colorHex' + i);
+    const nomEl = document.getElementById('colorNombre' + i);
+    if (hexEl && nomEl) {
+      cols.push({ hex: hexEl.value, nombre: nomEl.value.trim() });
+    }
+  }
+  return cols;
+}
+
+/* ═══════════════════════════════════════
+   IMAGE PREVIEWS
+═══════════════════════════════════════ */
+function updateImgPreview(input, n) {
+  const thumb = document.getElementById('thumb' + n);
+  if (!thumb) return;
+  if (input.value.trim()) {
+    thumb.src = input.value.trim();
+    thumb.className = 'img-preview-thumb visible';
+    thumb.onerror = () => { thumb.className = 'img-preview-thumb'; };
+  } else {
+    thumb.className = 'img-preview-thumb';
+  }
+}
+
+/* ═══════════════════════════════════════
+   LIVE PREVIEW
+═══════════════════════════════════════ */
+function updatePreview() {
+  const nombre = document.getElementById('fieldNombre')?.value || '';
+  const precio = document.getElementById('fieldPrecio')?.value || '';
+  const old    = document.getElementById('fieldPrecioOld')?.value || '';
+  const desc   = document.getElementById('fieldDescripcion')?.value || '';
+  const img1   = document.getElementById('img1')?.value || '';
+  const cat    = STATE.categoria;
+
+  document.getElementById('prevNombre').textContent = nombre || 'Nombre del modelo';
+  document.getElementById('prevPrecio').textContent = precio || '$0';
+  document.getElementById('prevOld').textContent = old;
+  document.getElementById('prevDesc').textContent = desc || 'La descripción aparece acá...';
+  document.getElementById('prevCat').textContent = cat ? cat.replace('-',' ') : '—';
+
+  // Imagen
+  const previewImg = document.getElementById('previewImg');
+  const placeholder = document.getElementById('previewPlaceholder');
+  if (img1) {
+    previewImg.src = img1;
+    previewImg.className = 'preview-img visible';
+    placeholder.style.display = 'none';
+    previewImg.onerror = () => {
+      previewImg.className = 'preview-img';
+      placeholder.style.display = 'flex';
+    };
+  } else {
+    previewImg.className = 'preview-img';
+    placeholder.style.display = 'flex';
+  }
+
+  // Talles
+  const tallesWrap = document.getElementById('prevTalles');
+  tallesWrap.innerHTML = '';
+  TALLES.forEach(t => {
+    const check = document.getElementById('talle' + t);
+    if (check && check.checked) {
+      const agotado = document.getElementById('agotado' + t)?.checked;
+      const chip = document.createElement('div');
+      chip.className = 'preview-talle-chip' + (agotado ? ' agotado' : '');
+      chip.textContent = t;
+      tallesWrap.appendChild(chip);
+    }
+  });
+
+  // Colores
+  const coloresWrap = document.getElementById('prevColors');
+  coloresWrap.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const hexEl = document.getElementById('colorHex' + i);
+    if (hexEl) {
+      const dot = document.createElement('div');
+      dot.className = 'preview-color-dot';
+      dot.style.background = hexEl.value;
+      coloresWrap.appendChild(dot);
+    }
+  }
+}
+
+/* ═══════════════════════════════════════
+   GUARDAR EN SHEETS
+═══════════════════════════════════════ */
+async function guardarProducto() {
+  const btn = document.getElementById('submitBtn');
+  const scriptUrl = STATE.scriptUrl;
+
+  // Validación básica
+  const nombre = document.getElementById('fieldNombre').value.trim();
+  const precio = document.getElementById('fieldPrecio').value.trim();
+
+  if (!nombre) { showToast('Escribí el nombre del modelo', 'error'); return; }
+  if (!precio) { showToast('Ingresá el precio', 'error'); return; }
+  if (STATE.hoja === 'productos' && !STATE.categoria) {
+    showToast('Elegí una categoría', 'error'); return;
+  }
+
+  // Construir fila según hoja
+  const colores = getColoresData();
+  let headers, row;
+
+  if (STATE.hoja === 'productos') {
+    headers = ['categoria','nombre','descripcion','materiales','precio','precio_old','descuento',
+               'talles','color1_nombre','color1_hex','color2_nombre','color2_hex',
+               'color3_nombre','color3_hex','color4_nombre','color4_hex','color5_nombre','color5_hex',
+               'imagen1','imagen2','imagen3','imagen4','link_wa'];
+    row = [
+      STATE.categoria,
+      nombre,
+      document.getElementById('fieldDescripcion').value.trim(),
+      document.getElementById('fieldMateriales').value.trim(),
+      precio,
+      document.getElementById('fieldPrecioOld').value.trim(),
+      document.getElementById('fieldDescuento').value.trim(),
+      getTallesStr(),
+      colores[0]?.nombre||'', colores[0]?.hex||'',
+      colores[1]?.nombre||'', colores[1]?.hex||'',
+      colores[2]?.nombre||'', colores[2]?.hex||'',
+      colores[3]?.nombre||'', colores[3]?.hex||'',
+      colores[4]?.nombre||'', colores[4]?.hex||'',
+      document.getElementById('img1').value.trim(),
+      document.getElementById('img2').value.trim(),
+      document.getElementById('img3').value.trim(),
+      document.getElementById('img4').value.trim(),
+      document.getElementById('fieldWa').value.trim() || 'https://wa.me/5492227466087'
+    ];
+  } else if (STATE.hoja === 'ofertas') {
+    headers = ['nombre','precio','precio_old','ahorro','etiqueta','etiqueta_tipo','imagen'];
+    row = [
+      nombre, precio,
+      document.getElementById('fieldPrecioOld').value.trim(),
+      document.getElementById('fieldDescuento').value.trim(),
+      document.getElementById('fieldDescripcion').value.trim() || 'OFERTA',
+      'sale',
+      document.getElementById('img1').value.trim()
+    ];
+  } else if (STATE.hoja === 'coleccion') {
+    headers = ['nombre','precio','precio_old','imagen'];
+    row = [
+      nombre, precio,
+      document.getElementById('fieldPrecioOld').value.trim(),
+      document.getElementById('img1').value.trim()
+    ];
+  } else if (STATE.hoja === 'home') {
+    headers = ['nombre','subtitulo','descripcion','precio','precio_old','descuento',
+               'talle35','talle36','talle37','talle38','talle39','talle40',
+               'color1','color2','color3','imagen','link_wa'];
+    const talleChecks = [35,36,37,38,39,40].map(t =>
+      document.getElementById('talle'+t)?.checked ? 'si' : 'no'
+    );
+    row = [
+      nombre,
+      document.getElementById('fieldSubtitulo').value.trim(),
+      document.getElementById('fieldDescripcion').value.trim(),
+      precio,
+      document.getElementById('fieldPrecioOld').value.trim(),
+      document.getElementById('fieldDescuento').value.trim(),
+      ...talleChecks,
+      colores[0]?.hex||'', colores[1]?.hex||'', colores[2]?.hex||'',
+      document.getElementById('img1').value.trim(),
+      document.getElementById('fieldWa').value.trim() || 'https://wa.me/5492227466087'
+    ];
+  }
+
+  // Si no hay script configurado → copiar al portapapeles
+  if (!scriptUrl) {
+    const csvRow = row.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
+    try {
+      await navigator.clipboard.writeText(csvRow);
+      showToast('¡Fila copiada! Pegala en tu Google Sheet', 'success');
+    } catch {
+      showToast('Configurá el Apps Script para guardar directo', 'error');
+    }
+    return;
+  }
+
+  // Guardar via Apps Script
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hoja: STATE.hoja, headers, row }),
+      mode: 'no-cors'
+    });
+
+    // no-cors no devuelve respuesta legible, asumimos éxito
+    showToast('✓ Producto guardado en Google Sheets', 'success');
+    limpiarFormulario();
+
+  } catch (err) {
+    showToast('Error al guardar. Revisá la configuración', 'error');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+/* ═══════════════════════════════════════
+   VER REGISTROS
+═══════════════════════════════════════ */
+async function cargarVista(hoja, btn) {
+  document.querySelectorAll('#tab-ver .hoja-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('verHojaLabel').textContent = 'Mostrando: ' + hoja;
+
+  const gid = GID_MAP[hoja];
+  const url = gid
+    ? `${SHEET_BASE}&gid=${gid}`
+    : null;
+
+  if (!url) {
+    document.getElementById('verEmpty').innerHTML = `
+      <div class="empty-icon">🔧</div>
+      <p>Configurá el GID de la hoja "${hoja}" en el código para ver los registros</p>
+    `;
+    document.getElementById('verEmpty').style.display = 'block';
+    document.getElementById('verTable').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('verEmpty').innerHTML = `<div class="cat-loading-spinner" style="width:32px;height:32px;border:2px solid var(--sand);border-top-color:var(--brown);border-radius:50%;animation:spin .8s linear infinite;margin:40px auto"></div>`;
+  document.getElementById('verEmpty').style.display = 'block';
+  document.getElementById('verTable').style.display = 'none';
+
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
+    const rows = parsearCSV(text);
+    if (rows.length < 2) throw new Error('Sin datos');
+
+    const headers = rows[0];
+    const thead = document.getElementById('verThead');
+    const tbody = document.getElementById('verTbody');
+    thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+    tbody.innerHTML = '';
+
+    rows.slice(1).forEach(row => {
+      const tr = document.createElement('tr');
+      row.forEach((cell, i) => {
+        const td = document.createElement('td');
+        const header = (headers[i] || '').toLowerCase();
+        if (header.startsWith('imagen') && cell.startsWith('http')) {
+          td.innerHTML = `<img class="record-img" src="${cell}" onerror="this.style.display='none'">`;
+        } else if (header === 'nombre') {
+          td.innerHTML = `<span class="record-name">${cell}</span>`;
+        } else if (header === 'categoria') {
+          td.innerHTML = `<span class="record-cat">${cell}</span>`;
+        } else if (header === 'precio') {
+          td.innerHTML = `<span class="record-price">${cell}</span>`;
+        } else {
+          td.textContent = cell.length > 40 ? cell.slice(0,40) + '…' : cell;
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('verEmpty').style.display = 'none';
+    document.getElementById('verTable').style.display = 'table';
+
+  } catch (err) {
+    document.getElementById('verEmpty').innerHTML = `<div class="empty-icon">⚠️</div><p>No se pudo cargar. Verificá que la hoja esté publicada.</p>`;
+  }
+}
+
+/* ═══════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════ */
+function guardarConfig() {
+  const url = document.getElementById('configScriptUrl').value.trim();
+  STATE.scriptUrl = url;
+  localStorage.setItem('luisito_script_url', url);
+  if (url) document.getElementById('setupAlert').style.display = 'none';
+}
+
+async function testConexion() {
+  const url = STATE.scriptUrl || document.getElementById('configScriptUrl')?.value?.trim();
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  txt.textContent = 'Verificando...';
+
+  if (!url) {
+    dot.className = 'status-dot';
+    txt.textContent = 'Sin configurar';
+    return;
+  }
+
+  try {
+    const res = await fetch(url, { mode: 'no-cors' });
+    dot.className = 'status-dot ok';
+    txt.textContent = 'Conectado a Sheets';
+    document.getElementById('setupAlert').style.display = 'none';
+  } catch {
+    dot.className = 'status-dot error';
+    txt.textContent = 'Sin conexión';
+  }
+}
+
+/* ═══════════════════════════════════════
+   LIMPIAR
+═══════════════════════════════════════ */
+function limpiarFormulario() {
+  ['fieldNombre','fieldSubtitulo','fieldDescripcion','fieldMateriales',
+   'fieldPrecio','fieldPrecioOld','fieldDescuento','fieldWa',
+   'img1','img2','img3','img4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  STATE.categoria = '';
+  TALLES.forEach(t => {
+    const c = document.getElementById('talle'+t);
+    const a = document.getElementById('agotado'+t);
+    if (c) c.checked = false;
+    if (a) a.checked = false;
+  });
+  [1,2,3,4].forEach(n => {
+    const t = document.getElementById('thumb'+n);
+    if (t) t.className = 'img-preview-thumb';
+  });
+  updatePreview();
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+function showToast(msg, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icon  = document.getElementById('toastIcon');
+  const text  = document.getElementById('toastMsg');
+  toast.className = 'toast ' + type;
+  icon.textContent = type === 'success' ? '✓' : '✕';
+  text.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+/* ═══════════════════════════════════════
+   PARSE CSV
+═══════════════════════════════════════ */
+function parsearCSV(texto) {
+  const filas = [];
+  const lineas = texto.trim().split(/\r?\n/);
+  lineas.forEach(linea => {
+    const cols = []; let actual = ''; let dentro = false;
+    for (let i = 0; i < linea.length; i++) {
+      const c = linea[i]; const sig = linea[i+1];
+      if (c === '"' && dentro && sig === '"') { actual += '"'; i++; }
+      else if (c === '"') { dentro = !dentro; }
+      else if (c === ',' && !dentro) { cols.push(actual.trim()); actual = ''; }
+      else { actual += c; }
+    }
+    cols.push(actual.trim());
+    filas.push(cols);
+  });
+  return filas;
+}
+
+/* ═══════════════════════════════════════
+   LOGIN
+   Usuario: admin
+   Contraseña: luisito2025
+   (Cambiálos en las variables de abajo)
+═══════════════════════════════════════ */
+const LOGIN_USER = 'admin';
+const LOGIN_PASS = 'luisito2025';
+const SESSION_KEY = 'lc_admin_session';
+let intentosFallidos = 0;
+const MAX_INTENTOS = 5;
+
+function verificarSesion() {
+  const session = sessionStorage.getItem(SESSION_KEY);
+  if (session === 'ok') {
+    document.getElementById('loginOverlay').style.display = 'none';
+  }
+}
+
+function intentarLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const errorEl = document.getElementById('loginError');
+  const attemptsEl = document.getElementById('loginAttempts');
+
+  if (intentosFallidos >= MAX_INTENTOS) {
+    errorEl.textContent = 'Demasiados intentos. Recargá la página.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  if (user === LOGIN_USER && pass === LOGIN_PASS) {
+    sessionStorage.setItem(SESSION_KEY, 'ok');
+    const overlay = document.getElementById('loginOverlay');
+    overlay.classList.add('hidden');
+    setTimeout(() => overlay.style.display = 'none', 400);
+    errorEl.classList.remove('show');
+  } else {
+    intentosFallidos++;
+    errorEl.textContent = 'Usuario o contraseña incorrectos';
+    errorEl.classList.add('show');
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+
+    const restantes = MAX_INTENTOS - intentosFallidos;
+    if (restantes <= 2 && restantes > 0) {
+      attemptsEl.textContent = `Intentos restantes: ${restantes}`;
+    }
+
+    // Shake animation
+    const box = document.querySelector('.login-box');
+    box.style.animation = 'none';
+    box.offsetHeight;
+    box.style.animation = 'shake .4s ease';
+  }
+}
+
+// Shake keyframe (lo agregamos por JS)
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+`;
+document.head.appendChild(shakeStyle);
+
+// Verificar al cargar
+verificarSesion();
+
+</script>
+</body>
+</html>
