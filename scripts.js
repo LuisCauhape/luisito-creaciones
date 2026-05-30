@@ -303,8 +303,13 @@ const imgs = [p.imagen, p.imagen2, p.imagen3].filter(Boolean);
 if (imgs[0]) {
   const heroImg = document.getElementById('heroMainImg');
   if (heroImg) heroImg.src = convertirDrive(imgs[0]);
-  document.querySelectorAll('.thumb img').forEach((thumb, i) => {
-    if (imgs[i]) thumb.src = convertirDrive(imgs[i]);
+  document.querySelectorAll('.thumb').forEach((thumb, i) => {
+    if (imgs[i]) {
+      const url = convertirDrive(imgs[i]);
+      const imgEl = thumb.querySelector('img');
+      if (imgEl) imgEl.src = url;
+      thumb.onclick = () => changeHero(thumb, url);
+    }
   });
 }
     const talles = [35, 36, 37, 38, 39, 40];
