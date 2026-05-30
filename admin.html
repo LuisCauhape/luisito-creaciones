@@ -616,15 +616,9 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 ══════════════════════════════ */
 const CLIENT_ID = '267224057278-2h8qksuos2cioraanr4a8m0qbatdl825.apps.googleusercontent.com';
 
-/* ══════════════════════════════
-   EMAILS AUTORIZADOS
-   Agregá o quitá emails de esta lista
-   para controlar quién puede entrar
-══════════════════════════════ */
 const EMAILS_AUTORIZADOS = [
-  'cauhapeeluis@gmail.com',   // dueño del panel
-  'email-cliente@gmail.com',  // ← reemplazá con el email de tu cliente
-  // 'otro-email@gmail.com',  // ← descomentá para agregar más
+  'cauhapeeluis@gmail.com',
+  'email-cliente@gmail.com',
 ];
 const SHEET_ID  = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
 const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file email profile openid';
@@ -642,7 +636,7 @@ let userInfo    = null;
 let hojaActual  = 'productos';
 let categoriaActual = '';
 let colorCount  = 0;
-let imgUrls     = ['','','',''];  // URLs de las 4 imágenes subidas
+let imgUrls     = ['','','',''];
 
 /* ══════════════════════════════
    GOOGLE LOGIN
@@ -662,39 +656,24 @@ function iniciarLogin() {
 }
 
 async function obtenerPerfil() {
-  // Usar tokeninfo para obtener email garantizado
   const res = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${accessToken}`);
   const tokenData = await res.json();
-  
-  // También pedir userinfo para foto y nombre
   const res2 = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
   const userData = await res2.json();
-  
-  // Combinar ambas fuentes
   userInfo = {
     email: tokenData.email || userData.email || '',
     name: userData.name || tokenData.email || '',
     picture: userData.picture || ''
   };
-  
-  console.log('tokenData:', JSON.stringify(tokenData));
-  console.log('userData:', JSON.stringify(userData));
-  console.log('email final:', userInfo.email);
-  
   document.getElementById('userName').textContent = userInfo.name || '';
   document.getElementById('userEmail').textContent = userInfo.email || '';
   if (userInfo.picture) document.getElementById('userAvatar').src = userInfo.picture;
 }
 
 function mostrarApp() {
-  // Verificar si el email está autorizado
-  // Intentar obtener email de distintos campos
   const email = userInfo?.email || userInfo?.sub || '';
-  console.log('userInfo completo:', JSON.stringify(userInfo));
-  console.log('email detectado:', email);
-  
   if (!EMAILS_AUTORIZADOS.includes(email)) {
     accessToken = null;
     userInfo = null;
@@ -860,7 +839,6 @@ async function subirImagen(input, idx) {
   txt.textContent = 'Subiendo...';
 
   try {
-    // Mostrar preview local inmediato
     const reader = new FileReader();
     reader.onload = e => {
       const prevEl = document.getElementById('prev'+idx);
@@ -871,7 +849,6 @@ async function subirImagen(input, idx) {
 
     bar.style.width = '50%';
 
-    // Subir a Google Drive
     const metadata = { name: file.name, mimeType: file.type };
     const formData = new FormData();
     formData.append('metadata', new Blob([JSON.stringify(metadata)], {type:'application/json'}));
@@ -888,14 +865,12 @@ async function subirImagen(input, idx) {
 
     if (!data.id) throw new Error('No se obtuvo ID del archivo');
 
-    // Hacer el archivo público
     await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
       method: 'POST',
       headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
       body: JSON.stringify({ role:'reader', type:'anyone' })
     });
 
-    // URL directa de la imagen (thumbnail format - funciona cross-origin)
     const imgUrl = `https://lh3.googleusercontent.com/d/${data.id}`;
     imgUrls[idx] = imgUrl;
 
@@ -905,7 +880,6 @@ async function subirImagen(input, idx) {
 
     setTimeout(() => { prog.classList.remove('show'); }, 800);
 
-    // Actualizar preview del panel
     if (idx === 0) updatePreview();
     showToast('Foto subida correctamente ✓', 'success');
 
@@ -1037,29 +1011,39 @@ async function guardarProducto() {
       document.getElementById('fDescuento').value.trim(),
       ...tc,
       colores[0]?.hex||'', colores[1]?.hex||'', colores[2]?.hex||'',
-      imgUrls[0]||'',                                            // P imagen
-      imgUrls[1]||'',                                            // Q imagen2
-      imgUrls[2]||'',                                            // R imagen3
+      imgUrls[0]||'',
+      imgUrls[1]||'',
+      imgUrls[2]||'',
       document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
     ]];
   }
 
-try {
-    const sheetUrl = hojaActual === 'home'
-      ? `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`
-      : `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
-    const sheetMethod = hojaActual === 'home' ? 'PUT' : 'POST';
-    const res = await fetch(sheetUrl, {
-        method: sheetMethod,
-        headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
-        body: JSON.stringify({ values })
-      }
-    );
+  try {
+    let url, method;
+
+    if (hojaActual === 'home') {
+      url    = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`;
+      method = 'PUT';
+    } else {
+      // ✅ FIX: el rango va en el path sin encodeURIComponent para que el ! no se codifique
+      url    = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
+      method = 'POST';
+    }
+
+    console.log('Guardando en:', url);
+
+    const res = await fetch(url, {
+      method,
+      headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({ values })
+    });
+
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
 
     showToast('✓ Guardado en Google Sheets', 'success');
     limpiar();
+
   } catch(err) {
     console.error(err);
     showToast('Error al guardar: '+err.message, 'error');
