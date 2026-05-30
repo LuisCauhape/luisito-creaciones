@@ -623,7 +623,7 @@ const CLIENT_ID = '267224057278-2h8qksuos2cioraanr4a8m0qbatdl825.apps.googleuser
 ══════════════════════════════ */
 const EMAILS_AUTORIZADOS = [
   'cauhapeeluis@gmail.com',   // dueño del panel
-  'cauhapeeluis@gmail.com',  // ← reemplazá con el email de tu cliente
+  'email-cliente@gmail.com',  // ← reemplazá con el email de tu cliente
   // 'otro-email@gmail.com',  // ← descomentá para agregar más
 ];
 const SHEET_ID  = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
@@ -673,17 +673,20 @@ async function obtenerPerfil() {
 
 function mostrarApp() {
   // Verificar si el email está autorizado
-  const email = userInfo?.email || '';
+  // Intentar obtener email de distintos campos
+  const email = userInfo?.email || userInfo?.sub || '';
+  console.log('userInfo completo:', JSON.stringify(userInfo));
+  console.log('email detectado:', email);
+  
   if (!EMAILS_AUTORIZADOS.includes(email)) {
     accessToken = null;
     userInfo = null;
     document.getElementById('loginScreen').style.display = 'flex';
-    // Mostrar mensaje de error
     const nota = document.querySelector('.login-note');
     if (nota) {
       nota.style.color = '#8B2635';
       nota.style.fontWeight = '600';
-      nota.textContent = '⛔ Tu cuenta (' + email + ') no tiene acceso a este panel. Contactá al administrador.';
+      nota.textContent = '⛔ Email detectado: [' + email + '] — no autorizado. Mostrá esto al admin.';
     }
     return;
   }
