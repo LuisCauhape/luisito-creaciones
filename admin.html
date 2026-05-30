@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel de Carga — Luisito Creaciones</title>
+<title>Panel — Luisito Creaciones</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root {
   --cream: #F7F2EC;
@@ -22,1499 +23,1093 @@
   --error: #8B2635;
   --sidebar: #18120F;
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(--dark); min-height:100vh; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--offwhite);
-  color: var(--dark);
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 260px 1fr;
+/* ── LOGIN ── */
+.login-screen {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:var(--dark); padding:24px;
 }
+.login-box {
+  background:var(--offwhite); width:100%; max-width:420px;
+  padding:56px 48px; text-align:center;
+  animation: loginUp .5s cubic-bezier(.16,1,.3,1);
+}
+@keyframes loginUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.login-logo {
+  font-family:'Playfair Display',serif; font-size:28px; font-weight:800;
+  color:var(--dark); margin-bottom:4px;
+}
+.login-logo span { color:var(--accent); font-style:italic; }
+.login-sub {
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--warm-gray); font-weight:600; margin-bottom:48px;
+}
+.login-desc {
+  font-size:14px; color:var(--warm-gray); line-height:1.7; margin-bottom:36px;
+}
+.google-btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:12px;
+  width:100%; padding:16px 24px;
+  background:white; border:1.5px solid var(--sand); border-radius:6px;
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  color:var(--dark); cursor:pointer; transition:all .25s ease;
+  text-decoration:none;
+}
+.google-btn:hover { border-color:var(--accent); box-shadow:0 2px 12px rgba(196,149,106,.2); }
+.google-btn svg { flex-shrink:0; }
+.login-note {
+  font-size:11px; color:var(--warm-gray); margin-top:20px; line-height:1.6;
+}
+
+/* ── APP ── */
+.app { display:none; grid-template-columns:260px 1fr; min-height:100vh; }
+.app.visible { display:grid; }
 
 /* ── SIDEBAR ── */
 .sidebar {
-  background: var(--sidebar);
-  min-height: 100vh;
-  position: sticky; top: 0; height: 100vh;
-  display: flex; flex-direction: column;
-  padding: 0;
-  overflow: hidden;
+  background:var(--sidebar); min-height:100vh;
+  position:sticky; top:0; height:100vh;
+  display:flex; flex-direction:column;
 }
-.sidebar-brand {
-  padding: 32px 28px 28px;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-.sidebar-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px; font-weight: 700;
-  color: var(--accent); display: block; margin-bottom: 4px;
-}
-.sidebar-logo span { font-style: italic; color: var(--tan); }
-.sidebar-sub {
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(255,255,255,.3); font-weight: 500;
-}
-.sidebar-nav { padding: 24px 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.sidebar-brand { padding:32px 28px 28px; border-bottom:1px solid rgba(255,255,255,.06); }
+.sidebar-logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--accent); display:block; margin-bottom:4px; }
+.sidebar-logo span { color:var(--tan); font-style:italic; }
+.sidebar-sub { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.3); font-weight:500; }
+.sidebar-user { padding:16px 28px; border-bottom:1px solid rgba(255,255,255,.06); display:flex; align-items:center; gap:10px; }
+.user-avatar { width:32px; height:32px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); }
+.user-name { font-size:12px; font-weight:600; color:rgba(255,255,255,.7); }
+.user-email { font-size:10px; color:rgba(255,255,255,.3); }
+.sidebar-nav { padding:24px 16px; flex:1; display:flex; flex-direction:column; gap:4px; }
 .nav-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 14px; border-radius: 8px;
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,.45);
-  cursor: pointer; transition: all .2s ease;
-  border: none; background: none; width: 100%; text-align: left;
+  display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:8px;
+  font-size:13px; font-weight:600; color:rgba(255,255,255,.45);
+  cursor:pointer; transition:all .2s ease; border:none; background:none; width:100%; text-align:left;
 }
-.nav-item:hover { background: rgba(255,255,255,.06); color: rgba(255,255,255,.8); }
-.nav-item.active { background: var(--accent); color: white; }
-.nav-item .nav-icon { font-size: 16px; flex-shrink: 0; }
-.sidebar-footer {
-  padding: 20px 16px;
-  border-top: 1px solid rgba(255,255,255,.06);
-}
+.nav-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
+.nav-item.active { background:var(--accent); color:white; }
+.nav-item .nav-icon { font-size:16px; flex-shrink:0; }
+.sidebar-footer { padding:20px 16px; border-top:1px solid rgba(255,255,255,.06); display:flex; flex-direction:column; gap:4px; }
 .sidebar-link {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 12px; font-weight: 500; color: rgba(255,255,255,.3);
-  text-decoration: none; padding: 10px 14px; border-radius: 6px;
-  transition: all .2s ease;
+  display:flex; align-items:center; gap:10px; font-size:12px; font-weight:500;
+  color:rgba(255,255,255,.3); text-decoration:none; padding:10px 14px; border-radius:6px; transition:all .2s ease;
 }
-.sidebar-link:hover { color: rgba(255,255,255,.6); background: rgba(255,255,255,.04); }
+.sidebar-link:hover { color:rgba(255,255,255,.6); background:rgba(255,255,255,.04); }
+.logout-btn {
+  display:flex; align-items:center; gap:10px; font-size:12px; font-weight:600;
+  color:rgba(255,100,100,.5); padding:10px 14px; border-radius:6px;
+  background:none; border:none; cursor:pointer; transition:all .2s ease; width:100%;
+}
+.logout-btn:hover { color:rgba(255,100,100,.8); background:rgba(255,0,0,.05); }
 
 /* ── MAIN ── */
-.main {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-}
+.main { display:flex; flex-direction:column; min-height:100vh; }
 .topbar {
-  background: white;
-  border-bottom: 1px solid rgba(212,191,163,.3);
-  padding: 20px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 10;
+  background:white; border-bottom:1px solid rgba(212,191,163,.3);
+  padding:20px 40px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:10;
 }
-.topbar-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px; font-weight: 800; color: var(--dark);
+.topbar-title { font-family:'Playfair Display',serif; font-size:26px; font-weight:800; color:var(--dark); }
+.topbar-title span { color:var(--accent); font-style:italic; }
+.status-pill {
+  display:flex; align-items:center; gap:8px; font-size:12px; font-weight:500;
+  color:var(--warm-gray); padding:8px 16px; border:1px solid var(--sand); border-radius:20px;
 }
-.topbar-title span { color: var(--accent); font-style: italic; }
-.topbar-actions { display: flex; gap: 12px; align-items: center; }
-.sheet-status {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 500; color: var(--warm-gray);
-  padding: 8px 16px; border: 1px solid var(--sand); border-radius: 20px;
-}
-.status-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--sand);
-  transition: background .3s ease;
-}
-.status-dot.ok { background: #52b788; }
-.status-dot.error { background: var(--error); }
-
-/* ── CONTENT ── */
-.content { padding: 36px 40px; flex: 1; }
+.status-dot { width:8px; height:8px; border-radius:50%; background:var(--sand); }
+.status-dot.ok { background:#52b788; }
+.content { padding:36px 40px; flex:1; }
 
 /* ── TABS ── */
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* ── HOJA TABS ── */
+.hoja-tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+.hoja-tab {
+  padding:10px 20px; border:1.5px solid var(--sand); background:white; border-radius:6px;
+  font-size:12px; font-weight:700; color:var(--warm-gray); cursor:pointer;
+  transition:all .2s ease; font-family:'DM Sans',sans-serif;
+}
+.hoja-tab:hover { border-color:var(--accent); color:var(--dark); }
+.hoja-tab.active { background:var(--dark); color:white; border-color:var(--dark); }
 
 /* ── FORM CARD ── */
-.form-card {
-  background: white;
-  border: 1px solid rgba(212,191,163,.3);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-.form-card-header {
-  padding: 22px 28px;
-  border-bottom: 1px solid rgba(212,191,163,.2);
-  display: flex; align-items: center; gap: 12px;
-}
-.form-card-icon { font-size: 20px; }
-.form-card-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px; font-weight: 700; color: var(--dark);
-}
-.form-card-sub { font-size: 12px; color: var(--warm-gray); font-weight: 400; margin-top: 2px; }
-.form-card-body { padding: 28px; }
+.form-card { background:white; border:1px solid rgba(212,191,163,.3); border-radius:12px; overflow:hidden; margin-bottom:24px; }
+.form-card-header { padding:22px 28px; border-bottom:1px solid rgba(212,191,163,.2); display:flex; align-items:center; gap:12px; }
+.form-card-icon { font-size:20px; }
+.form-card-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--dark); }
+.form-card-sub { font-size:12px; color:var(--warm-gray); margin-top:2px; }
+.form-card-body { padding:28px; }
 
-/* ── FORM GRID ── */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
-.form-full { grid-column: 1 / -1; }
-
-.field { display: flex; flex-direction: column; gap: 8px; }
-.field label {
-  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
-  font-weight: 700; color: var(--warm-gray);
-}
-.field label .req { color: var(--accent); margin-left: 3px; }
+/* ── FIELDS ── */
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.form-grid.cols3 { grid-template-columns:1fr 1fr 1fr; }
+.form-full { grid-column:1/-1; }
+.field { display:flex; flex-direction:column; gap:8px; }
+.field label { font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--warm-gray); }
+.field label .req { color:var(--accent); margin-left:3px; }
 .field input, .field select, .field textarea {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px; font-weight: 500; color: var(--dark);
-  border: 1.5px solid var(--sand);
-  background: var(--offwhite);
-  padding: 12px 16px; border-radius: 6px;
-  transition: border-color .2s ease, box-shadow .2s ease;
-  outline: none; width: 100%;
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; color:var(--dark);
+  border:1.5px solid var(--sand); background:var(--offwhite);
+  padding:12px 16px; border-radius:6px; transition:border-color .2s,box-shadow .2s;
+  outline:none; width:100%;
 }
 .field input:focus, .field select:focus, .field textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(196,149,106,.12);
-  background: white;
+  border-color:var(--accent); box-shadow:0 0 0 3px rgba(196,149,106,.12); background:white;
 }
-.field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-.field select { cursor: pointer; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239E8E80' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
-}
-.field-hint { font-size: 11px; color: var(--warm-gray); font-weight: 400; margin-top: -4px; }
+.field textarea { resize:vertical; min-height:90px; line-height:1.6; }
+.field-hint { font-size:11px; color:var(--warm-gray); margin-top:-4px; }
 
-/* ── CATEGORY SELECTOR ── */
-.cat-selector { display: flex; flex-wrap: wrap; gap: 8px; }
+/* ── CAT SELECTOR ── */
+.cat-selector { display:flex; flex-wrap:wrap; gap:8px; }
 .cat-btn {
-  padding: 9px 16px; border: 1.5px solid var(--sand);
-  background: white; border-radius: 6px;
-  font-size: 12px; font-weight: 600; color: var(--warm-gray);
-  cursor: pointer; transition: all .2s ease;
-  font-family: 'DM Sans', sans-serif;
+  padding:9px 16px; border:1.5px solid var(--sand); background:white; border-radius:6px;
+  font-size:12px; font-weight:600; color:var(--warm-gray); cursor:pointer; transition:all .2s;
+  font-family:'DM Sans',sans-serif;
 }
-.cat-btn:hover { border-color: var(--accent); color: var(--accent); }
-.cat-btn.selected { background: var(--dark); color: white; border-color: var(--dark); }
+.cat-btn:hover { border-color:var(--accent); color:var(--accent); }
+.cat-btn.selected { background:var(--dark); color:white; border-color:var(--dark); }
 
-/* ── TALLE SELECTOR ── */
-.talle-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.talle-item {
-  position: relative;
-}
-.talle-item input[type="checkbox"] { display: none; }
+/* ── TALLES ── */
+.talle-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.talle-item { position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.talle-item input[type="checkbox"] { display:none; }
 .talle-label {
-  display: flex; align-items: center; justify-content: center;
-  width: 46px; height: 46px;
-  border: 1.5px solid var(--sand); border-radius: 4px;
-  font-size: 13px; font-weight: 700; color: var(--warm-gray);
-  cursor: pointer; transition: all .2s ease;
-  user-select: none;
+  display:flex; align-items:center; justify-content:center;
+  width:46px; height:46px; border:1.5px solid var(--sand); border-radius:4px;
+  font-size:13px; font-weight:700; color:var(--warm-gray);
+  cursor:pointer; transition:all .2s; user-select:none;
 }
-.talle-item input:checked + .talle-label {
-  background: var(--dark); color: white; border-color: var(--dark);
-}
-.talle-label:hover { border-color: var(--accent); color: var(--accent); }
+.talle-item input:checked + .talle-label { background:var(--dark); color:white; border-color:var(--dark); }
+.talle-label:hover { border-color:var(--accent); color:var(--accent); }
+.talle-agotado-wrap { display:none; align-items:center; gap:4px; }
+.talle-item input:checked ~ .talle-agotado-wrap { display:flex; }
+.talle-agotado-wrap input[type="checkbox"] { display:none; }
+.talle-agotado-label { font-size:9px; font-weight:700; color:var(--error); cursor:pointer; }
 
-/* Talle agotado toggle */
-.talle-agotado-wrap { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
-.talle-agotado-wrap input[type="checkbox"] { display: none; }
-.talle-agotado-label {
-  font-size: 10px; font-weight: 600; color: var(--warm-gray);
-  cursor: pointer; text-decoration: none;
-  transition: color .2s;
-}
-.talle-item input:checked ~ .talle-agotado-wrap { display: flex; }
-.talle-item:not(:has(input:checked)) .talle-agotado-wrap { display: none; }
-
-/* ── COLOR INPUTS ── */
-.color-fields { display: flex; flex-direction: column; gap: 12px; }
-.color-row { display: flex; align-items: center; gap: 12px; }
-.color-swatch-preview {
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 2px solid var(--sand); flex-shrink: 0;
-  transition: background .2s ease;
-}
-.color-row input[type="color"] {
-  width: 40px; height: 40px; border: 1.5px solid var(--sand);
-  border-radius: 50%; cursor: pointer; padding: 2px;
-  background: none; flex-shrink: 0;
-}
-.color-row .color-name-input { flex: 1; }
+/* ── COLORES ── */
+.color-fields { display:flex; flex-direction:column; gap:12px; }
+.color-row { display:flex; align-items:center; gap:12px; }
+.color-row input[type="color"] { width:40px; height:40px; border:1.5px solid var(--sand); border-radius:50%; cursor:pointer; padding:2px; background:none; flex-shrink:0; }
+.color-name-input { flex:1; border:1.5px solid var(--sand); border-radius:6px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; outline:none; transition:border-color .2s; }
+.color-name-input:focus { border-color:var(--accent); }
 .add-color-btn {
-  font-size: 12px; font-weight: 600; color: var(--accent);
-  background: none; border: 1.5px dashed var(--sand);
-  padding: 10px 16px; border-radius: 6px; cursor: pointer;
-  transition: all .2s ease; font-family: 'DM Sans', sans-serif;
-  width: 100%;
+  font-size:12px; font-weight:600; color:var(--accent); background:none;
+  border:1.5px dashed var(--sand); padding:10px 16px; border-radius:6px;
+  cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; width:100%; margin-top:8px;
 }
-.add-color-btn:hover { border-color: var(--accent); background: rgba(196,149,106,.06); }
+.add-color-btn:hover { border-color:var(--accent); background:rgba(196,149,106,.06); }
 
-/* ── IMAGE INPUTS ── */
-.img-fields { display: flex; flex-direction: column; gap: 10px; }
-.img-row { display: flex; align-items: center; gap: 12px; }
-.img-num {
-  width: 28px; height: 28px; border-radius: 50%; background: var(--dark);
-  color: white; font-size: 11px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+/* ── IMÁGENES ── */
+.img-upload-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.img-upload-slot {
+  position:relative; aspect-ratio:3/4; border:2px dashed var(--sand);
+  border-radius:8px; overflow:hidden; cursor:pointer;
+  transition:border-color .2s, background .2s;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; background:var(--offwhite);
 }
-.img-row input { flex: 1; }
-.img-preview-thumb {
-  width: 44px; height: 54px; border-radius: 4px;
-  object-fit: cover; border: 1.5px solid var(--sand);
-  display: none; flex-shrink: 0;
+.img-upload-slot:hover { border-color:var(--accent); background:rgba(196,149,106,.04); }
+.img-upload-slot.has-img { border-style:solid; border-color:var(--sand); }
+.img-upload-slot input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.img-upload-preview { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; display:none; }
+.img-upload-preview.visible { display:block; }
+.img-upload-icon { font-size:28px; opacity:.4; position:relative; z-index:1; }
+.img-upload-label { font-size:11px; font-weight:600; color:var(--warm-gray); position:relative; z-index:1; text-align:center; padding:0 8px; }
+.img-upload-num {
+  position:absolute; top:8px; left:8px; z-index:2;
+  width:22px; height:22px; border-radius:50%; background:var(--dark);
+  color:white; font-size:10px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
 }
-.img-preview-thumb.visible { display: block; }
-
-/* ── PREVIEW CARD ── */
-.preview-section {
-  position: sticky; top: 88px;
+.img-remove-btn {
+  position:absolute; top:6px; right:6px; z-index:3;
+  width:24px; height:24px; border-radius:50%; background:rgba(0,0,0,.6);
+  color:white; border:none; cursor:pointer; font-size:14px;
+  display:none; align-items:center; justify-content:center;
 }
-.preview-card {
-  background: white;
-  border: 1px solid rgba(212,191,163,.3);
-  border-radius: 12px; overflow: hidden;
+.img-upload-slot.has-img .img-remove-btn { display:flex; }
+.img-upload-url-input {
+  position:absolute; bottom:0; left:0; right:0; z-index:2;
+  background:rgba(255,255,255,.95); border:none; border-top:1px solid var(--sand);
+  padding:8px 10px; font-size:11px; font-family:'DM Sans',sans-serif;
+  display:none; outline:none;
 }
-.preview-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(212,191,163,.2);
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-  font-weight: 700; color: var(--warm-gray);
-  display: flex; align-items: center; gap: 8px;
+.img-slot-actions {
+  position:absolute; bottom:8px; right:8px; z-index:3;
+  display:none; gap:4px;
 }
-.preview-img-wrap {
-  aspect-ratio: 3/4; background: var(--nude); position: relative; overflow: hidden;
-}
-.preview-img {
-  width: 100%; height: 100%; object-fit: cover;
-  display: none;
-}
-.preview-img.visible { display: block; }
-.preview-placeholder {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 8px; color: var(--sand);
-}
-.preview-placeholder-icon { font-size: 40px; opacity: .5; }
-.preview-placeholder p { font-size: 12px; font-weight: 500; }
-.preview-info { padding: 16px 20px; }
-.preview-cat-tag {
-  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
-  font-weight: 700; color: var(--accent); margin-bottom: 6px;
-}
-.preview-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 6px; line-height: 1.1;
-}
-.preview-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
-.preview-price { font-size: 20px; font-weight: 700; color: var(--dark); }
-.preview-price-old { font-size: 13px; color: var(--sand); text-decoration: line-through; }
-.preview-desc { font-size: 12px; line-height: 1.65; color: var(--warm-gray); margin-bottom: 12px; }
-.preview-talles { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-.preview-talle-chip {
-  font-size: 11px; font-weight: 700; border: 1.5px solid var(--sand);
-  padding: 4px 9px; border-radius: 3px; color: var(--warm-gray);
-}
-.preview-talle-chip.agotado { opacity: .35; text-decoration: line-through; }
-.preview-colors { display: flex; gap: 6px; }
-.preview-color-dot {
-  width: 18px; height: 18px; border-radius: 50%;
-  border: 2px solid rgba(0,0,0,.1);
+.img-upload-slot.has-img .img-slot-actions { display:flex; }
+.img-action-btn {
+  width:26px; height:26px; border-radius:4px; background:rgba(0,0,0,.6);
+  color:white; border:none; cursor:pointer; font-size:12px;
+  display:flex; align-items:center; justify-content:center;
 }
 
-/* ── HOJA SELECTOR TABS ── */
-.hoja-tabs { display: flex; gap: 2px; margin-bottom: 28px; }
-.hoja-tab {
-  padding: 10px 20px; border: 1.5px solid var(--sand);
-  background: white; border-radius: 6px;
-  font-size: 12px; font-weight: 700; color: var(--warm-gray);
-  cursor: pointer; transition: all .2s ease;
-  font-family: 'DM Sans', sans-serif;
-  display: flex; align-items: center; gap: 8px;
+/* ── UPLOAD PROGRESS ── */
+.upload-progress {
+  position:absolute; inset:0; z-index:4; background:rgba(28,23,20,.7);
+  display:none; flex-direction:column; align-items:center; justify-content:center; gap:8px;
 }
-.hoja-tab:hover { border-color: var(--accent); color: var(--dark); }
-.hoja-tab.active { background: var(--dark); color: white; border-color: var(--dark); }
+.upload-progress.show { display:flex; }
+.progress-bar-wrap { width:70%; height:4px; background:rgba(255,255,255,.2); border-radius:2px; overflow:hidden; }
+.progress-bar { height:100%; background:var(--accent); border-radius:2px; transition:width .3s ease; width:0%; }
+.progress-text { font-size:11px; color:white; font-weight:600; }
+
+/* ── PREVIEW ── */
+.preview-section { position:sticky; top:88px; }
+.preview-card { background:white; border:1px solid rgba(212,191,163,.3); border-radius:12px; overflow:hidden; }
+.preview-header { padding:16px 20px; border-bottom:1px solid rgba(212,191,163,.2); font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--warm-gray); }
+.preview-img-wrap { aspect-ratio:3/4; background:var(--nude); position:relative; overflow:hidden; }
+.preview-img { width:100%; height:100%; object-fit:cover; display:none; }
+.preview-img.visible { display:block; }
+.preview-placeholder { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--sand); }
+.preview-placeholder-icon { font-size:40px; opacity:.5; }
+.preview-placeholder p { font-size:12px; font-weight:500; }
+.preview-info { padding:16px 20px; }
+.preview-cat { font-size:10px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:var(--accent); margin-bottom:6px; }
+.preview-name { font-family:'Playfair Display',serif; font-size:22px; font-weight:800; color:var(--dark); margin-bottom:6px; line-height:1.1; }
+.preview-price-row { display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
+.preview-price { font-size:20px; font-weight:700; color:var(--dark); }
+.preview-price-old { font-size:13px; color:var(--sand); text-decoration:line-through; }
+.preview-desc { font-size:12px; line-height:1.65; color:var(--warm-gray); margin-bottom:10px; }
+.preview-talles { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.preview-talle { font-size:11px; font-weight:700; border:1.5px solid var(--sand); padding:3px 8px; border-radius:3px; color:var(--warm-gray); }
+.preview-talle.agotado { opacity:.35; text-decoration:line-through; }
+.preview-colors { display:flex; gap:6px; }
+.preview-color { width:16px; height:16px; border-radius:50%; border:2px solid rgba(0,0,0,.1); }
 
 /* ── SUBMIT ── */
 .submit-row {
-  display: flex; align-items: center; gap: 16px;
-  padding: 24px 28px;
-  border-top: 1px solid rgba(212,191,163,.2);
-  background: var(--cream);
+  display:flex; align-items:center; gap:16px; padding:24px 28px;
+  border-top:1px solid rgba(212,191,163,.2); background:var(--cream);
 }
 .btn-submit {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  background: var(--dark); color: white;
-  border: none; padding: 16px 36px; border-radius: 6px;
-  cursor: pointer; transition: all .3s ease;
-  display: flex; align-items: center; gap: 10px;
-  position: relative; overflow: hidden;
+  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  background:var(--dark); color:white; border:none; padding:16px 36px;
+  border-radius:6px; cursor:pointer; transition:all .3s;
+  display:flex; align-items:center; gap:10px;
 }
-.btn-submit:hover { background: var(--brown); }
-.btn-submit:disabled { opacity: .5; cursor: not-allowed; }
-.btn-submit .spinner {
-  width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3);
-  border-top-color: white; border-radius: 50%;
-  animation: spin .7s linear infinite; display: none;
-}
-.btn-submit.loading .spinner { display: block; }
-.btn-submit.loading .btn-text { opacity: .6; }
-.btn-clear {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 600;
-  background: none; color: var(--warm-gray);
-  border: 1.5px solid var(--sand); padding: 16px 24px; border-radius: 6px;
-  cursor: pointer; transition: all .2s ease;
-}
-.btn-clear:hover { border-color: var(--dark); color: var(--dark); }
+.btn-submit:hover { background:var(--brown); }
+.btn-submit:disabled { opacity:.5; cursor:not-allowed; }
+.btn-submit .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:white; border-radius:50%; animation:spin .7s linear infinite; display:none; }
+.btn-submit.loading .spinner { display:block; }
+.btn-clear { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; background:none; color:var(--warm-gray); border:1.5px solid var(--sand); padding:16px 24px; border-radius:6px; cursor:pointer; transition:all .2s; }
+.btn-clear:hover { border-color:var(--dark); color:var(--dark); }
 
 /* ── TOAST ── */
 .toast {
-  position: fixed; bottom: 32px; right: 32px;
-  background: var(--dark); color: white;
-  padding: 16px 24px; border-radius: 8px;
-  font-size: 14px; font-weight: 500;
-  display: flex; align-items: center; gap: 12px;
-  transform: translateY(80px); opacity: 0;
-  transition: all .4s cubic-bezier(.16,1,.3,1);
-  z-index: 1000; max-width: 360px;
+  position:fixed; bottom:32px; right:32px;
+  background:var(--dark); color:white; padding:16px 24px; border-radius:8px;
+  font-size:14px; font-weight:500; display:flex; align-items:center; gap:12px;
+  transform:translateY(80px); opacity:0; transition:all .4s cubic-bezier(.16,1,.3,1);
+  z-index:1000; max-width:380px;
 }
-.toast.show { transform: translateY(0); opacity: 1; }
-.toast.success { background: var(--success); }
-.toast.error { background: var(--error); }
-.toast-icon { font-size: 18px; flex-shrink: 0; }
+.toast.show { transform:translateY(0); opacity:1; }
+.toast.success { background:var(--success); }
+.toast.error { background:var(--error); }
+.toast-icon { font-size:18px; flex-shrink:0; }
 
-/* ── RECORDS TABLE ── */
-.records-wrap { overflow-x: auto; }
-.records-table { width: 100%; border-collapse: collapse; }
-.records-table th {
-  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
-  font-weight: 700; color: var(--warm-gray);
-  padding: 12px 16px; text-align: left;
-  border-bottom: 1.5px solid rgba(212,191,163,.3);
-  white-space: nowrap;
-}
-.records-table td {
-  padding: 14px 16px; font-size: 13px; font-weight: 400;
-  border-bottom: 1px solid rgba(212,191,163,.15);
-  vertical-align: middle;
-}
-.records-table tr:hover td { background: rgba(247,242,236,.6); }
-.record-img { width: 40px; height: 50px; object-fit: cover; border-radius: 3px; }
-.record-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; }
-.record-cat {
-  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-  font-weight: 700; color: var(--accent);
-  background: rgba(196,149,106,.1); padding: 3px 8px; border-radius: 3px;
-  white-space: nowrap;
-}
-.record-price { font-weight: 700; font-size: 14px; }
+/* ── VER TABLA ── */
+.records-wrap { overflow-x:auto; }
+.records-table { width:100%; border-collapse:collapse; }
+.records-table th { font-size:10px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--warm-gray); padding:12px 16px; text-align:left; border-bottom:1.5px solid rgba(212,191,163,.3); white-space:nowrap; }
+.records-table td { padding:14px 16px; font-size:13px; border-bottom:1px solid rgba(212,191,163,.15); vertical-align:middle; }
+.records-table tr:hover td { background:rgba(247,242,236,.6); }
+.record-img { width:40px; height:50px; object-fit:cover; border-radius:3px; }
+.record-name { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; }
+.record-cat { font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--accent); background:rgba(196,149,106,.1); padding:3px 8px; border-radius:3px; white-space:nowrap; }
+.record-price { font-weight:700; }
+.empty-state { text-align:center; padding:60px 20px; color:var(--warm-gray); }
+.empty-icon { font-size:48px; margin-bottom:12px; opacity:.4; }
 
-/* ── EMPTY STATE ── */
-.empty-state {
-  text-align: center; padding: 60px 20px;
-  color: var(--warm-gray);
-}
-.empty-icon { font-size: 48px; margin-bottom: 12px; opacity: .4; }
-.empty-state p { font-size: 14px; font-weight: 500; }
-
-/* ── SETUP ALERT ── */
-.setup-alert {
-  background: #FEF3C7; border: 1.5px solid #F59E0B;
-  border-radius: 8px; padding: 16px 20px;
-  margin-bottom: 24px; display: flex; gap: 14px; align-items: flex-start;
-}
-.setup-alert-icon { font-size: 20px; flex-shrink: 0; }
-.setup-alert-title { font-size: 13px; font-weight: 700; color: #92400E; margin-bottom: 4px; }
-.setup-alert-body { font-size: 12px; font-weight: 400; color: #78350F; line-height: 1.6; }
-.setup-alert code {
-  background: rgba(0,0,0,.08); padding: 2px 6px; border-radius: 3px;
-  font-family: monospace; font-size: 11px;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin { to{transform:rotate(360deg)} }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  body { grid-template-columns: 1fr; }
-  .sidebar { display: none; }
-  .topbar { padding: 16px 20px; }
-  .content { padding: 24px 20px; }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-grid.cols3 { grid-template-columns: 1fr 1fr; }
-}
-
-/* ── LOGIN OVERLAY ── */
-.login-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--dark);
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px;
-  animation: fadeIn .4s ease;
-}
-.login-overlay.hidden {
-  opacity: 0; pointer-events: none;
-  transition: opacity .4s ease;
-}
-.login-box {
-  background: var(--offwhite);
-  width: 100%; max-width: 400px;
-  padding: 48px 40px;
-  position: relative;
-  animation: loginUp .5s cubic-bezier(.16,1,.3,1);
-}
-@keyframes loginUp {
-  from { opacity:0; transform: translateY(28px); }
-  to   { opacity:1; transform: translateY(0); }
-}
-.login-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px; font-weight: 800;
-  color: var(--dark); margin-bottom: 6px;
-}
-.login-logo span { color: var(--accent); font-style: italic; }
-.login-sub {
-  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--warm-gray); font-weight: 600; margin-bottom: 40px;
-}
-.login-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-.login-field label {
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-  font-weight: 700; color: var(--warm-gray);
-}
-.login-field input {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px; font-weight: 500; color: var(--dark);
-  border: 1.5px solid var(--sand); background: white;
-  padding: 14px 18px; outline: none;
-  transition: border-color .2s ease, box-shadow .2s ease;
-  border-radius: 4px;
-}
-.login-field input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(196,149,106,.12);
-}
-.login-btn {
-  width: 100%; margin-top: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-  background: var(--dark); color: white;
-  border: none; padding: 16px; cursor: pointer;
-  transition: background .25s ease; border-radius: 4px;
-}
-.login-btn:hover { background: var(--brown); }
-.login-error {
-  font-size: 12px; font-weight: 600; color: var(--error);
-  margin-top: 12px; text-align: center; min-height: 18px;
-  opacity: 0; transition: opacity .2s ease;
-}
-.login-error.show { opacity: 1; }
-.login-lock {
-  font-size: 36px; margin-bottom: 28px; display: block;
-}
-.login-attempts {
-  font-size: 11px; color: var(--warm-gray); text-align: center;
-  margin-top: 20px; font-weight: 400;
+@media(max-width:900px){
+  .app { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  .topbar { padding:16px 20px; }
+  .content { padding:24px 20px; }
+  .form-grid { grid-template-columns:1fr; }
+  .form-grid.cols3 { grid-template-columns:1fr 1fr; }
+  .img-upload-grid { grid-template-columns:repeat(2,1fr); }
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
-<div class="login-overlay" id="loginOverlay">
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <span class="login-lock">🔐</span>
     <div class="login-logo">Luisito <span>Creaciones</span></div>
     <div class="login-sub">Panel de administración</div>
-
-    <div class="login-field">
-      <label>Usuario</label>
-      <input type="text" id="loginUser" placeholder="Ingresá tu usuario"
-        onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()">
-    </div>
-    <div class="login-field">
-      <label>Contraseña</label>
-      <input type="password" id="loginPass" placeholder="••••••••"
-        onkeydown="if(event.key==='Enter') intentarLogin()">
-    </div>
-
-    <button class="login-btn" onclick="intentarLogin()">Ingresar al panel →</button>
-    <div class="login-error" id="loginError">Usuario o contraseña incorrectos</div>
-    <div class="login-attempts" id="loginAttempts"></div>
+    <p class="login-desc">Ingresá con tu cuenta de Google para acceder al panel. Solo cuentas autorizadas pueden entrar.</p>
+    <button class="google-btn" onclick="iniciarLogin()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Entrar con Google
+    </button>
+    <p class="login-note">🔒 Tu sesión es segura. Solo vos podés ver y editar los datos de tu tienda.</p>
   </div>
 </div>
 
+<!-- APP -->
+<div class="app" id="app">
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <span class="sidebar-logo">Luisito <span>Creaciones</span></span>
-    <span class="sidebar-sub">Panel de administración</span>
-  </div>
-  <nav class="sidebar-nav">
-    <button class="nav-item active" onclick="showTab('cargar')">
-      <span class="nav-icon">✦</span> Cargar producto
-    </button>
-    <button class="nav-item" onclick="showTab('ver')">
-      <span class="nav-icon">◈</span> Ver productos
-    </button>
-    <button class="nav-item" onclick="showTab('config')">
-      <span class="nav-icon">⚙</span> Configuración
-    </button>
-  </nav>
-  <div class="sidebar-footer">
-    <a class="sidebar-link" href="index.html" target="_blank">
-      <span>↗</span> Ver sitio web
-    </a>
-  </div>
-</aside>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="sidebar-logo">Luisito <span>Creaciones</span></span>
+      <span class="sidebar-sub">Panel de administración</span>
+    </div>
+    <div class="sidebar-user">
+      <img class="user-avatar" id="userAvatar" src="" alt="">
+      <div>
+        <div class="user-name" id="userName">—</div>
+        <div class="user-email" id="userEmail">—</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="showTab('cargar',this)">
+        <span class="nav-icon">✦</span> Cargar producto
+      </button>
+      <button class="nav-item" onclick="showTab('ver',this)">
+        <span class="nav-icon">◈</span> Ver productos
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <a class="sidebar-link" href="index.html" target="_blank">↗ Ver sitio web</a>
+      <button class="logout-btn" onclick="cerrarSesion()">↩ Cerrar sesión</button>
+    </div>
+  </aside>
 
-<!-- MAIN -->
-<main class="main">
-  <div class="topbar">
-    <div>
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
       <div class="topbar-title">Panel de <span>carga</span></div>
-    </div>
-    <div class="topbar-actions">
-      <div class="sheet-status" id="sheetStatus">
-        <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">Verificando conexión...</span>
+      <div class="status-pill">
+        <div class="status-dot ok" id="statusDot"></div>
+        <span id="statusText">Conectado</span>
       </div>
     </div>
-  </div>
 
-  <div class="content">
+    <div class="content">
 
-    <!-- ══ TAB: CARGAR ══ -->
-    <div class="tab-panel active" id="tab-cargar">
+      <!-- TAB CARGAR -->
+      <div class="tab-panel active" id="tab-cargar">
 
-      <div class="setup-alert" id="setupAlert">
-        <span class="setup-alert-icon">⚠️</span>
-        <div>
-          <div class="setup-alert-title">Configuración necesaria</div>
-          <div class="setup-alert-body">
-            Para que el panel pueda guardar en Google Sheets necesitás crear un Google Apps Script.
-            Hacé clic en <strong>Configuración</strong> en el menú para ver los pasos.
-            Mientras tanto podés cargar datos y copiarlos manualmente al Sheet.
-          </div>
+        <div class="hoja-tabs">
+          <button class="hoja-tab active" onclick="setHoja('productos',this)">📦 Productos</button>
+          <button class="hoja-tab" onclick="setHoja('ofertas',this)">🏷 Ofertas</button>
+          <button class="hoja-tab" onclick="setHoja('coleccion',this)">✨ Colección</button>
+          <button class="hoja-tab" onclick="setHoja('home',this)">🏠 Hero</button>
         </div>
-      </div>
 
-      <!-- Selector de hoja -->
-      <div class="hoja-tabs">
-        <button class="hoja-tab active" onclick="setHoja('productos')" data-hoja="productos">📦 Productos / Categorías</button>
-        <button class="hoja-tab" onclick="setHoja('ofertas')" data-hoja="ofertas">🏷 Ofertas</button>
-        <button class="hoja-tab" onclick="setHoja('coleccion')" data-hoja="coleccion">✨ Colección</button>
-        <button class="hoja-tab" onclick="setHoja('home')" data-hoja="home">🏠 Hero / Home</button>
-      </div>
+        <div style="display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start;">
+          <div>
 
-      <div style="display:grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start;">
-
-        <!-- FORMULARIO -->
-        <div>
-
-          <!-- DATOS BÁSICOS -->
-          <div class="form-card">
-            <div class="form-card-header">
-              <span class="form-card-icon">📝</span>
-              <div>
-                <div class="form-card-title">Datos del producto</div>
-                <div class="form-card-sub">Información principal que verá el cliente</div>
+            <!-- DATOS -->
+            <div class="form-card">
+              <div class="form-card-header">
+                <span class="form-card-icon">📝</span>
+                <div>
+                  <div class="form-card-title">Datos del producto</div>
+                  <div class="form-card-sub">Información principal</div>
+                </div>
               </div>
-            </div>
-            <div class="form-card-body">
-              <div class="form-grid">
-                <div class="field form-full" id="catField">
-                  <label>Categoría <span class="req">*</span></label>
-                  <div class="cat-selector" id="catSelector">
-                    <button class="cat-btn" onclick="selectCat(this,'zapatos-planos')">👟 Zapatos planos</button>
-                    <button class="cat-btn" onclick="selectCat(this,'tacones')">👠 Tacones</button>
-                    <button class="cat-btn" onclick="selectCat(this,'sandalias')">🩴 Sandalias</button>
-                    <button class="cat-btn" onclick="selectCat(this,'zapatillas')">👟 Zapatillas</button>
-                    <button class="cat-btn" onclick="selectCat(this,'botas-botines')">🥾 Botas y botines</button>
-                    <button class="cat-btn" onclick="selectCat(this,'fiesta')">💃 Fiesta</button>
-                    <button class="cat-btn" onclick="selectCat(this,'verano')">☀️ Verano</button>
-                    <button class="cat-btn" onclick="selectCat(this,'deportivo')">🏃 Deportivo</button>
+              <div class="form-card-body">
+                <div class="form-grid">
+                  <div class="field form-full" id="catField">
+                    <label>Categoría <span class="req">*</span></label>
+                    <div class="cat-selector">
+                      <button class="cat-btn" onclick="selectCat(this,'zapatos-planos')">👟 Zapatos planos</button>
+                      <button class="cat-btn" onclick="selectCat(this,'tacones')">👠 Tacones</button>
+                      <button class="cat-btn" onclick="selectCat(this,'sandalias')">🩴 Sandalias</button>
+                      <button class="cat-btn" onclick="selectCat(this,'zapatillas')">👟 Zapatillas</button>
+                      <button class="cat-btn" onclick="selectCat(this,'botas-botines')">🥾 Botas</button>
+                      <button class="cat-btn" onclick="selectCat(this,'fiesta')">💃 Fiesta</button>
+                      <button class="cat-btn" onclick="selectCat(this,'verano')">☀️ Verano</button>
+                      <button class="cat-btn" onclick="selectCat(this,'deportivo')">🏃 Deportivo</button>
+                    </div>
                   </div>
-                  <input type="hidden" id="fieldCategoria">
+                  <div class="field">
+                    <label>Nombre <span class="req">*</span></label>
+                    <input type="text" id="fNombre" placeholder="Ej: Bota Siena" oninput="updatePreview()">
+                  </div>
+                  <div class="field">
+                    <label>Subtítulo</label>
+                    <input type="text" id="fSubtitulo" placeholder="Ej: Cuero genuino" oninput="updatePreview()">
+                  </div>
+                  <div class="field form-full">
+                    <label>Descripción</label>
+                    <textarea id="fDescripcion" placeholder="Describí el modelo..." oninput="updatePreview()"></textarea>
+                  </div>
+                  <div class="field form-full">
+                    <label>Materiales</label>
+                    <input type="text" id="fMateriales" placeholder="Ej: Cuero vacuno, suela TPR">
+                  </div>
                 </div>
+              </div>
+            </div>
 
+            <!-- PRECIO -->
+            <div class="form-card">
+              <div class="form-card-header">
+                <span class="form-card-icon">💰</span>
+                <div><div class="form-card-title">Precio</div></div>
+              </div>
+              <div class="form-card-body">
+                <div class="form-grid cols3">
+                  <div class="field">
+                    <label>Precio actual <span class="req">*</span></label>
+                    <input type="text" id="fPrecio" placeholder="$89.000" oninput="updatePreview()">
+                  </div>
+                  <div class="field">
+                    <label>Precio anterior</label>
+                    <input type="text" id="fPrecioOld" placeholder="$115.000" oninput="updatePreview()">
+                  </div>
+                  <div class="field">
+                    <label>Descuento</label>
+                    <input type="text" id="fDescuento" placeholder="–22% OFF" oninput="updatePreview()">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FOTOS -->
+            <div class="form-card">
+              <div class="form-card-header">
+                <span class="form-card-icon">📸</span>
+                <div>
+                  <div class="form-card-title">Fotos del producto</div>
+                  <div class="form-card-sub">Subí hasta 4 fotos desde tu dispositivo — se guardan en tu Google Drive automáticamente</div>
+                </div>
+              </div>
+              <div class="form-card-body">
+                <div class="img-upload-grid" id="imgGrid">
+                  <!-- generado por JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- TALLES -->
+            <div class="form-card">
+              <div class="form-card-header">
+                <span class="form-card-icon">📏</span>
+                <div><div class="form-card-title">Talles disponibles</div></div>
+              </div>
+              <div class="form-card-body">
+                <div class="talle-grid" id="talleGrid"></div>
+              </div>
+            </div>
+
+            <!-- COLORES -->
+            <div class="form-card">
+              <div class="form-card-header">
+                <span class="form-card-icon">🎨</span>
+                <div><div class="form-card-title">Colores</div></div>
+              </div>
+              <div class="form-card-body">
+                <div class="color-fields" id="colorFields"></div>
+                <button class="add-color-btn" id="addColorBtn" onclick="addColor()">+ Agregar color</button>
+              </div>
+            </div>
+
+            <!-- WA -->
+            <div class="form-card">
+              <div class="form-card-header">
+                <span class="form-card-icon">💬</span>
+                <div><div class="form-card-title">WhatsApp</div></div>
+              </div>
+              <div class="form-card-body">
                 <div class="field">
-                  <label>Nombre del modelo <span class="req">*</span></label>
-                  <input type="text" id="fieldNombre" placeholder="Ej: Bota Siena" oninput="updatePreview()">
+                  <label>Número (dejá vacío para usar el default)</label>
+                  <input type="text" id="fWa" placeholder="2227466087">
                 </div>
+              </div>
+            </div>
 
-                <div class="field">
-                  <label>Subtítulo <span class="req"></span></label>
-                  <input type="text" id="fieldSubtitulo" placeholder="Ej: Cuero genuino" oninput="updatePreview()">
-                </div>
+            <!-- SUBMIT -->
+            <div class="form-card">
+              <div class="submit-row">
+                <button class="btn-submit" id="submitBtn" onclick="guardarProducto()">
+                  <div class="spinner"></div>
+                  <span class="btn-text">✦ Guardar en Sheets</span>
+                </button>
+                <button class="btn-clear" onclick="limpiar()">Limpiar</button>
+              </div>
+            </div>
 
-                <div class="field form-full">
-                  <label>Descripción</label>
-                  <textarea id="fieldDescripcion" placeholder="Describí el modelo: materiales, ocasión, comodidad..." oninput="updatePreview()"></textarea>
-                </div>
+          </div><!-- /form -->
 
-                <div class="field form-full">
-                  <label>Materiales</label>
-                  <input type="text" id="fieldMateriales" placeholder="Ej: Cuero vacuno, suela TPR antideslizante">
+          <!-- PREVIEW -->
+          <div class="preview-section">
+            <div class="preview-card">
+              <div class="preview-header">👁 Vista previa</div>
+              <div class="preview-img-wrap">
+                <img class="preview-img" id="previewImg">
+                <div class="preview-placeholder" id="previewPlaceholder">
+                  <div class="preview-placeholder-icon">📸</div>
+                  <p>La foto aparece acá</p>
                 </div>
+              </div>
+              <div class="preview-info">
+                <div class="preview-cat" id="prevCat">—</div>
+                <div class="preview-name" id="prevNombre">Nombre del modelo</div>
+                <div class="preview-price-row">
+                  <span class="preview-price" id="prevPrecio">$0</span>
+                  <span class="preview-price-old" id="prevOld"></span>
+                </div>
+                <div class="preview-desc" id="prevDesc">La descripción aparece acá...</div>
+                <div class="preview-talles" id="prevTalles"></div>
+                <div class="preview-colors" id="prevColors"></div>
               </div>
             </div>
           </div>
 
-          <!-- PRECIOS -->
-          <div class="form-card">
-            <div class="form-card-header">
-              <span class="form-card-icon">💰</span>
-              <div>
-                <div class="form-card-title">Precio</div>
-                <div class="form-card-sub">Ingresá el precio con el signo $ y los puntos</div>
-              </div>
-            </div>
-            <div class="form-card-body">
-              <div class="form-grid cols3">
-                <div class="field">
-                  <label>Precio actual <span class="req">*</span></label>
-                  <input type="text" id="fieldPrecio" placeholder="$89.000" oninput="updatePreview()">
-                </div>
-                <div class="field">
-                  <label>Precio anterior (si hay oferta)</label>
-                  <input type="text" id="fieldPrecioOld" placeholder="$115.000" oninput="updatePreview()">
-                </div>
-                <div class="field">
-                  <label>Etiqueta de descuento</label>
-                  <input type="text" id="fieldDescuento" placeholder="–22% OFF" oninput="updatePreview()">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TALLES -->
-          <div class="form-card">
-            <div class="form-card-header">
-              <span class="form-card-icon">📏</span>
-              <div>
-                <div class="form-card-title">Talles disponibles</div>
-                <div class="form-card-sub">Marcá los talles que tenés en stock</div>
-              </div>
-            </div>
-            <div class="form-card-body">
-              <div class="talle-grid" id="talleGrid">
-                <!-- generado por JS -->
-              </div>
-            </div>
-          </div>
-
-          <!-- COLORES -->
-          <div class="form-card">
-            <div class="form-card-header">
-              <span class="form-card-icon">🎨</span>
-              <div>
-                <div class="form-card-title">Colores disponibles</div>
-                <div class="form-card-sub">Hasta 5 colores por producto</div>
-              </div>
-            </div>
-            <div class="form-card-body">
-              <div class="color-fields" id="colorFields">
-                <!-- generado por JS -->
-              </div>
-              <button class="add-color-btn" onclick="addColor()" id="addColorBtn" style="margin-top:12px">
-                + Agregar color
-              </button>
-            </div>
-          </div>
-
-          <!-- IMÁGENES -->
-          <div class="form-card">
-            <div class="form-card-header">
-              <span class="form-card-icon">🖼</span>
-              <div>
-                <div class="form-card-title">Fotos del producto</div>
-                <div class="form-card-sub">Pegá las URLs de las fotos (hasta 4). Podés usar Google Drive, Imgur, o links de Instagram</div>
-              </div>
-            </div>
-            <div class="form-card-body">
-              <div class="img-fields">
-                <div class="img-row">
-                  <div class="img-num">1</div>
-                  <input type="url" id="img1" placeholder="https://..." oninput="updateImgPreview(this,1); updatePreview()">
-                  <img class="img-preview-thumb" id="thumb1">
-                </div>
-                <div class="img-row">
-                  <div class="img-num">2</div>
-                  <input type="url" id="img2" placeholder="https://..." oninput="updateImgPreview(this,2)">
-                  <img class="img-preview-thumb" id="thumb2">
-                </div>
-                <div class="img-row">
-                  <div class="img-num">3</div>
-                  <input type="url" id="img3" placeholder="https://..." oninput="updateImgPreview(this,3)">
-                  <img class="img-preview-thumb" id="thumb3">
-                </div>
-                <div class="img-row">
-                  <div class="img-num">4</div>
-                  <input type="url" id="img4" placeholder="https://..." oninput="updateImgPreview(this,4)">
-                  <img class="img-preview-thumb" id="thumb4">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- WA -->
-          <div class="form-card">
-            <div class="form-card-header">
-              <span class="form-card-icon">💬</span>
-              <div>
-                <div class="form-card-title">Link de WhatsApp</div>
-                <div class="form-card-sub">Si lo dejás vacío usa el número por defecto</div>
-              </div>
-            </div>
-            <div class="form-card-body">
-              <div class="field">
-                <label>Número o link completo</label>
-                <input type="text" id="fieldWa" placeholder="2227466087 o https://wa.me/5492227466087">
-                <span class="field-hint">Solo el número sin el +549, o pegá el link completo</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- SUBMIT -->
-          <div class="form-card">
-            <div class="submit-row">
-              <button class="btn-submit" id="submitBtn" onclick="guardarProducto()">
-                <div class="spinner"></div>
-                <span class="btn-text">✦ Guardar en Google Sheets</span>
-              </button>
-              <button class="btn-clear" onclick="limpiarFormulario()">Limpiar</button>
-              <span id="submitMsg" style="font-size:13px; color:var(--warm-gray);"></span>
-            </div>
-          </div>
-
-        </div><!-- /form -->
-
-        <!-- PREVIEW -->
-        <div class="preview-section">
-          <div class="preview-card">
-            <div class="preview-header">
-              👁 Vista previa
-            </div>
-            <div class="preview-img-wrap">
-              <img class="preview-img" id="previewImg">
-              <div class="preview-placeholder" id="previewPlaceholder">
-                <div class="preview-placeholder-icon">📸</div>
-                <p>La foto aparece acá</p>
-              </div>
-            </div>
-            <div class="preview-info">
-              <div class="preview-cat-tag" id="prevCat">—</div>
-              <div class="preview-name" id="prevNombre">Nombre del modelo</div>
-              <div class="preview-price-row">
-                <span class="preview-price" id="prevPrecio">$0</span>
-                <span class="preview-price-old" id="prevOld"></span>
-              </div>
-              <div class="preview-desc" id="prevDesc">La descripción aparece acá...</div>
-              <div class="preview-talles" id="prevTalles"></div>
-              <div class="preview-colors" id="prevColors"></div>
-            </div>
-          </div>
         </div>
+      </div><!-- /tab cargar -->
 
-      </div><!-- /grid -->
-    </div><!-- /tab cargar -->
-
-    <!-- ══ TAB: VER ══ -->
-    <div class="tab-panel" id="tab-ver">
-      <div class="form-card">
-        <div class="form-card-header">
-          <span class="form-card-icon">◈</span>
-          <div>
-            <div class="form-card-title">Productos cargados</div>
-            <div class="form-card-sub" id="verHojaLabel">Mostrando: productos</div>
+      <!-- TAB VER -->
+      <div class="tab-panel" id="tab-ver">
+        <div class="form-card">
+          <div class="form-card-header">
+            <span class="form-card-icon">◈</span>
+            <div><div class="form-card-title">Productos cargados</div></div>
           </div>
-        </div>
-        <div style="padding:16px 28px 0; display:flex; gap:8px;">
-          <button class="hoja-tab active" onclick="cargarVista('productos',this)" style="font-size:11px; padding:8px 14px;">📦 Productos</button>
-          <button class="hoja-tab" onclick="cargarVista('ofertas',this)" style="font-size:11px; padding:8px 14px;">🏷 Ofertas</button>
-          <button class="hoja-tab" onclick="cargarVista('coleccion',this)" style="font-size:11px; padding:8px 14px;">✨ Colección</button>
-        </div>
-        <div class="form-card-body">
-          <div class="records-wrap">
-            <div class="empty-state" id="verEmpty">
-              <div class="empty-icon">📋</div>
-              <p>Hacé clic en una pestaña para cargar los productos</p>
+          <div style="padding:16px 28px 0; display:flex; gap:8px;">
+            <button class="hoja-tab active" onclick="cargarVista('productos',this)" style="font-size:11px;padding:8px 14px;">📦 Productos</button>
+            <button class="hoja-tab" onclick="cargarVista('ofertas',this)" style="font-size:11px;padding:8px 14px;">🏷 Ofertas</button>
+            <button class="hoja-tab" onclick="cargarVista('coleccion',this)" style="font-size:11px;padding:8px 14px;">✨ Colección</button>
+          </div>
+          <div class="form-card-body">
+            <div class="records-wrap">
+              <div class="empty-state" id="verEmpty">
+                <div class="empty-icon">📋</div>
+                <p>Elegí una pestaña para ver los productos</p>
+              </div>
+              <table class="records-table" id="verTable" style="display:none">
+                <thead id="verThead"></thead>
+                <tbody id="verTbody"></tbody>
+              </table>
             </div>
-            <table class="records-table" id="verTable" style="display:none">
-              <thead id="verThead"></thead>
-              <tbody id="verTbody"></tbody>
-            </table>
           </div>
         </div>
       </div>
+
     </div>
-
-    <!-- ══ TAB: CONFIG ══ -->
-    <div class="tab-panel" id="tab-config">
-      <div class="form-card">
-        <div class="form-card-header">
-          <span class="form-card-icon">⚙</span>
-          <div>
-            <div class="form-card-title">Configuración del panel</div>
-            <div class="form-card-sub">Apps Script para conectar con Google Sheets</div>
-          </div>
-        </div>
-        <div class="form-card-body">
-
-          <div class="field" style="margin-bottom:24px">
-            <label>URL del Apps Script (Web App)</label>
-            <input type="url" id="configScriptUrl"
-              placeholder="https://script.google.com/macros/s/TU_ID/exec"
-              oninput="guardarConfig()">
-            <span class="field-hint">Pegá acá la URL que te da Google Apps Script al publicar como Web App</span>
-          </div>
-
-          <div style="background:var(--cream); border-radius:8px; padding:24px; margin-bottom:24px;">
-            <p style="font-family:'Playfair Display',serif; font-size:18px; font-weight:800; margin-bottom:16px;">Cómo crear el Apps Script</p>
-            <ol style="font-size:13px; line-height:2; color:var(--warm-gray); padding-left:20px;">
-              <li>Abrí tu Google Sheet</li>
-              <li>Hacé clic en <strong style="color:var(--dark)">Extensiones → Apps Script</strong></li>
-              <li>Borrá todo el código que aparece y pegá el código de abajo</li>
-              <li>Hacé clic en <strong style="color:var(--dark)">Implementar → Nueva implementación</strong></li>
-              <li>Tipo: <strong style="color:var(--dark)">Aplicación web</strong></li>
-              <li>Ejecutar como: <strong style="color:var(--dark)">Yo</strong></li>
-              <li>Quién tiene acceso: <strong style="color:var(--dark)">Cualquier persona</strong></li>
-              <li>Hacé clic en <strong style="color:var(--dark)">Implementar</strong> y copiá la URL que aparece</li>
-              <li>Pegá esa URL en el campo de arriba</li>
-            </ol>
-          </div>
-
-          <div style="background:#1C1714; border-radius:8px; padding:20px; overflow-x:auto;">
-            <pre style="font-family:monospace; font-size:12px; color:#C4956A; line-height:1.7; white-space:pre-wrap;">const SHEET_ID = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
-
-function doPost(e) {
-  try {
-    const data = JSON.parse(e.postData.contents);
-    const sheet = SpreadsheetApp.openById(SHEET_ID)
-                    .getSheetByName(data.hoja);
-    
-    if (!sheet) throw new Error('Hoja no encontrada: ' + data.hoja);
-    
-    // Si no hay encabezados, los agrega
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(data.headers);
-    }
-    
-    sheet.appendRow(data.row);
-    
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: true }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
-  } catch(err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, error: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function doGet(e) {
-  return ContentService
-    .createTextOutput(JSON.stringify({ ok: true, msg: 'Panel Luisito Creaciones activo' }))
-    .setMimeType(ContentService.MimeType.JSON);
-}</pre>
-          </div>
-
-          <div style="margin-top:20px">
-            <button class="btn-submit" onclick="testConexion()">
-              <span class="btn-text">Probar conexión</span>
-            </button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</main>
+  </main>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast">
   <span class="toast-icon" id="toastIcon">✓</span>
-  <span id="toastMsg">Producto guardado</span>
+  <span id="toastMsg"></span>
 </div>
 
 <script>
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
+   CONFIGURACIÓN
+══════════════════════════════ */
+const CLIENT_ID = '267224057278-2h8qksuos2cioraanr4a8m0qbatdl825.apps.googleusercontent.com';
+const SHEET_ID  = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
+const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
+
+const SHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSVUmYHOcXytQ6R2uJjjiajRPMsYgP-HdNIBrIkKLKfR0G6wQRADsZuoX66a_ixK5QUBQBwPUWNOcJt/pub?single=true&output=csv';
+const GID_MAP = { home:'0', ofertas:'860634940', coleccion:'1202954954', productos:'127848751' };
+
+const TALLES_LIST = [34,35,36,37,38,39,40,41,42];
+
+/* ══════════════════════════════
    ESTADO
-═══════════════════════════════════════ */
-const STATE = {
-  hoja: 'productos',
-  categoria: '',
-  colores: [],
-  scriptUrl: localStorage.getItem('luisito_script_url') || ''
-};
+══════════════════════════════ */
+let accessToken = null;
+let userInfo    = null;
+let hojaActual  = 'productos';
+let categoriaActual = '';
+let colorCount  = 0;
+let imgUrls     = ['','','',''];  // URLs de las 4 imágenes subidas
 
-const TALLES = [34,35,36,37,38,39,40,41,42];
+/* ══════════════════════════════
+   GOOGLE LOGIN
+══════════════════════════════ */
+function iniciarLogin() {
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: async (resp) => {
+      if (resp.error) { showToast('Error al iniciar sesión', 'error'); return; }
+      accessToken = resp.access_token;
+      await obtenerPerfil();
+      mostrarApp();
+    }
+  });
+  client.requestAccessToken();
+}
 
-const SHEET_ID = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
-const SHEET_BASE = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSVUmYHOcXytQ6R2uJjjiajRPMsYgP-HdNIBrIkKLKfR0G6wQRADsZuoX66a_ixK5QUBQBwPUWNOcJt/pub?single=true&output=csv`;
+async function obtenerPerfil() {
+  const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+  userInfo = await res.json();
+  document.getElementById('userName').textContent = userInfo.name || '';
+  document.getElementById('userEmail').textContent = userInfo.email || '';
+  if (userInfo.picture) document.getElementById('userAvatar').src = userInfo.picture;
+}
 
-const GID_MAP = {
-  home: '0',
-  ofertas: '860634940',
-  coleccion: '1202954954',
-  productos: '' // ponés el GID cuando lo tengas
-};
+function mostrarApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  iniciarFormulario();
+}
 
-/* ═══════════════════════════════════════
-   INIT
-═══════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
+function cerrarSesion() {
+  accessToken = null; userInfo = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').classList.remove('visible');
+  limpiar();
+}
+
+/* ══════════════════════════════
+   INIT FORMULARIO
+══════════════════════════════ */
+function iniciarFormulario() {
   generarTalles();
-  addColor();
-  addColor();
-  if (STATE.scriptUrl) {
-    document.getElementById('configScriptUrl').value = STATE.scriptUrl;
-    document.getElementById('setupAlert').style.display = 'none';
-    testConexion();
-  }
+  generarImgSlots();
+  addColor(); addColor();
   updatePreview();
-});
+}
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    TABS
-═══════════════════════════════════════ */
-function showTab(id) {
+══════════════════════════════ */
+function showTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if (btn) btn.classList.add('active');
 }
 
-/* ═══════════════════════════════════════
-   HOJA SELECTOR
-═══════════════════════════════════════ */
-function setHoja(hoja) {
-  STATE.hoja = hoja;
-  document.querySelectorAll('.hoja-tab').forEach(t => t.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-
-  // Mostrar/ocultar campos según hoja
-  const catField = document.getElementById('catField');
-  catField.style.display = (hoja === 'productos') ? 'flex' : 'none';
-
+function setHoja(hoja, btn) {
+  hojaActual = hoja;
+  document.querySelectorAll('.hoja-tabs .hoja-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('catField').style.display = hoja === 'productos' ? 'flex' : 'none';
   updatePreview();
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    CATEGORÍA
-═══════════════════════════════════════ */
+══════════════════════════════ */
 function selectCat(btn, slug) {
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  STATE.categoria = slug;
-  document.getElementById('fieldCategoria').value = slug;
+  categoriaActual = slug;
   updatePreview();
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    TALLES
-═══════════════════════════════════════ */
+══════════════════════════════ */
 function generarTalles() {
   const grid = document.getElementById('talleGrid');
   grid.innerHTML = '';
-  TALLES.forEach(t => {
+  TALLES_LIST.forEach(t => {
     const wrap = document.createElement('div');
     wrap.className = 'talle-item';
     wrap.innerHTML = `
-      <input type="checkbox" id="talle${t}" value="${t}" onchange="updatePreview()">
-      <label class="talle-label" for="talle${t}">${t}</label>
+      <input type="checkbox" id="t${t}" onchange="updatePreview()">
+      <label class="talle-label" for="t${t}">${t}</label>
       <div class="talle-agotado-wrap">
-        <input type="checkbox" id="agotado${t}" title="Agotado">
-        <label class="talle-agotado-label" for="agotado${t}" title="Marcar como agotado" style="font-size:9px; color:var(--error)">agotado</label>
-      </div>
-    `;
+        <input type="checkbox" id="a${t}">
+        <label class="talle-agotado-label" for="a${t}">agotado</label>
+      </div>`;
     grid.appendChild(wrap);
   });
 }
 
 function getTallesStr() {
-  const parts = [];
-  TALLES.forEach(t => {
-    const check = document.getElementById('talle' + t);
-    if (check && check.checked) {
-      const agotado = document.getElementById('agotado' + t)?.checked;
-      parts.push(agotado ? `${t}-agotado` : `${t}`);
-    }
-  });
-  return parts.join(',');
+  return TALLES_LIST
+    .filter(t => document.getElementById('t'+t)?.checked)
+    .map(t => document.getElementById('a'+t)?.checked ? `${t}-agotado` : `${t}`)
+    .join(',');
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    COLORES
-═══════════════════════════════════════ */
-let colorCount = 0;
-
+══════════════════════════════ */
 function addColor() {
   if (colorCount >= 5) return;
   colorCount++;
-  const idx = colorCount;
+  const i = colorCount;
   const wrap = document.getElementById('colorFields');
   const row = document.createElement('div');
-  row.className = 'color-row';
-  row.id = 'colorRow' + idx;
+  row.className = 'color-row'; row.id = 'cr'+i;
   row.innerHTML = `
-    <input type="color" id="colorHex${idx}" value="#7A5C3F"
-      oninput="updateColorPreview(${idx}); updatePreview()" style="cursor:pointer">
-    <input type="text" class="color-name-input field input"
-      id="colorNombre${idx}" placeholder="Nombre del color (ej: Negro)"
-      oninput="updatePreview()"
-      style="border:1.5px solid var(--sand); border-radius:6px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; outline:none;">
-    ${idx > 1 ? `<button onclick="removeColor(${idx})" style="background:none;border:none;cursor:pointer;color:var(--sand);font-size:18px;padding:4px 8px;" title="Quitar color">×</button>` : ''}
-  `;
+    <input type="color" id="ch${i}" value="#7A5C3F" oninput="updatePreview()">
+    <input type="text" class="color-name-input" id="cn${i}" placeholder="Nombre (ej: Negro)" oninput="updatePreview()">
+    ${i>1?`<button onclick="removeColor(${i})" style="background:none;border:none;cursor:pointer;color:var(--sand);font-size:20px;padding:4px 8px">×</button>`:''}`;
   wrap.appendChild(row);
-  if (colorCount >= 5) document.getElementById('addColorBtn').style.display = 'none';
+  if (colorCount>=5) document.getElementById('addColorBtn').style.display='none';
   updatePreview();
 }
 
-function removeColor(idx) {
-  document.getElementById('colorRow' + idx)?.remove();
+function removeColor(i) {
+  document.getElementById('cr'+i)?.remove();
   colorCount--;
-  document.getElementById('addColorBtn').style.display = 'block';
+  document.getElementById('addColorBtn').style.display='block';
   updatePreview();
 }
 
-function updateColorPreview(idx) {
-  // nada extra necesario, el color picker se ve solo
-}
-
-function getColoresData() {
+function getColores() {
   const cols = [];
-  for (let i = 1; i <= 5; i++) {
-    const hexEl = document.getElementById('colorHex' + i);
-    const nomEl = document.getElementById('colorNombre' + i);
-    if (hexEl && nomEl) {
-      cols.push({ hex: hexEl.value, nombre: nomEl.value.trim() });
-    }
+  for (let i=1;i<=5;i++) {
+    const h=document.getElementById('ch'+i); const n=document.getElementById('cn'+i);
+    if (h&&n) cols.push({hex:h.value, nombre:n.value.trim()});
   }
   return cols;
 }
 
-/* ═══════════════════════════════════════
-   IMAGE PREVIEWS
-═══════════════════════════════════════ */
-function updateImgPreview(input, n) {
-  const thumb = document.getElementById('thumb' + n);
-  if (!thumb) return;
-  if (input.value.trim()) {
-    thumb.src = input.value.trim();
-    thumb.className = 'img-preview-thumb visible';
-    thumb.onerror = () => { thumb.className = 'img-preview-thumb'; };
-  } else {
-    thumb.className = 'img-preview-thumb';
+/* ══════════════════════════════
+   IMÁGENES — UPLOAD A DRIVE
+══════════════════════════════ */
+function generarImgSlots() {
+  const grid = document.getElementById('imgGrid');
+  grid.innerHTML = '';
+  imgUrls = ['','','',''];
+  for (let i=0;i<4;i++) {
+    const slot = document.createElement('div');
+    slot.className = 'img-upload-slot';
+    slot.id = 'slot'+i;
+    slot.innerHTML = `
+      <div class="img-upload-num">${i+1}</div>
+      <input type="file" accept="image/*" onchange="subirImagen(this,${i})">
+      <img class="img-upload-preview" id="prev${i}">
+      <div class="upload-progress" id="prog${i}">
+        <div class="progress-bar-wrap"><div class="progress-bar" id="bar${i}"></div></div>
+        <div class="progress-text" id="progTxt${i}">Subiendo...</div>
+      </div>
+      <div class="img-upload-icon">📷</div>
+      <div class="img-upload-label">Tocá para subir<br>una foto</div>
+      <button class="img-remove-btn" onclick="quitarImg(${i},event)">×</button>`;
+    grid.appendChild(slot);
   }
 }
 
-/* ═══════════════════════════════════════
+async function subirImagen(input, idx) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!accessToken) { showToast('Necesitás iniciar sesión primero','error'); return; }
+
+  const slot = document.getElementById('slot'+idx);
+  const prog = document.getElementById('prog'+idx);
+  const bar  = document.getElementById('bar'+idx);
+  const txt  = document.getElementById('progTxt'+idx);
+
+  prog.classList.add('show');
+  bar.style.width = '20%';
+  txt.textContent = 'Subiendo...';
+
+  try {
+    // Mostrar preview local inmediato
+    const reader = new FileReader();
+    reader.onload = e => {
+      const prevEl = document.getElementById('prev'+idx);
+      prevEl.src = e.target.result;
+      prevEl.classList.add('visible');
+    };
+    reader.readAsDataURL(file);
+
+    bar.style.width = '50%';
+
+    // Subir a Google Drive
+    const metadata = { name: file.name, mimeType: file.type };
+    const formData = new FormData();
+    formData.append('metadata', new Blob([JSON.stringify(metadata)], {type:'application/json'}));
+    formData.append('file', file);
+
+    const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webContentLink,webViewLink', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: formData
+    });
+
+    bar.style.width = '80%';
+    const data = await res.json();
+
+    if (!data.id) throw new Error('No se obtuvo ID del archivo');
+
+    // Hacer el archivo público
+    await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
+      method: 'POST',
+      headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({ role:'reader', type:'anyone' })
+    });
+
+    // URL directa de la imagen
+    const imgUrl = `https://drive.google.com/uc?export=view&id=${data.id}`;
+    imgUrls[idx] = imgUrl;
+
+    bar.style.width = '100%';
+    txt.textContent = '✓ Subida';
+    slot.classList.add('has-img');
+
+    setTimeout(() => { prog.classList.remove('show'); }, 800);
+
+    // Actualizar preview del panel
+    if (idx === 0) updatePreview();
+    showToast('Foto subida correctamente ✓', 'success');
+
+  } catch (err) {
+    prog.classList.remove('show');
+    showToast('Error al subir la foto. Intentá de nuevo.', 'error');
+    console.error(err);
+  }
+}
+
+function quitarImg(idx, e) {
+  e.stopPropagation();
+  imgUrls[idx] = '';
+  const slot = document.getElementById('slot'+idx);
+  const prev = document.getElementById('prev'+idx);
+  prev.src=''; prev.classList.remove('visible');
+  slot.classList.remove('has-img');
+  if (idx===0) updatePreview();
+}
+
+/* ══════════════════════════════
    LIVE PREVIEW
-═══════════════════════════════════════ */
+══════════════════════════════ */
 function updatePreview() {
-  const nombre = document.getElementById('fieldNombre')?.value || '';
-  const precio = document.getElementById('fieldPrecio')?.value || '';
-  const old    = document.getElementById('fieldPrecioOld')?.value || '';
-  const desc   = document.getElementById('fieldDescripcion')?.value || '';
-  const img1   = document.getElementById('img1')?.value || '';
-  const cat    = STATE.categoria;
+  const nombre = document.getElementById('fNombre')?.value||'';
+  const precio = document.getElementById('fPrecio')?.value||'';
+  const old    = document.getElementById('fPrecioOld')?.value||'';
+  const desc   = document.getElementById('fDescripcion')?.value||'';
 
-  document.getElementById('prevNombre').textContent = nombre || 'Nombre del modelo';
-  document.getElementById('prevPrecio').textContent = precio || '$0';
+  document.getElementById('prevNombre').textContent = nombre||'Nombre del modelo';
+  document.getElementById('prevPrecio').textContent = precio||'$0';
   document.getElementById('prevOld').textContent = old;
-  document.getElementById('prevDesc').textContent = desc || 'La descripción aparece acá...';
-  document.getElementById('prevCat').textContent = cat ? cat.replace('-',' ') : '—';
+  document.getElementById('prevDesc').textContent = desc||'La descripción aparece acá...';
+  document.getElementById('prevCat').textContent = categoriaActual ? categoriaActual.replace('-',' ') : '—';
 
-  // Imagen
   const previewImg = document.getElementById('previewImg');
   const placeholder = document.getElementById('previewPlaceholder');
-  if (img1) {
-    previewImg.src = img1;
-    previewImg.className = 'preview-img visible';
-    placeholder.style.display = 'none';
-    previewImg.onerror = () => {
-      previewImg.className = 'preview-img';
-      placeholder.style.display = 'flex';
-    };
+  const localPrev = document.getElementById('prev0');
+
+  if (localPrev && localPrev.src && localPrev.classList.contains('visible')) {
+    previewImg.src = localPrev.src;
+    previewImg.classList.add('visible');
+    placeholder.style.display='none';
+  } else if (imgUrls[0]) {
+    previewImg.src = imgUrls[0];
+    previewImg.classList.add('visible');
+    placeholder.style.display='none';
   } else {
-    previewImg.className = 'preview-img';
-    placeholder.style.display = 'flex';
+    previewImg.classList.remove('visible');
+    placeholder.style.display='flex';
   }
 
-  // Talles
-  const tallesWrap = document.getElementById('prevTalles');
-  tallesWrap.innerHTML = '';
-  TALLES.forEach(t => {
-    const check = document.getElementById('talle' + t);
-    if (check && check.checked) {
-      const agotado = document.getElementById('agotado' + t)?.checked;
-      const chip = document.createElement('div');
-      chip.className = 'preview-talle-chip' + (agotado ? ' agotado' : '');
-      chip.textContent = t;
-      tallesWrap.appendChild(chip);
+  const tv = document.getElementById('prevTalles');
+  tv.innerHTML='';
+  TALLES_LIST.forEach(t => {
+    const c=document.getElementById('t'+t);
+    if(c&&c.checked){
+      const ag=document.getElementById('a'+t)?.checked;
+      const chip=document.createElement('div');
+      chip.className='preview-talle'+(ag?' agotado':'');
+      chip.textContent=t; tv.appendChild(chip);
     }
   });
 
-  // Colores
-  const coloresWrap = document.getElementById('prevColors');
-  coloresWrap.innerHTML = '';
-  for (let i = 1; i <= 5; i++) {
-    const hexEl = document.getElementById('colorHex' + i);
-    if (hexEl) {
-      const dot = document.createElement('div');
-      dot.className = 'preview-color-dot';
-      dot.style.background = hexEl.value;
-      coloresWrap.appendChild(dot);
-    }
+  const cv = document.getElementById('prevColors');
+  cv.innerHTML='';
+  for(let i=1;i<=5;i++){
+    const h=document.getElementById('ch'+i);
+    if(h){ const d=document.createElement('div'); d.className='preview-color'; d.style.background=h.value; cv.appendChild(d); }
   }
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    GUARDAR EN SHEETS
-═══════════════════════════════════════ */
+══════════════════════════════ */
 async function guardarProducto() {
   const btn = document.getElementById('submitBtn');
-  const scriptUrl = STATE.scriptUrl;
+  const nombre = document.getElementById('fNombre').value.trim();
+  const precio = document.getElementById('fPrecio').value.trim();
 
-  // Validación básica
-  const nombre = document.getElementById('fieldNombre').value.trim();
-  const precio = document.getElementById('fieldPrecio').value.trim();
+  if (!nombre) { showToast('Escribí el nombre del modelo','error'); return; }
+  if (!precio) { showToast('Ingresá el precio','error'); return; }
+  if (hojaActual==='productos' && !categoriaActual) { showToast('Elegí una categoría','error'); return; }
+  if (!accessToken) { showToast('Sesión expirada. Volvé a entrar.','error'); return; }
 
-  if (!nombre) { showToast('Escribí el nombre del modelo', 'error'); return; }
-  if (!precio) { showToast('Ingresá el precio', 'error'); return; }
-  if (STATE.hoja === 'productos' && !STATE.categoria) {
-    showToast('Elegí una categoría', 'error'); return;
-  }
+  btn.classList.add('loading'); btn.disabled=true;
 
-  // Construir fila según hoja
-  const colores = getColoresData();
-  let headers, row;
+  const colores = getColores();
+  let values;
 
-  if (STATE.hoja === 'productos') {
-    headers = ['categoria','nombre','descripcion','materiales','precio','precio_old','descuento',
-               'talles','color1_nombre','color1_hex','color2_nombre','color2_hex',
-               'color3_nombre','color3_hex','color4_nombre','color4_hex','color5_nombre','color5_hex',
-               'imagen1','imagen2','imagen3','imagen4','link_wa'];
-    row = [
-      STATE.categoria,
+  if (hojaActual==='productos') {
+    values = [[
+      categoriaActual,
       nombre,
-      document.getElementById('fieldDescripcion').value.trim(),
-      document.getElementById('fieldMateriales').value.trim(),
+      document.getElementById('fDescripcion').value.trim(),
+      document.getElementById('fMateriales').value.trim(),
       precio,
-      document.getElementById('fieldPrecioOld').value.trim(),
-      document.getElementById('fieldDescuento').value.trim(),
+      document.getElementById('fPrecioOld').value.trim(),
+      document.getElementById('fDescuento').value.trim(),
       getTallesStr(),
       colores[0]?.nombre||'', colores[0]?.hex||'',
       colores[1]?.nombre||'', colores[1]?.hex||'',
       colores[2]?.nombre||'', colores[2]?.hex||'',
       colores[3]?.nombre||'', colores[3]?.hex||'',
       colores[4]?.nombre||'', colores[4]?.hex||'',
-      document.getElementById('img1').value.trim(),
-      document.getElementById('img2').value.trim(),
-      document.getElementById('img3').value.trim(),
-      document.getElementById('img4').value.trim(),
-      document.getElementById('fieldWa').value.trim() || 'https://wa.me/5492227466087'
-    ];
-  } else if (STATE.hoja === 'ofertas') {
-    headers = ['nombre','precio','precio_old','ahorro','etiqueta','etiqueta_tipo','imagen'];
-    row = [
-      nombre, precio,
-      document.getElementById('fieldPrecioOld').value.trim(),
-      document.getElementById('fieldDescuento').value.trim(),
-      document.getElementById('fieldDescripcion').value.trim() || 'OFERTA',
-      'sale',
-      document.getElementById('img1').value.trim()
-    ];
-  } else if (STATE.hoja === 'coleccion') {
-    headers = ['nombre','precio','precio_old','imagen'];
-    row = [
-      nombre, precio,
-      document.getElementById('fieldPrecioOld').value.trim(),
-      document.getElementById('img1').value.trim()
-    ];
-  } else if (STATE.hoja === 'home') {
-    headers = ['nombre','subtitulo','descripcion','precio','precio_old','descuento',
-               'talle35','talle36','talle37','talle38','talle39','talle40',
-               'color1','color2','color3','imagen','link_wa'];
-    const talleChecks = [35,36,37,38,39,40].map(t =>
-      document.getElementById('talle'+t)?.checked ? 'si' : 'no'
-    );
-    row = [
+      imgUrls[0], imgUrls[1], imgUrls[2], imgUrls[3],
+      document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
+    ]];
+  } else if (hojaActual==='ofertas') {
+    values = [[nombre, precio,
+      document.getElementById('fPrecioOld').value.trim(),
+      document.getElementById('fDescuento').value.trim(),
+      document.getElementById('fDescripcion').value.trim()||'OFERTA',
+      'sale', imgUrls[0]
+    ]];
+  } else if (hojaActual==='coleccion') {
+    values = [[nombre, precio,
+      document.getElementById('fPrecioOld').value.trim(),
+      imgUrls[0]
+    ]];
+  } else if (hojaActual==='home') {
+    const tc=[35,36,37,38,39,40].map(t=>document.getElementById('t'+t)?.checked?'si':'no');
+    values = [[
       nombre,
-      document.getElementById('fieldSubtitulo').value.trim(),
-      document.getElementById('fieldDescripcion').value.trim(),
+      document.getElementById('fSubtitulo').value.trim(),
+      document.getElementById('fDescripcion').value.trim(),
       precio,
-      document.getElementById('fieldPrecioOld').value.trim(),
-      document.getElementById('fieldDescuento').value.trim(),
-      ...talleChecks,
+      document.getElementById('fPrecioOld').value.trim(),
+      document.getElementById('fDescuento').value.trim(),
+      ...tc,
       colores[0]?.hex||'', colores[1]?.hex||'', colores[2]?.hex||'',
-      document.getElementById('img1').value.trim(),
-      document.getElementById('fieldWa').value.trim() || 'https://wa.me/5492227466087'
-    ];
+      imgUrls[0],
+      document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
+    ]];
   }
-
-  // Si no hay script configurado → copiar al portapapeles
-  if (!scriptUrl) {
-    const csvRow = row.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
-    try {
-      await navigator.clipboard.writeText(csvRow);
-      showToast('¡Fila copiada! Pegala en tu Google Sheet', 'success');
-    } catch {
-      showToast('Configurá el Apps Script para guardar directo', 'error');
-    }
-    return;
-  }
-
-  // Guardar via Apps Script
-  btn.classList.add('loading');
-  btn.disabled = true;
 
   try {
-    const res = await fetch(scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ hoja: STATE.hoja, headers, row }),
-      mode: 'no-cors'
-    });
+    const res = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+      {
+        method:'POST',
+        headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
+        body: JSON.stringify({ values })
+      }
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
 
-    // no-cors no devuelve respuesta legible, asumimos éxito
-    showToast('✓ Producto guardado en Google Sheets', 'success');
-    limpiarFormulario();
-
-  } catch (err) {
-    showToast('Error al guardar. Revisá la configuración', 'error');
+    showToast('✓ Guardado en Google Sheets', 'success');
+    limpiar();
+  } catch(err) {
+    console.error(err);
+    showToast('Error al guardar: '+err.message, 'error');
   } finally {
-    btn.classList.remove('loading');
-    btn.disabled = false;
+    btn.classList.remove('loading'); btn.disabled=false;
   }
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    VER REGISTROS
-═══════════════════════════════════════ */
+══════════════════════════════ */
 async function cargarVista(hoja, btn) {
-  document.querySelectorAll('#tab-ver .hoja-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('verHojaLabel').textContent = 'Mostrando: ' + hoja;
+  document.querySelectorAll('#tab-ver .hoja-tab').forEach(t=>t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
 
   const gid = GID_MAP[hoja];
-  const url = gid
-    ? `${SHEET_BASE}&gid=${gid}`
-    : null;
+  if(!gid){ document.getElementById('verEmpty').innerHTML='<div class="empty-icon">🔧</div><p>GID no configurado</p>'; return; }
 
-  if (!url) {
-    document.getElementById('verEmpty').innerHTML = `
-      <div class="empty-icon">🔧</div>
-      <p>Configurá el GID de la hoja "${hoja}" en el código para ver los registros</p>
-    `;
-    document.getElementById('verEmpty').style.display = 'block';
-    document.getElementById('verTable').style.display = 'none';
-    return;
-  }
-
-  document.getElementById('verEmpty').innerHTML = `<div class="cat-loading-spinner" style="width:32px;height:32px;border:2px solid var(--sand);border-top-color:var(--brown);border-radius:50%;animation:spin .8s linear infinite;margin:40px auto"></div>`;
-  document.getElementById('verEmpty').style.display = 'block';
-  document.getElementById('verTable').style.display = 'none';
+  document.getElementById('verEmpty').innerHTML='<div style="display:flex;justify-content:center;padding:40px"><div style="width:32px;height:32px;border:2px solid var(--sand);border-top-color:var(--brown);border-radius:50%;animation:spin .8s linear infinite"></div></div>';
+  document.getElementById('verEmpty').style.display='block';
+  document.getElementById('verTable').style.display='none';
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(`${SHEET_BASE}&gid=${gid}`);
     const text = await res.text();
     const rows = parsearCSV(text);
-    if (rows.length < 2) throw new Error('Sin datos');
+    if(rows.length<2) throw new Error('Sin datos');
 
-    const headers = rows[0];
-    const thead = document.getElementById('verThead');
-    const tbody = document.getElementById('verTbody');
-    thead.innerHTML = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
-    tbody.innerHTML = '';
-
-    rows.slice(1).forEach(row => {
-      const tr = document.createElement('tr');
-      row.forEach((cell, i) => {
-        const td = document.createElement('td');
-        const header = (headers[i] || '').toLowerCase();
-        if (header.startsWith('imagen') && cell.startsWith('http')) {
-          td.innerHTML = `<img class="record-img" src="${cell}" onerror="this.style.display='none'">`;
-        } else if (header === 'nombre') {
-          td.innerHTML = `<span class="record-name">${cell}</span>`;
-        } else if (header === 'categoria') {
-          td.innerHTML = `<span class="record-cat">${cell}</span>`;
-        } else if (header === 'precio') {
-          td.innerHTML = `<span class="record-price">${cell}</span>`;
-        } else {
-          td.textContent = cell.length > 40 ? cell.slice(0,40) + '…' : cell;
-        }
+    const headers=rows[0];
+    document.getElementById('verThead').innerHTML='<tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr>';
+    const tbody=document.getElementById('verTbody');
+    tbody.innerHTML='';
+    rows.slice(1).forEach(row=>{
+      const tr=document.createElement('tr');
+      row.forEach((cell,i)=>{
+        const td=document.createElement('td');
+        const h=(headers[i]||'').toLowerCase();
+        if((h.startsWith('imagen')||h==='imagen')&&cell.startsWith('http'))
+          td.innerHTML=`<img class="record-img" src="${cell}" onerror="this.style.display='none'">`;
+        else if(h==='nombre') td.innerHTML=`<span class="record-name">${cell}</span>`;
+        else if(h==='categoria') td.innerHTML=`<span class="record-cat">${cell}</span>`;
+        else if(h==='precio') td.innerHTML=`<span class="record-price">${cell}</span>`;
+        else td.textContent=cell.length>40?cell.slice(0,40)+'…':cell;
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
     });
-
-    document.getElementById('verEmpty').style.display = 'none';
-    document.getElementById('verTable').style.display = 'table';
-
-  } catch (err) {
-    document.getElementById('verEmpty').innerHTML = `<div class="empty-icon">⚠️</div><p>No se pudo cargar. Verificá que la hoja esté publicada.</p>`;
+    document.getElementById('verEmpty').style.display='none';
+    document.getElementById('verTable').style.display='table';
+  } catch(err) {
+    document.getElementById('verEmpty').innerHTML='<div class="empty-icon">⚠️</div><p>No se pudo cargar</p>';
   }
 }
 
-/* ═══════════════════════════════════════
-   CONFIG
-═══════════════════════════════════════ */
-function guardarConfig() {
-  const url = document.getElementById('configScriptUrl').value.trim();
-  STATE.scriptUrl = url;
-  localStorage.setItem('luisito_script_url', url);
-  if (url) document.getElementById('setupAlert').style.display = 'none';
-}
-
-async function testConexion() {
-  const url = STATE.scriptUrl || document.getElementById('configScriptUrl')?.value?.trim();
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('statusText');
-  txt.textContent = 'Verificando...';
-
-  if (!url) {
-    dot.className = 'status-dot';
-    txt.textContent = 'Sin configurar';
-    return;
-  }
-
-  try {
-    const res = await fetch(url, { mode: 'no-cors' });
-    dot.className = 'status-dot ok';
-    txt.textContent = 'Conectado a Sheets';
-    document.getElementById('setupAlert').style.display = 'none';
-  } catch {
-    dot.className = 'status-dot error';
-    txt.textContent = 'Sin conexión';
-  }
-}
-
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    LIMPIAR
-═══════════════════════════════════════ */
-function limpiarFormulario() {
-  ['fieldNombre','fieldSubtitulo','fieldDescripcion','fieldMateriales',
-   'fieldPrecio','fieldPrecioOld','fieldDescuento','fieldWa',
-   'img1','img2','img3','img4'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
+══════════════════════════════ */
+function limpiar() {
+  ['fNombre','fSubtitulo','fDescripcion','fMateriales','fPrecio','fPrecioOld','fDescuento','fWa']
+    .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
+  categoriaActual='';
+  TALLES_LIST.forEach(t=>{
+    const c=document.getElementById('t'+t); const a=document.getElementById('a'+t);
+    if(c) c.checked=false; if(a) a.checked=false;
   });
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
-  STATE.categoria = '';
-  TALLES.forEach(t => {
-    const c = document.getElementById('talle'+t);
-    const a = document.getElementById('agotado'+t);
-    if (c) c.checked = false;
-    if (a) a.checked = false;
-  });
-  [1,2,3,4].forEach(n => {
-    const t = document.getElementById('thumb'+n);
-    if (t) t.className = 'img-preview-thumb';
-  });
+  generarImgSlots();
   updatePreview();
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    TOAST
-═══════════════════════════════════════ */
-function showToast(msg, type = 'success') {
-  const toast = document.getElementById('toast');
-  const icon  = document.getElementById('toastIcon');
-  const text  = document.getElementById('toastMsg');
-  toast.className = 'toast ' + type;
-  icon.textContent = type === 'success' ? '✓' : '✕';
-  text.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3500);
+══════════════════════════════ */
+function showToast(msg, type='success') {
+  const t=document.getElementById('toast');
+  t.className='toast '+type;
+  document.getElementById('toastIcon').textContent=type==='success'?'✓':'✕';
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════
    PARSE CSV
-═══════════════════════════════════════ */
+══════════════════════════════ */
 function parsearCSV(texto) {
-  const filas = [];
-  const lineas = texto.trim().split(/\r?\n/);
-  lineas.forEach(linea => {
-    const cols = []; let actual = ''; let dentro = false;
-    for (let i = 0; i < linea.length; i++) {
-      const c = linea[i]; const sig = linea[i+1];
-      if (c === '"' && dentro && sig === '"') { actual += '"'; i++; }
-      else if (c === '"') { dentro = !dentro; }
-      else if (c === ',' && !dentro) { cols.push(actual.trim()); actual = ''; }
-      else { actual += c; }
+  const filas=[];
+  texto.trim().split(/\r?\n/).forEach(linea=>{
+    const cols=[]; let actual=''; let dentro=false;
+    for(let i=0;i<linea.length;i++){
+      const c=linea[i],sig=linea[i+1];
+      if(c==='"'&&dentro&&sig==='"'){actual+='"';i++;}
+      else if(c==='"'){dentro=!dentro;}
+      else if(c===','&&!dentro){cols.push(actual.trim());actual='';}
+      else{actual+=c;}
     }
-    cols.push(actual.trim());
-    filas.push(cols);
+    cols.push(actual.trim()); filas.push(cols);
   });
   return filas;
 }
-
-/* ═══════════════════════════════════════
-   LOGIN
-   Usuario: admin
-   Contraseña: luisito2025
-   (Cambiálos en las variables de abajo)
-═══════════════════════════════════════ */
-const LOGIN_USER = 'admin';
-const LOGIN_PASS = 'luisito2025';
-const SESSION_KEY = 'lc_admin_session';
-let intentosFallidos = 0;
-const MAX_INTENTOS = 5;
-
-function verificarSesion() {
-  const session = sessionStorage.getItem(SESSION_KEY);
-  if (session === 'ok') {
-    document.getElementById('loginOverlay').style.display = 'none';
-  }
-}
-
-function intentarLogin() {
-  const user = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value;
-  const errorEl = document.getElementById('loginError');
-  const attemptsEl = document.getElementById('loginAttempts');
-
-  if (intentosFallidos >= MAX_INTENTOS) {
-    errorEl.textContent = 'Demasiados intentos. Recargá la página.';
-    errorEl.classList.add('show');
-    return;
-  }
-
-  if (user === LOGIN_USER && pass === LOGIN_PASS) {
-    sessionStorage.setItem(SESSION_KEY, 'ok');
-    const overlay = document.getElementById('loginOverlay');
-    overlay.classList.add('hidden');
-    setTimeout(() => overlay.style.display = 'none', 400);
-    errorEl.classList.remove('show');
-  } else {
-    intentosFallidos++;
-    errorEl.textContent = 'Usuario o contraseña incorrectos';
-    errorEl.classList.add('show');
-    document.getElementById('loginPass').value = '';
-    document.getElementById('loginPass').focus();
-
-    const restantes = MAX_INTENTOS - intentosFallidos;
-    if (restantes <= 2 && restantes > 0) {
-      attemptsEl.textContent = `Intentos restantes: ${restantes}`;
-    }
-
-    // Shake animation
-    const box = document.querySelector('.login-box');
-    box.style.animation = 'none';
-    box.offsetHeight;
-    box.style.animation = 'shake .4s ease';
-  }
-}
-
-// Shake keyframe (lo agregamos por JS)
-const shakeStyle = document.createElement('style');
-shakeStyle.textContent = `
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    20% { transform: translateX(-8px); }
-    40% { transform: translateX(8px); }
-    60% { transform: translateX(-5px); }
-    80% { transform: translateX(5px); }
-  }
-`;
-document.head.appendChild(shakeStyle);
-
-// Verificar al cargar
-verificarSesion();
-
 </script>
 </body>
 </html>
