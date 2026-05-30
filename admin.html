@@ -997,10 +997,12 @@ async function guardarProducto() {
   }
 
   try {
-    const res = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
-      {
-        method:'POST',
+    const url = hojaActual === 'home'
+      ? `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:Z?valueInputOption=RAW`
+      : `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
+    const method = hojaActual === 'home' ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+        method,
         headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
         body: JSON.stringify({ values })
       }
