@@ -299,12 +299,12 @@ async function cargarProductoHero() {
     if (oldPrice && p.precio_old) oldPrice.textContent = p.precio_old;
     if (sale && p.descuento) sale.textContent = p.descuento;
 
-  const imgs = [p.imagen, p.imagen2, p.imagen3].filter(Boolean);
+const imgs = [p.imagen, p.imagen2, p.imagen3].filter(Boolean);
 if (imgs[0]) {
   const heroImg = document.getElementById('heroMainImg');
-  if (heroImg) heroImg.src = imgs[0];
+  if (heroImg) heroImg.src = convertirDrive(imgs[0]);
   document.querySelectorAll('.thumb img').forEach((thumb, i) => {
-    if (imgs[i]) thumb.src = imgs[i];
+    if (imgs[i]) thumb.src = convertirDrive(imgs[i]);
   });
 }
     const talles = [35, 36, 37, 38, 39, 40];
