@@ -623,11 +623,11 @@ const CLIENT_ID = '267224057278-2h8qksuos2cioraanr4a8m0qbatdl825.apps.googleuser
 ══════════════════════════════ */
 const EMAILS_AUTORIZADOS = [
   'cauhapeeluis@gmail.com',   // dueño del panel
-  'cauhapeeluis@gmail.com',  // ← reemplazá con el email de tu cliente
+  'email-cliente@gmail.com',  // ← reemplazá con el email de tu cliente
   // 'otro-email@gmail.com',  // ← descomentá para agregar más
 ];
 const SHEET_ID  = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
-const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file';
+const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file email profile openid';
 
 const SHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSVUmYHOcXytQ6R2uJjjiajRPMsYgP-HdNIBrIkKLKfR0G6wQRADsZuoX66a_ixK5QUBQBwPUWNOcJt/pub?single=true&output=csv';
 const GID_MAP = { home:'0', ofertas:'860634940', coleccion:'1202954954', productos:'127848751' };
@@ -662,10 +662,27 @@ function iniciarLogin() {
 }
 
 async function obtenerPerfil() {
-  const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+  // Usar tokeninfo para obtener email garantizado
+  const res = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${accessToken}`);
+  const tokenData = await res.json();
+  
+  // También pedir userinfo para foto y nombre
+  const res2 = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
-  userInfo = await res.json();
+  const userData = await res2.json();
+  
+  // Combinar ambas fuentes
+  userInfo = {
+    email: tokenData.email || userData.email || '',
+    name: userData.name || tokenData.email || '',
+    picture: userData.picture || ''
+  };
+  
+  console.log('tokenData:', JSON.stringify(tokenData));
+  console.log('userData:', JSON.stringify(userData));
+  console.log('email final:', userInfo.email);
+  
   document.getElementById('userName').textContent = userInfo.name || '';
   document.getElementById('userEmail').textContent = userInfo.email || '';
   if (userInfo.picture) document.getElementById('userAvatar').src = userInfo.picture;
