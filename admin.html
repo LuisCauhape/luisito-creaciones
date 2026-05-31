@@ -813,13 +813,34 @@ async function guardarProducto() {
 
     if (modoEdicion && editRowIndex !== null) {
       // MODO EDICIÓN: PUT para reemplazar la fila exacta
+ if (modoEdicion && editRowIndex !== null) {
       const sheetRow = editRowIndex + 1;
-const colFin = hojaActual === 'productos' ? 'S' : hojaActual === 'ofertas' ? 'G' : hojaActual === 'coleccion' ? 'D' : 'S';
-const range = `${hojaActual}!A${sheetRow}:${colFin}${sheetRow}`;
-res = await fetch(
-  `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?valueInputOption=RAW`,
-  { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
-);
+      const colFin = hojaActual === 'productos' ? 'S' : hojaActual === 'ofertas' ? 'G' : hojaActual === 'coleccion' ? 'D' : 'S';
+      const gidEdit = parseInt(GID_MAP[hojaActual]);
+      const colMap = {A:0,B:1,C:2,D:3,E:4,F:5,G:6,H:7,I:8,J:9,K:10,L:11,M:12,N:13,O:14,P:15,Q:16,R:17,S:18};
+      const endColIdx = colMap[colFin] + 1;
+      res = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            requests: [{
+              updateCells: {
+                range: {
+                  sheetId: gidEdit,
+                  startRowIndex: sheetRow - 1,
+                  endRowIndex: sheetRow,
+                  startColumnIndex: 0,
+                  endColumnIndex: endColIdx
+                },
+                rows: [{ values: values[0].map(v => ({ userEnteredValue: { stringValue: String(v) } })) }],
+                fields: 'userEnteredValue'
+              }
+            }]
+          })
+        }
+      );
     } else if (hojaActual === 'home') {
       res = await fetch(
         `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`,
