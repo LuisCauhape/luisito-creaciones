@@ -651,11 +651,12 @@ async function guardarProducto() {
         { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
       );
     } else {
-      res = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
-        { method:'POST', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ range:`${hojaActual}!A1`, values }) }
-      );
-    }
+  const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + hojaActual + '!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS';
+  res = await fetch(
+    url,
+    { method:'POST', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
+  );
+}
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
     showToast('✓ Guardado en Google Sheets','success');
