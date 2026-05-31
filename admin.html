@@ -972,8 +972,7 @@ async function guardarProducto() {
 
   if (hojaActual==='productos') {
     values = [[
-      categoriaActual,
-      nombre,
+      categoriaActual, nombre,
       document.getElementById('fDescripcion').value.trim(),
       document.getElementById('fMateriales').value.trim(),
       precio,
@@ -1011,32 +1010,34 @@ async function guardarProducto() {
       document.getElementById('fDescuento').value.trim(),
       ...tc,
       colores[0]?.hex||'', colores[1]?.hex||'', colores[2]?.hex||'',
-      imgUrls[0]||'',
-      imgUrls[1]||'',
-      imgUrls[2]||'',
+      imgUrls[0]||'', imgUrls[1]||'', imgUrls[2]||'',
       document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
     ]];
   }
 
   try {
-    let url, method;
+    let res;
 
     if (hojaActual === 'home') {
-      url    = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`;
-      method = 'PUT';
+      res = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home%21A2%3AS2?valueInputOption=RAW`,
+        {
+          method: 'PUT',
+          headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
+          body: JSON.stringify({ values })
+        }
+      );
     } else {
-      // ✅ FIX: el rango va en el path sin encodeURIComponent para que el ! no se codifique
-      url    = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${hojaActual}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
-      method = 'POST';
+      const rango = encodeURIComponent(`${hojaActual}!A1`);
+      res = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${rango}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+        {
+          method: 'POST',
+          headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
+          body: JSON.stringify({ values })
+        }
+      );
     }
-
-    console.log('Guardando en:', url);
-
-    const res = await fetch(url, {
-      method,
-      headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({ values })
-    });
 
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
@@ -1051,7 +1052,6 @@ async function guardarProducto() {
     btn.classList.remove('loading'); btn.disabled=false;
   }
 }
-
 /* ══════════════════════════════
    VER REGISTROS
 ══════════════════════════════ */
