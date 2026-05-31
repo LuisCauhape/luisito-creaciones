@@ -1027,10 +1027,18 @@ async function guardarProducto() {
           body: JSON.stringify({ values })
         }
       );
-    } else {
-      const rango = encodeURIComponent(`${hojaActual}!A1`);
-      res = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${rango}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+    }else {
+  res = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+    {
+      method: 'POST',
+      headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        range: `${hojaActual}!A1`,
+        values
+      })
+    }
+  );
         {
           method: 'POST',
           headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
