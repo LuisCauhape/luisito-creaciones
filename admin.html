@@ -72,6 +72,16 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 .hoja-tab { padding:10px 20px; border:1.5px solid var(--sand); background:white; border-radius:6px; font-size:12px; font-weight:700; color:var(--warm-gray); cursor:pointer; transition:all .2s ease; font-family:'DM Sans',sans-serif; }
 .hoja-tab:hover { border-color:var(--accent); color:var(--dark); }
 .hoja-tab.active { background:var(--dark); color:white; border-color:var(--dark); }
+
+/* Banner modo edición */
+.edit-banner { display:none; align-items:center; gap:12px; background:#FFF8F0; border:1.5px solid var(--accent); border-radius:8px; padding:14px 20px; margin-bottom:20px; }
+.edit-banner.show { display:flex; }
+.edit-banner-icon { font-size:18px; }
+.edit-banner-text { flex:1; font-size:13px; font-weight:600; color:var(--brown); }
+.edit-banner-row { font-size:11px; color:var(--warm-gray); font-weight:400; }
+.btn-cancel-edit { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700; background:none; color:var(--error); border:1.5px solid rgba(139,38,53,.3); padding:8px 16px; border-radius:6px; cursor:pointer; transition:all .2s; }
+.btn-cancel-edit:hover { background:rgba(139,38,53,.06); }
+
 .form-card { background:white; border:1px solid rgba(212,191,163,.3); border-radius:12px; overflow:hidden; margin-bottom:24px; }
 .form-card-header { padding:22px 28px; border-bottom:1px solid rgba(212,191,163,.2); display:flex; align-items:center; gap:12px; }
 .form-card-icon { font-size:20px; }
@@ -149,6 +159,8 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 .submit-row { display:flex; align-items:center; gap:16px; padding:24px 28px; border-top:1px solid rgba(212,191,163,.2); background:var(--cream); }
 .btn-submit { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; background:var(--dark); color:white; border:none; padding:16px 36px; border-radius:6px; cursor:pointer; transition:all .3s; display:flex; align-items:center; gap:10px; }
 .btn-submit:hover { background:var(--brown); }
+.btn-submit.editing { background:var(--accent); }
+.btn-submit.editing:hover { background:var(--tan); }
 .btn-submit:disabled { opacity:.5; cursor:not-allowed; }
 .btn-submit .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:white; border-radius:50%; animation:spin .7s linear infinite; display:none; }
 .btn-submit.loading .spinner { display:block; }
@@ -168,6 +180,8 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 .record-name { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; }
 .record-cat { font-size:10px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--accent); background:rgba(196,149,106,.1); padding:3px 8px; border-radius:3px; white-space:nowrap; }
 .record-price { font-weight:700; }
+.btn-edit-row { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; background:none; color:var(--accent); border:1.5px solid rgba(196,149,106,.4); padding:6px 14px; border-radius:4px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+.btn-edit-row:hover { background:rgba(196,149,106,.1); border-color:var(--accent); }
 .empty-state { text-align:center; padding:60px 20px; color:var(--warm-gray); }
 .empty-icon { font-size:48px; margin-bottom:12px; opacity:.4; }
 @keyframes spin { to{transform:rotate(360deg)} }
@@ -190,7 +204,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
     <div class="login-sub">Panel de administración</div>
     <p class="login-desc">Ingresá con tu cuenta de Google para acceder al panel. Solo cuentas autorizadas pueden entrar.</p>
     <button class="google-btn" onclick="iniciarLogin()">
-      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84z"/></svg>
       Entrar con Google
     </button>
     <p class="login-note">🔒 Tu sesión es segura. Solo vos podés ver y editar los datos de tu tienda.</p>
@@ -222,7 +236,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 
   <main class="main">
     <div class="topbar">
-      <div class="topbar-title">Panel de <span>carga</span></div>
+      <div class="topbar-title" id="topbarTitle">Panel de <span>carga</span></div>
       <div class="status-pill">
         <div class="status-dot ok" id="statusDot"></div>
         <span id="statusText">Conectado</span>
@@ -232,6 +246,17 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
     <div class="content">
 
       <div class="tab-panel active" id="tab-cargar">
+
+        <!-- Banner modo edición -->
+        <div class="edit-banner" id="editBanner">
+          <span class="edit-banner-icon">✏️</span>
+          <div class="edit-banner-text">
+            Modo edición
+            <div class="edit-banner-row" id="editBannerInfo">Editando fila —</div>
+          </div>
+          <button class="btn-cancel-edit" onclick="cancelarEdicion()">✕ Cancelar</button>
+        </div>
+
         <div class="hoja-tabs">
           <button class="hoja-tab active" onclick="setHoja('productos',this)">📦 Productos</button>
           <button class="hoja-tab" onclick="setHoja('ofertas',this)">🏷 Ofertas</button>
@@ -384,6 +409,12 @@ let hojaActual  = 'productos';
 let categoriaActual = '';
 let colorCount  = 0;
 let imgUrls     = ['','','',''];
+
+// Estado de edición
+let modoEdicion = false;
+let editRowIndex = null;   // índice real en la sheet (1-based, sin contar header)
+let editHoja    = null;
+let vistaHojaActual = 'productos'; // para saber qué hoja está mostrando "ver"
 
 function iniciarLogin() {
   const client = google.accounts.oauth2.initTokenClient({
@@ -585,6 +616,142 @@ function updatePreview() {
   for(let i=1;i<=5;i++){ const h=document.getElementById('ch'+i); if(h){ const d=document.createElement('div'); d.className='preview-color'; d.style.background=h.value; cv.appendChild(d); } }
 }
 
+// ─── EDICIÓN ──────────────────────────────────────────────
+
+function activarModoEdicion(rowIndex, hoja, rowData, headers) {
+  modoEdicion = true;
+  editRowIndex = rowIndex;
+  editHoja = hoja;
+
+  // Cambiar a pestaña cargar
+  showTab('cargar', document.querySelector('.nav-item'));
+  document.querySelectorAll('.nav-item')[0].classList.add('active');
+
+  // Cambiar la hoja del formulario
+  const hojaTabMap = { productos: 0, ofertas: 1, coleccion: 2, home: 3 };
+  const tabs = document.querySelectorAll('.hoja-tabs .hoja-tab');
+  const hi = hojaTabMap[hoja] ?? 0;
+  setHoja(hoja, tabs[hi]);
+  tabs.forEach(t => t.classList.remove('active'));
+  tabs[hi].classList.add('active');
+
+  // Mostrar banner
+  document.getElementById('editBanner').classList.add('show');
+  document.getElementById('editBannerInfo').textContent = `Editando fila ${rowIndex} — ${hoja}`;
+
+  // Cambiar botón
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('editing');
+  btn.querySelector('.btn-text').textContent = '✏️ Actualizar producto';
+
+  // Limpiar formulario primero
+  limpiarSinModo();
+
+  // Función helper para obtener valor de columna
+  const col = (nombre) => {
+    const idx = headers.findIndex(h => h.toLowerCase() === nombre.toLowerCase());
+    return idx >= 0 ? (rowData[idx] || '') : '';
+  };
+
+  if (hoja === 'productos') {
+    const cat = col('categoria');
+    if (cat) {
+      const catBtns = document.querySelectorAll('.cat-btn');
+      catBtns.forEach(b => { if (b.getAttribute('onclick').includes(cat)) { b.classList.add('selected'); categoriaActual = cat; } });
+    }
+    document.getElementById('fNombre').value = col('nombre');
+    document.getElementById('fDescripcion').value = col('descripcion');
+    document.getElementById('fMateriales').value = col('materiales');
+    document.getElementById('fPrecio').value = col('precio');
+    document.getElementById('fPrecioOld').value = col('precio anterior') || col('precioold') || col('precio_old') || rowData[5] || '';
+    document.getElementById('fDescuento').value = col('descuento') || rowData[6] || '';
+    document.getElementById('fWa').value = col('whatsapp') || col('wa') || rowData[18] || '';
+
+    // Talles
+    const tallesStr = col('talles') || rowData[7] || '';
+    tallesStr.split(',').forEach(t => {
+      const clean = t.trim();
+      const esAgotado = clean.endsWith('-agotado');
+      const num = esAgotado ? clean.replace('-agotado','') : clean;
+      const cb = document.getElementById('t'+num);
+      if (cb) { cb.checked = true; if (esAgotado) { const ag = document.getElementById('a'+num); if(ag) ag.checked = true; } }
+    });
+
+    // Colores (col8=nombre1, col9=hex1, col10=nombre2, col11=hex2...)
+    // Limpiar colores existentes y recrear
+    document.getElementById('colorFields').innerHTML = '';
+    colorCount = 0;
+    document.getElementById('addColorBtn').style.display='block';
+    const colorData = [];
+    for (let ci = 8; ci <= 13; ci += 2) {
+      const nombre = rowData[ci] || '';
+      const hex = rowData[ci+1] || '';
+      if (nombre || hex) colorData.push({nombre, hex});
+    }
+    if (colorData.length === 0) colorData.push({nombre:'',hex:'#7A5C3F'}, {nombre:'',hex:'#7A5C3F'});
+    colorData.forEach(cd => { addColor(); const i = colorCount; document.getElementById('cn'+i).value = cd.nombre; if(cd.hex) document.getElementById('ch'+i).value = cd.hex; });
+
+    // Imágenes existentes
+    generarImgSlots();
+    for (let ii = 0; ii < 4; ii++) {
+      const url = rowData[14+ii] || '';
+      if (url) {
+        imgUrls[ii] = url;
+        const prev = document.getElementById('prev'+ii);
+        const slot = document.getElementById('slot'+ii);
+        if (prev) { prev.src = url; prev.classList.add('visible'); }
+        if (slot) slot.classList.add('has-img');
+      }
+    }
+
+  } else if (hoja === 'ofertas') {
+    document.getElementById('fNombre').value = rowData[0] || '';
+    document.getElementById('fPrecio').value = rowData[1] || '';
+    document.getElementById('fPrecioOld').value = rowData[2] || '';
+    document.getElementById('fDescuento').value = rowData[3] || '';
+    document.getElementById('fDescripcion').value = rowData[4] || '';
+    const url = rowData[6] || '';
+    if (url) { imgUrls[0]=url; const prev=document.getElementById('prev0'),slot=document.getElementById('slot0'); if(prev){prev.src=url;prev.classList.add('visible');} if(slot)slot.classList.add('has-img'); }
+
+  } else if (hoja === 'coleccion') {
+    document.getElementById('fNombre').value = rowData[0] || '';
+    document.getElementById('fPrecio').value = rowData[1] || '';
+    document.getElementById('fPrecioOld').value = rowData[2] || '';
+    const url = rowData[3] || '';
+    if (url) { imgUrls[0]=url; const prev=document.getElementById('prev0'),slot=document.getElementById('slot0'); if(prev){prev.src=url;prev.classList.add('visible');} if(slot)slot.classList.add('has-img'); }
+  }
+
+  updatePreview();
+  window.scrollTo({top:0, behavior:'smooth'});
+  showToast('Datos cargados para editar ✏️', 'success');
+}
+
+function cancelarEdicion() {
+  modoEdicion = false;
+  editRowIndex = null;
+  editHoja = null;
+  document.getElementById('editBanner').classList.remove('show');
+  const btn = document.getElementById('submitBtn');
+  btn.classList.remove('editing');
+  btn.querySelector('.btn-text').textContent = '✦ Guardar en Sheets';
+  limpiarSinModo();
+}
+
+function limpiarSinModo() {
+  ['fNombre','fSubtitulo','fDescripcion','fMateriales','fPrecio','fPrecioOld','fDescuento','fWa'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
+  categoriaActual='';
+  TALLES_LIST.forEach(t=>{ const c=document.getElementById('t'+t); const a=document.getElementById('a'+t); if(c) c.checked=false; if(a) a.checked=false; });
+  document.getElementById('colorFields').innerHTML='';
+  colorCount=0;
+  document.getElementById('addColorBtn').style.display='block';
+  addColor(); addColor();
+  generarImgSlots();
+  updatePreview();
+}
+
+// ─── GUARDAR (nuevo o actualización) ──────────────────────
+
 async function guardarProducto() {
   const btn = document.getElementById('submitBtn');
   const nombre = document.getElementById('fNombre').value.trim();
@@ -599,21 +766,20 @@ async function guardarProducto() {
   let values;
 
   if (hojaActual==='productos') {
-   values = [[
-  categoriaActual, nombre,
-  document.getElementById('fDescripcion').value.trim(),
-  document.getElementById('fMateriales').value.trim(),
-  precio,
-  document.getElementById('fPrecioOld').value.trim(),
-  document.getElementById('fDescuento').value.trim(),
-  getTallesStr(),
-  colores[0]?.nombre||'', colores[0]?.hex||'',
-  colores[1]?.nombre||'', colores[1]?.hex||'',
-  colores[2]?.nombre||'', colores[2]?.hex||'',
-  imgUrls[0], imgUrls[1], imgUrls[2], imgUrls[3],
-  document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
-]];
-   
+    values = [[
+      categoriaActual, nombre,
+      document.getElementById('fDescripcion').value.trim(),
+      document.getElementById('fMateriales').value.trim(),
+      precio,
+      document.getElementById('fPrecioOld').value.trim(),
+      document.getElementById('fDescuento').value.trim(),
+      getTallesStr(),
+      colores[0]?.nombre||'', colores[0]?.hex||'',
+      colores[1]?.nombre||'', colores[1]?.hex||'',
+      colores[2]?.nombre||'', colores[2]?.hex||'',
+      imgUrls[0], imgUrls[1], imgUrls[2], imgUrls[3],
+      document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
+    ]];
   } else if (hojaActual==='ofertas') {
     values = [[nombre, precio,
       document.getElementById('fPrecioOld').value.trim(),
@@ -644,22 +810,36 @@ async function guardarProducto() {
 
   try {
     let res;
-    if (hojaActual === 'home') {
+
+    if (modoEdicion && editRowIndex !== null) {
+      // MODO EDICIÓN: PUT para reemplazar la fila exacta
+      const sheetRow = editRowIndex + 1; // +1 porque la fila 1 es el header
+      const colFin = hojaActual === 'productos' ? 'S' : hojaActual === 'ofertas' ? 'G' : hojaActual === 'coleccion' ? 'D' : 'S';
+      const range = `${hojaActual}!A${sheetRow}:${colFin}${sheetRow}`;
+      res = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?valueInputOption=RAW`,
+        { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
+      );
+    } else if (hojaActual === 'home') {
       res = await fetch(
         `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`,
         { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
       );
     } else {
- const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + hojaActual + ' !A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS';
-  res = await fetch(
-    url,
-    { method:'POST', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
-  );
-}
+      const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + hojaActual + '!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS';
+      res = await fetch(url, { method:'POST', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) });
+    }
+
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-    showToast('✓ Guardado en Google Sheets','success');
-    limpiar();
+
+    if (modoEdicion) {
+      showToast('✓ Producto actualizado correctamente','success');
+      cancelarEdicion();
+    } else {
+      showToast('✓ Guardado en Google Sheets','success');
+      limpiar();
+    }
   } catch(err) {
     console.error(err);
     showToast('Error al guardar: '+err.message,'error');
@@ -668,7 +848,10 @@ async function guardarProducto() {
   }
 }
 
+// ─── VISTA DE PRODUCTOS ────────────────────────────────────
+
 async function cargarVista(hoja, btn) {
+  vistaHojaActual = hoja;
   document.querySelectorAll('#tab-ver .hoja-tab').forEach(t=>t.classList.remove('active'));
   if(btn) btn.classList.add('active');
   const gid = GID_MAP[hoja];
@@ -682,9 +865,13 @@ async function cargarVista(hoja, btn) {
     const rows = parsearCSV(text);
     if(rows.length<2) throw new Error('Sin datos');
     const headers=rows[0];
-    document.getElementById('verThead').innerHTML='<tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr>';
+
+    // Thead con columna extra para acciones
+    document.getElementById('verThead').innerHTML='<tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'<th>Acción</th></tr>';
+
     const tbody=document.getElementById('verTbody'); tbody.innerHTML='';
-    rows.slice(1).forEach(row=>{
+    rows.slice(1).forEach((row, rowIdx)=>{
+      const realRowIndex = rowIdx + 1; // índice en la sheet sin contar header (1-based)
       const tr=document.createElement('tr');
       row.forEach((cell,i)=>{
         const td=document.createElement('td');
@@ -696,6 +883,16 @@ async function cargarVista(hoja, btn) {
         else td.textContent=cell.length>40?cell.slice(0,40)+'…':cell;
         tr.appendChild(td);
       });
+
+      // Celda con botón Editar
+      const tdAccion = document.createElement('td');
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn-edit-row';
+      editBtn.textContent = '✏️ Editar';
+      editBtn.onclick = () => activarModoEdicion(realRowIndex, hoja, row, headers);
+      tdAccion.appendChild(editBtn);
+      tr.appendChild(tdAccion);
+
       tbody.appendChild(tr);
     });
     document.getElementById('verEmpty').style.display='none';
@@ -706,12 +903,8 @@ async function cargarVista(hoja, btn) {
 }
 
 function limpiar() {
-  ['fNombre','fSubtitulo','fDescripcion','fMateriales','fPrecio','fPrecioOld','fDescuento','fWa'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
-  categoriaActual='';
-  TALLES_LIST.forEach(t=>{ const c=document.getElementById('t'+t); const a=document.getElementById('a'+t); if(c) c.checked=false; if(a) a.checked=false; });
-  generarImgSlots();
-  updatePreview();
+  if (modoEdicion) cancelarEdicion();
+  limpiarSinModo();
 }
 
 function showToast(msg, type='success') {
