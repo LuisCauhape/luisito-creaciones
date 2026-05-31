@@ -26,54 +26,20 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(--dark); min-height:100vh; }
-
-/* ── LOGIN ── */
-.login-screen {
-  min-height:100vh; display:flex; align-items:center; justify-content:center;
-  background:var(--dark); padding:24px;
-}
-.login-box {
-  background:var(--offwhite); width:100%; max-width:420px;
-  padding:56px 48px; text-align:center;
-  animation: loginUp .5s cubic-bezier(.16,1,.3,1);
-}
+.login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--dark); padding:24px; }
+.login-box { background:var(--offwhite); width:100%; max-width:420px; padding:56px 48px; text-align:center; animation: loginUp .5s cubic-bezier(.16,1,.3,1); }
 @keyframes loginUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-.login-logo {
-  font-family:'Playfair Display',serif; font-size:28px; font-weight:800;
-  color:var(--dark); margin-bottom:4px;
-}
+.login-logo { font-family:'Playfair Display',serif; font-size:28px; font-weight:800; color:var(--dark); margin-bottom:4px; }
 .login-logo span { color:var(--accent); font-style:italic; }
-.login-sub {
-  font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--warm-gray); font-weight:600; margin-bottom:48px;
-}
-.login-desc {
-  font-size:14px; color:var(--warm-gray); line-height:1.7; margin-bottom:36px;
-}
-.google-btn {
-  display:inline-flex; align-items:center; justify-content:center; gap:12px;
-  width:100%; padding:16px 24px;
-  background:white; border:1.5px solid var(--sand); border-radius:6px;
-  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
-  color:var(--dark); cursor:pointer; transition:all .25s ease;
-  text-decoration:none;
-}
+.login-sub { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--warm-gray); font-weight:600; margin-bottom:48px; }
+.login-desc { font-size:14px; color:var(--warm-gray); line-height:1.7; margin-bottom:36px; }
+.google-btn { display:inline-flex; align-items:center; justify-content:center; gap:12px; width:100%; padding:16px 24px; background:white; border:1.5px solid var(--sand); border-radius:6px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--dark); cursor:pointer; transition:all .25s ease; text-decoration:none; }
 .google-btn:hover { border-color:var(--accent); box-shadow:0 2px 12px rgba(196,149,106,.2); }
 .google-btn svg { flex-shrink:0; }
-.login-note {
-  font-size:11px; color:var(--warm-gray); margin-top:20px; line-height:1.6;
-}
-
-/* ── APP ── */
+.login-note { font-size:11px; color:var(--warm-gray); margin-top:20px; line-height:1.6; }
 .app { display:none; grid-template-columns:260px 1fr; min-height:100vh; }
 .app.visible { display:grid; }
-
-/* ── SIDEBAR ── */
-.sidebar {
-  background:var(--sidebar); min-height:100vh;
-  position:sticky; top:0; height:100vh;
-  display:flex; flex-direction:column;
-}
+.sidebar { background:var(--sidebar); min-height:100vh; position:sticky; top:0; height:100vh; display:flex; flex-direction:column; }
 .sidebar-brand { padding:32px 28px 28px; border-bottom:1px solid rgba(255,255,255,.06); }
 .sidebar-logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--accent); display:block; margin-bottom:4px; }
 .sidebar-logo span { color:var(--tan); font-style:italic; }
@@ -83,134 +49,67 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 .user-name { font-size:12px; font-weight:600; color:rgba(255,255,255,.7); }
 .user-email { font-size:10px; color:rgba(255,255,255,.3); }
 .sidebar-nav { padding:24px 16px; flex:1; display:flex; flex-direction:column; gap:4px; }
-.nav-item {
-  display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:8px;
-  font-size:13px; font-weight:600; color:rgba(255,255,255,.45);
-  cursor:pointer; transition:all .2s ease; border:none; background:none; width:100%; text-align:left;
-}
+.nav-item { display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:8px; font-size:13px; font-weight:600; color:rgba(255,255,255,.45); cursor:pointer; transition:all .2s ease; border:none; background:none; width:100%; text-align:left; }
 .nav-item:hover { background:rgba(255,255,255,.06); color:rgba(255,255,255,.8); }
 .nav-item.active { background:var(--accent); color:white; }
 .nav-item .nav-icon { font-size:16px; flex-shrink:0; }
 .sidebar-footer { padding:20px 16px; border-top:1px solid rgba(255,255,255,.06); display:flex; flex-direction:column; gap:4px; }
-.sidebar-link {
-  display:flex; align-items:center; gap:10px; font-size:12px; font-weight:500;
-  color:rgba(255,255,255,.3); text-decoration:none; padding:10px 14px; border-radius:6px; transition:all .2s ease;
-}
+.sidebar-link { display:flex; align-items:center; gap:10px; font-size:12px; font-weight:500; color:rgba(255,255,255,.3); text-decoration:none; padding:10px 14px; border-radius:6px; transition:all .2s ease; }
 .sidebar-link:hover { color:rgba(255,255,255,.6); background:rgba(255,255,255,.04); }
-.logout-btn {
-  display:flex; align-items:center; gap:10px; font-size:12px; font-weight:600;
-  color:rgba(255,100,100,.5); padding:10px 14px; border-radius:6px;
-  background:none; border:none; cursor:pointer; transition:all .2s ease; width:100%;
-}
+.logout-btn { display:flex; align-items:center; gap:10px; font-size:12px; font-weight:600; color:rgba(255,100,100,.5); padding:10px 14px; border-radius:6px; background:none; border:none; cursor:pointer; transition:all .2s ease; width:100%; }
 .logout-btn:hover { color:rgba(255,100,100,.8); background:rgba(255,0,0,.05); }
-
-/* ── MAIN ── */
 .main { display:flex; flex-direction:column; min-height:100vh; }
-.topbar {
-  background:white; border-bottom:1px solid rgba(212,191,163,.3);
-  padding:20px 40px; display:flex; align-items:center; justify-content:space-between;
-  position:sticky; top:0; z-index:10;
-}
+.topbar { background:white; border-bottom:1px solid rgba(212,191,163,.3); padding:20px 40px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
 .topbar-title { font-family:'Playfair Display',serif; font-size:26px; font-weight:800; color:var(--dark); }
 .topbar-title span { color:var(--accent); font-style:italic; }
-.status-pill {
-  display:flex; align-items:center; gap:8px; font-size:12px; font-weight:500;
-  color:var(--warm-gray); padding:8px 16px; border:1px solid var(--sand); border-radius:20px;
-}
+.status-pill { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:500; color:var(--warm-gray); padding:8px 16px; border:1px solid var(--sand); border-radius:20px; }
 .status-dot { width:8px; height:8px; border-radius:50%; background:var(--sand); }
 .status-dot.ok { background:#52b788; }
 .content { padding:36px 40px; flex:1; }
-
-/* ── TABS ── */
 .tab-panel { display:none; }
 .tab-panel.active { display:block; }
-
-/* ── HOJA TABS ── */
 .hoja-tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
-.hoja-tab {
-  padding:10px 20px; border:1.5px solid var(--sand); background:white; border-radius:6px;
-  font-size:12px; font-weight:700; color:var(--warm-gray); cursor:pointer;
-  transition:all .2s ease; font-family:'DM Sans',sans-serif;
-}
+.hoja-tab { padding:10px 20px; border:1.5px solid var(--sand); background:white; border-radius:6px; font-size:12px; font-weight:700; color:var(--warm-gray); cursor:pointer; transition:all .2s ease; font-family:'DM Sans',sans-serif; }
 .hoja-tab:hover { border-color:var(--accent); color:var(--dark); }
 .hoja-tab.active { background:var(--dark); color:white; border-color:var(--dark); }
-
-/* ── FORM CARD ── */
 .form-card { background:white; border:1px solid rgba(212,191,163,.3); border-radius:12px; overflow:hidden; margin-bottom:24px; }
 .form-card-header { padding:22px 28px; border-bottom:1px solid rgba(212,191,163,.2); display:flex; align-items:center; gap:12px; }
 .form-card-icon { font-size:20px; }
 .form-card-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--dark); }
 .form-card-sub { font-size:12px; color:var(--warm-gray); margin-top:2px; }
 .form-card-body { padding:28px; }
-
-/* ── FIELDS ── */
 .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 .form-grid.cols3 { grid-template-columns:1fr 1fr 1fr; }
 .form-full { grid-column:1/-1; }
 .field { display:flex; flex-direction:column; gap:8px; }
 .field label { font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--warm-gray); }
 .field label .req { color:var(--accent); margin-left:3px; }
-.field input, .field select, .field textarea {
-  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; color:var(--dark);
-  border:1.5px solid var(--sand); background:var(--offwhite);
-  padding:12px 16px; border-radius:6px; transition:border-color .2s,box-shadow .2s;
-  outline:none; width:100%;
-}
-.field input:focus, .field select:focus, .field textarea:focus {
-  border-color:var(--accent); box-shadow:0 0 0 3px rgba(196,149,106,.12); background:white;
-}
+.field input, .field select, .field textarea { font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; color:var(--dark); border:1.5px solid var(--sand); background:var(--offwhite); padding:12px 16px; border-radius:6px; transition:border-color .2s,box-shadow .2s; outline:none; width:100%; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(196,149,106,.12); background:white; }
 .field textarea { resize:vertical; min-height:90px; line-height:1.6; }
-.field-hint { font-size:11px; color:var(--warm-gray); margin-top:-4px; }
-
-/* ── CAT SELECTOR ── */
 .cat-selector { display:flex; flex-wrap:wrap; gap:8px; }
-.cat-btn {
-  padding:9px 16px; border:1.5px solid var(--sand); background:white; border-radius:6px;
-  font-size:12px; font-weight:600; color:var(--warm-gray); cursor:pointer; transition:all .2s;
-  font-family:'DM Sans',sans-serif;
-}
+.cat-btn { padding:9px 16px; border:1.5px solid var(--sand); background:white; border-radius:6px; font-size:12px; font-weight:600; color:var(--warm-gray); cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; }
 .cat-btn:hover { border-color:var(--accent); color:var(--accent); }
 .cat-btn.selected { background:var(--dark); color:white; border-color:var(--dark); }
-
-/* ── TALLES ── */
 .talle-grid { display:flex; flex-wrap:wrap; gap:8px; }
 .talle-item { position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; }
 .talle-item input[type="checkbox"] { display:none; }
-.talle-label {
-  display:flex; align-items:center; justify-content:center;
-  width:46px; height:46px; border:1.5px solid var(--sand); border-radius:4px;
-  font-size:13px; font-weight:700; color:var(--warm-gray);
-  cursor:pointer; transition:all .2s; user-select:none;
-}
+.talle-label { display:flex; align-items:center; justify-content:center; width:46px; height:46px; border:1.5px solid var(--sand); border-radius:4px; font-size:13px; font-weight:700; color:var(--warm-gray); cursor:pointer; transition:all .2s; user-select:none; }
 .talle-item input:checked + .talle-label { background:var(--dark); color:white; border-color:var(--dark); }
 .talle-label:hover { border-color:var(--accent); color:var(--accent); }
 .talle-agotado-wrap { display:none; align-items:center; gap:4px; }
 .talle-item input:checked ~ .talle-agotado-wrap { display:flex; }
 .talle-agotado-wrap input[type="checkbox"] { display:none; }
 .talle-agotado-label { font-size:9px; font-weight:700; color:var(--error); cursor:pointer; }
-
-/* ── COLORES ── */
 .color-fields { display:flex; flex-direction:column; gap:12px; }
 .color-row { display:flex; align-items:center; gap:12px; }
 .color-row input[type="color"] { width:40px; height:40px; border:1.5px solid var(--sand); border-radius:50%; cursor:pointer; padding:2px; background:none; flex-shrink:0; }
 .color-name-input { flex:1; border:1.5px solid var(--sand); border-radius:6px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; outline:none; transition:border-color .2s; }
 .color-name-input:focus { border-color:var(--accent); }
-.add-color-btn {
-  font-size:12px; font-weight:600; color:var(--accent); background:none;
-  border:1.5px dashed var(--sand); padding:10px 16px; border-radius:6px;
-  cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; width:100%; margin-top:8px;
-}
+.add-color-btn { font-size:12px; font-weight:600; color:var(--accent); background:none; border:1.5px dashed var(--sand); padding:10px 16px; border-radius:6px; cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; width:100%; margin-top:8px; }
 .add-color-btn:hover { border-color:var(--accent); background:rgba(196,149,106,.06); }
-
-/* ── IMÁGENES ── */
 .img-upload-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
-.img-upload-slot {
-  position:relative; aspect-ratio:3/4; border:2px dashed var(--sand);
-  border-radius:8px; overflow:hidden; cursor:pointer;
-  transition:border-color .2s, background .2s;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:8px; background:var(--offwhite);
-}
+.img-upload-slot { position:relative; aspect-ratio:3/4; border:2px dashed var(--sand); border-radius:8px; overflow:hidden; cursor:pointer; transition:border-color .2s, background .2s; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:var(--offwhite); }
 .img-upload-slot:hover { border-color:var(--accent); background:rgba(196,149,106,.04); }
 .img-upload-slot.has-img { border-style:solid; border-color:var(--sand); }
 .img-upload-slot input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
@@ -218,47 +117,14 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 .img-upload-preview.visible { display:block; }
 .img-upload-icon { font-size:28px; opacity:.4; position:relative; z-index:1; }
 .img-upload-label { font-size:11px; font-weight:600; color:var(--warm-gray); position:relative; z-index:1; text-align:center; padding:0 8px; }
-.img-upload-num {
-  position:absolute; top:8px; left:8px; z-index:2;
-  width:22px; height:22px; border-radius:50%; background:var(--dark);
-  color:white; font-size:10px; font-weight:700;
-  display:flex; align-items:center; justify-content:center;
-}
-.img-remove-btn {
-  position:absolute; top:6px; right:6px; z-index:3;
-  width:24px; height:24px; border-radius:50%; background:rgba(0,0,0,.6);
-  color:white; border:none; cursor:pointer; font-size:14px;
-  display:none; align-items:center; justify-content:center;
-}
+.img-upload-num { position:absolute; top:8px; left:8px; z-index:2; width:22px; height:22px; border-radius:50%; background:var(--dark); color:white; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.img-remove-btn { position:absolute; top:6px; right:6px; z-index:3; width:24px; height:24px; border-radius:50%; background:rgba(0,0,0,.6); color:white; border:none; cursor:pointer; font-size:14px; display:none; align-items:center; justify-content:center; }
 .img-upload-slot.has-img .img-remove-btn { display:flex; }
-.img-upload-url-input {
-  position:absolute; bottom:0; left:0; right:0; z-index:2;
-  background:rgba(255,255,255,.95); border:none; border-top:1px solid var(--sand);
-  padding:8px 10px; font-size:11px; font-family:'DM Sans',sans-serif;
-  display:none; outline:none;
-}
-.img-slot-actions {
-  position:absolute; bottom:8px; right:8px; z-index:3;
-  display:none; gap:4px;
-}
-.img-upload-slot.has-img .img-slot-actions { display:flex; }
-.img-action-btn {
-  width:26px; height:26px; border-radius:4px; background:rgba(0,0,0,.6);
-  color:white; border:none; cursor:pointer; font-size:12px;
-  display:flex; align-items:center; justify-content:center;
-}
-
-/* ── UPLOAD PROGRESS ── */
-.upload-progress {
-  position:absolute; inset:0; z-index:4; background:rgba(28,23,20,.7);
-  display:none; flex-direction:column; align-items:center; justify-content:center; gap:8px;
-}
+.upload-progress { position:absolute; inset:0; z-index:4; background:rgba(28,23,20,.7); display:none; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
 .upload-progress.show { display:flex; }
 .progress-bar-wrap { width:70%; height:4px; background:rgba(255,255,255,.2); border-radius:2px; overflow:hidden; }
 .progress-bar { height:100%; background:var(--accent); border-radius:2px; transition:width .3s ease; width:0%; }
 .progress-text { font-size:11px; color:white; font-weight:600; }
-
-/* ── PREVIEW ── */
 .preview-section { position:sticky; top:88px; }
 .preview-card { background:white; border:1px solid rgba(212,191,163,.3); border-radius:12px; overflow:hidden; }
 .preview-header { padding:16px 20px; border-bottom:1px solid rgba(212,191,163,.2); font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--warm-gray); }
@@ -280,40 +146,19 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 .preview-talle.agotado { opacity:.35; text-decoration:line-through; }
 .preview-colors { display:flex; gap:6px; }
 .preview-color { width:16px; height:16px; border-radius:50%; border:2px solid rgba(0,0,0,.1); }
-
-/* ── SUBMIT ── */
-.submit-row {
-  display:flex; align-items:center; gap:16px; padding:24px 28px;
-  border-top:1px solid rgba(212,191,163,.2); background:var(--cream);
-}
-.btn-submit {
-  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700;
-  letter-spacing:.1em; text-transform:uppercase;
-  background:var(--dark); color:white; border:none; padding:16px 36px;
-  border-radius:6px; cursor:pointer; transition:all .3s;
-  display:flex; align-items:center; gap:10px;
-}
+.submit-row { display:flex; align-items:center; gap:16px; padding:24px 28px; border-top:1px solid rgba(212,191,163,.2); background:var(--cream); }
+.btn-submit { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; background:var(--dark); color:white; border:none; padding:16px 36px; border-radius:6px; cursor:pointer; transition:all .3s; display:flex; align-items:center; gap:10px; }
 .btn-submit:hover { background:var(--brown); }
 .btn-submit:disabled { opacity:.5; cursor:not-allowed; }
 .btn-submit .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:white; border-radius:50%; animation:spin .7s linear infinite; display:none; }
 .btn-submit.loading .spinner { display:block; }
 .btn-clear { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; background:none; color:var(--warm-gray); border:1.5px solid var(--sand); padding:16px 24px; border-radius:6px; cursor:pointer; transition:all .2s; }
 .btn-clear:hover { border-color:var(--dark); color:var(--dark); }
-
-/* ── TOAST ── */
-.toast {
-  position:fixed; bottom:32px; right:32px;
-  background:var(--dark); color:white; padding:16px 24px; border-radius:8px;
-  font-size:14px; font-weight:500; display:flex; align-items:center; gap:12px;
-  transform:translateY(80px); opacity:0; transition:all .4s cubic-bezier(.16,1,.3,1);
-  z-index:1000; max-width:380px;
-}
+.toast { position:fixed; bottom:32px; right:32px; background:var(--dark); color:white; padding:16px 24px; border-radius:8px; font-size:14px; font-weight:500; display:flex; align-items:center; gap:12px; transform:translateY(80px); opacity:0; transition:all .4s cubic-bezier(.16,1,.3,1); z-index:1000; max-width:380px; }
 .toast.show { transform:translateY(0); opacity:1; }
 .toast.success { background:var(--success); }
 .toast.error { background:var(--error); }
 .toast-icon { font-size:18px; flex-shrink:0; }
-
-/* ── VER TABLA ── */
 .records-wrap { overflow-x:auto; }
 .records-table { width:100%; border-collapse:collapse; }
 .records-table th { font-size:10px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--warm-gray); padding:12px 16px; text-align:left; border-bottom:1.5px solid rgba(212,191,163,.3); white-space:nowrap; }
@@ -325,10 +170,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 .record-price { font-weight:700; }
 .empty-state { text-align:center; padding:60px 20px; color:var(--warm-gray); }
 .empty-icon { font-size:48px; margin-bottom:12px; opacity:.4; }
-
 @keyframes spin { to{transform:rotate(360deg)} }
-
-/* ── RESPONSIVE ── */
 @media(max-width:900px){
   .app { grid-template-columns:1fr; }
   .sidebar { display:none; }
@@ -342,7 +184,6 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <div class="login-logo">Luisito <span>Creaciones</span></div>
@@ -356,10 +197,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
   </div>
 </div>
 
-<!-- APP -->
 <div class="app" id="app">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-brand">
       <span class="sidebar-logo">Luisito <span>Creaciones</span></span>
@@ -373,12 +211,8 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
       </div>
     </div>
     <nav class="sidebar-nav">
-      <button class="nav-item active" onclick="showTab('cargar',this)">
-        <span class="nav-icon">✦</span> Cargar producto
-      </button>
-      <button class="nav-item" onclick="showTab('ver',this)">
-        <span class="nav-icon">◈</span> Ver productos
-      </button>
+      <button class="nav-item active" onclick="showTab('cargar',this)"><span class="nav-icon">✦</span> Cargar producto</button>
+      <button class="nav-item" onclick="showTab('ver',this)"><span class="nav-icon">◈</span> Ver productos</button>
     </nav>
     <div class="sidebar-footer">
       <a class="sidebar-link" href="index.html" target="_blank">↗ Ver sitio web</a>
@@ -386,7 +220,6 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="topbar">
       <div class="topbar-title">Panel de <span>carga</span></div>
@@ -398,9 +231,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
 
     <div class="content">
 
-      <!-- TAB CARGAR -->
       <div class="tab-panel active" id="tab-cargar">
-
         <div class="hoja-tabs">
           <button class="hoja-tab active" onclick="setHoja('productos',this)">📦 Productos</button>
           <button class="hoja-tab" onclick="setHoja('ofertas',this)">🏷 Ofertas</button>
@@ -411,15 +242,8 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
         <div style="display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start;">
           <div>
 
-            <!-- DATOS -->
             <div class="form-card">
-              <div class="form-card-header">
-                <span class="form-card-icon">📝</span>
-                <div>
-                  <div class="form-card-title">Datos del producto</div>
-                  <div class="form-card-sub">Información principal</div>
-                </div>
-              </div>
+              <div class="form-card-header"><span class="form-card-icon">📝</span><div><div class="form-card-title">Datos del producto</div><div class="form-card-sub">Información principal</div></div></div>
               <div class="form-card-body">
                 <div class="form-grid">
                   <div class="field form-full" id="catField">
@@ -435,104 +259,48 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
                       <button class="cat-btn" onclick="selectCat(this,'deportivo')">🏃 Deportivo</button>
                     </div>
                   </div>
-                  <div class="field">
-                    <label>Nombre <span class="req">*</span></label>
-                    <input type="text" id="fNombre" placeholder="Ej: Bota Siena" oninput="updatePreview()">
-                  </div>
-                  <div class="field">
-                    <label>Subtítulo</label>
-                    <input type="text" id="fSubtitulo" placeholder="Ej: Cuero genuino" oninput="updatePreview()">
-                  </div>
-                  <div class="field form-full">
-                    <label>Descripción</label>
-                    <textarea id="fDescripcion" placeholder="Describí el modelo..." oninput="updatePreview()"></textarea>
-                  </div>
-                  <div class="field form-full">
-                    <label>Materiales</label>
-                    <input type="text" id="fMateriales" placeholder="Ej: Cuero vacuno, suela TPR">
-                  </div>
+                  <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="fNombre" placeholder="Ej: Bota Siena" oninput="updatePreview()"></div>
+                  <div class="field"><label>Subtítulo</label><input type="text" id="fSubtitulo" placeholder="Ej: Cuero genuino" oninput="updatePreview()"></div>
+                  <div class="field form-full"><label>Descripción</label><textarea id="fDescripcion" placeholder="Describí el modelo..." oninput="updatePreview()"></textarea></div>
+                  <div class="field form-full"><label>Materiales</label><input type="text" id="fMateriales" placeholder="Ej: Cuero vacuno, suela TPR"></div>
                 </div>
               </div>
             </div>
 
-            <!-- PRECIO -->
             <div class="form-card">
-              <div class="form-card-header">
-                <span class="form-card-icon">💰</span>
-                <div><div class="form-card-title">Precio</div></div>
-              </div>
+              <div class="form-card-header"><span class="form-card-icon">💰</span><div><div class="form-card-title">Precio</div></div></div>
               <div class="form-card-body">
                 <div class="form-grid cols3">
-                  <div class="field">
-                    <label>Precio actual <span class="req">*</span></label>
-                    <input type="text" id="fPrecio" placeholder="$89.000" oninput="updatePreview()">
-                  </div>
-                  <div class="field">
-                    <label>Precio anterior</label>
-                    <input type="text" id="fPrecioOld" placeholder="$115.000" oninput="updatePreview()">
-                  </div>
-                  <div class="field">
-                    <label>Descuento</label>
-                    <input type="text" id="fDescuento" placeholder="–22% OFF" oninput="updatePreview()">
-                  </div>
+                  <div class="field"><label>Precio actual <span class="req">*</span></label><input type="text" id="fPrecio" placeholder="$89.000" oninput="updatePreview()"></div>
+                  <div class="field"><label>Precio anterior</label><input type="text" id="fPrecioOld" placeholder="$115.000" oninput="updatePreview()"></div>
+                  <div class="field"><label>Descuento</label><input type="text" id="fDescuento" placeholder="–22% OFF" oninput="updatePreview()"></div>
                 </div>
               </div>
             </div>
 
-            <!-- FOTOS -->
             <div class="form-card">
-              <div class="form-card-header">
-                <span class="form-card-icon">📸</span>
-                <div>
-                  <div class="form-card-title">Fotos del producto</div>
-                  <div class="form-card-sub">Subí hasta 4 fotos desde tu dispositivo — se guardan en tu Google Drive automáticamente</div>
-                </div>
-              </div>
-              <div class="form-card-body">
-                <div class="img-upload-grid" id="imgGrid">
-                  <!-- generado por JS -->
-                </div>
-              </div>
+              <div class="form-card-header"><span class="form-card-icon">📸</span><div><div class="form-card-title">Fotos del producto</div><div class="form-card-sub">Subí hasta 4 fotos — se guardan en tu Google Drive automáticamente</div></div></div>
+              <div class="form-card-body"><div class="img-upload-grid" id="imgGrid"></div></div>
             </div>
 
-            <!-- TALLES -->
             <div class="form-card">
-              <div class="form-card-header">
-                <span class="form-card-icon">📏</span>
-                <div><div class="form-card-title">Talles disponibles</div></div>
-              </div>
-              <div class="form-card-body">
-                <div class="talle-grid" id="talleGrid"></div>
-              </div>
+              <div class="form-card-header"><span class="form-card-icon">📏</span><div><div class="form-card-title">Talles disponibles</div></div></div>
+              <div class="form-card-body"><div class="talle-grid" id="talleGrid"></div></div>
             </div>
 
-            <!-- COLORES -->
             <div class="form-card">
-              <div class="form-card-header">
-                <span class="form-card-icon">🎨</span>
-                <div><div class="form-card-title">Colores</div></div>
-              </div>
+              <div class="form-card-header"><span class="form-card-icon">🎨</span><div><div class="form-card-title">Colores</div></div></div>
               <div class="form-card-body">
                 <div class="color-fields" id="colorFields"></div>
                 <button class="add-color-btn" id="addColorBtn" onclick="addColor()">+ Agregar color</button>
               </div>
             </div>
 
-            <!-- WA -->
             <div class="form-card">
-              <div class="form-card-header">
-                <span class="form-card-icon">💬</span>
-                <div><div class="form-card-title">WhatsApp</div></div>
-              </div>
-              <div class="form-card-body">
-                <div class="field">
-                  <label>Número (dejá vacío para usar el default)</label>
-                  <input type="text" id="fWa" placeholder="2227466087">
-                </div>
-              </div>
+              <div class="form-card-header"><span class="form-card-icon">💬</span><div><div class="form-card-title">WhatsApp</div></div></div>
+              <div class="form-card-body"><div class="field"><label>Número (dejá vacío para usar el default)</label><input type="text" id="fWa" placeholder="2227466087"></div></div>
             </div>
 
-            <!-- SUBMIT -->
             <div class="form-card">
               <div class="submit-row">
                 <button class="btn-submit" id="submitBtn" onclick="guardarProducto()">
@@ -543,9 +311,8 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
               </div>
             </div>
 
-          </div><!-- /form -->
+          </div>
 
-          <!-- PREVIEW -->
           <div class="preview-section">
             <div class="preview-card">
               <div class="preview-header">👁 Vista previa</div>
@@ -571,15 +338,11 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
           </div>
 
         </div>
-      </div><!-- /tab cargar -->
+      </div>
 
-      <!-- TAB VER -->
       <div class="tab-panel" id="tab-ver">
         <div class="form-card">
-          <div class="form-card-header">
-            <span class="form-card-icon">◈</span>
-            <div><div class="form-card-title">Productos cargados</div></div>
-          </div>
+          <div class="form-card-header"><span class="form-card-icon">◈</span><div><div class="form-card-title">Productos cargados</div></div></div>
           <div style="padding:16px 28px 0; display:flex; gap:8px;">
             <button class="hoja-tab active" onclick="cargarVista('productos',this)" style="font-size:11px;padding:8px 14px;">📦 Productos</button>
             <button class="hoja-tab" onclick="cargarVista('ofertas',this)" style="font-size:11px;padding:8px 14px;">🏷 Ofertas</button>
@@ -587,10 +350,7 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
           </div>
           <div class="form-card-body">
             <div class="records-wrap">
-              <div class="empty-state" id="verEmpty">
-                <div class="empty-icon">📋</div>
-                <p>Elegí una pestaña para ver los productos</p>
-              </div>
+              <div class="empty-state" id="verEmpty"><div class="empty-icon">📋</div><p>Elegí una pestaña para ver los productos</p></div>
               <table class="records-table" id="verTable" style="display:none">
                 <thead id="verThead"></thead>
                 <tbody id="verTbody"></tbody>
@@ -604,33 +364,20 @@ body { font-family:'DM Sans',sans-serif; background:var(--offwhite); color:var(-
   </main>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast">
   <span class="toast-icon" id="toastIcon">✓</span>
   <span id="toastMsg"></span>
 </div>
 
 <script>
-/* ══════════════════════════════
-   CONFIGURACIÓN
-══════════════════════════════ */
 const CLIENT_ID = '267224057278-2h8qksuos2cioraanr4a8m0qbatdl825.apps.googleusercontent.com';
-
-const EMAILS_AUTORIZADOS = [
-  'cauhapeeluis@gmail.com',
-  'email-cliente@gmail.com',
-];
+const EMAILS_AUTORIZADOS = ['cauhapeeluis@gmail.com','email-cliente@gmail.com'];
 const SHEET_ID  = '1V-hIDFcIloQhgNA9SQ3j9MIAqXCvScizinmR7I-nPrY';
 const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file email profile openid';
-
 const SHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSVUmYHOcXytQ6R2uJjjiajRPMsYgP-HdNIBrIkKLKfR0G6wQRADsZuoX66a_ixK5QUBQBwPUWNOcJt/pub?single=true&output=csv';
 const GID_MAP = { home:'0', ofertas:'860634940', coleccion:'1202954954', productos:'127848751' };
-
 const TALLES_LIST = [34,35,36,37,38,39,40,41,42];
 
-/* ══════════════════════════════
-   ESTADO
-══════════════════════════════ */
 let accessToken = null;
 let userInfo    = null;
 let hojaActual  = 'productos';
@@ -638,9 +385,6 @@ let categoriaActual = '';
 let colorCount  = 0;
 let imgUrls     = ['','','',''];
 
-/* ══════════════════════════════
-   GOOGLE LOGIN
-══════════════════════════════ */
 function iniciarLogin() {
   const client = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
@@ -658,9 +402,7 @@ function iniciarLogin() {
 async function obtenerPerfil() {
   const res = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${accessToken}`);
   const tokenData = await res.json();
-  const res2 = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
+  const res2 = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: `Bearer ${accessToken}` } });
   const userData = await res2.json();
   userInfo = {
     email: tokenData.email || userData.email || '',
@@ -673,17 +415,12 @@ async function obtenerPerfil() {
 }
 
 function mostrarApp() {
-  const email = userInfo?.email || userInfo?.sub || '';
+  const email = userInfo?.email || '';
   if (!EMAILS_AUTORIZADOS.includes(email)) {
-    accessToken = null;
-    userInfo = null;
+    accessToken = null; userInfo = null;
     document.getElementById('loginScreen').style.display = 'flex';
     const nota = document.querySelector('.login-note');
-    if (nota) {
-      nota.style.color = '#8B2635';
-      nota.style.fontWeight = '600';
-      nota.textContent = '⛔ Email detectado: [' + email + '] — no autorizado. Mostrá esto al admin.';
-    }
+    if (nota) { nota.style.color='#8B2635'; nota.style.fontWeight='600'; nota.textContent='⛔ Email: ['+email+'] — no autorizado.'; }
     return;
   }
   document.getElementById('loginScreen').style.display = 'none';
@@ -698,9 +435,6 @@ function cerrarSesion() {
   limpiar();
 }
 
-/* ══════════════════════════════
-   INIT FORMULARIO
-══════════════════════════════ */
 function iniciarFormulario() {
   generarTalles();
   generarImgSlots();
@@ -708,9 +442,6 @@ function iniciarFormulario() {
   updatePreview();
 }
 
-/* ══════════════════════════════
-   TABS
-══════════════════════════════ */
 function showTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -726,9 +457,6 @@ function setHoja(hoja, btn) {
   updatePreview();
 }
 
-/* ══════════════════════════════
-   CATEGORÍA
-══════════════════════════════ */
 function selectCat(btn, slug) {
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
@@ -736,22 +464,13 @@ function selectCat(btn, slug) {
   updatePreview();
 }
 
-/* ══════════════════════════════
-   TALLES
-══════════════════════════════ */
 function generarTalles() {
   const grid = document.getElementById('talleGrid');
   grid.innerHTML = '';
   TALLES_LIST.forEach(t => {
     const wrap = document.createElement('div');
     wrap.className = 'talle-item';
-    wrap.innerHTML = `
-      <input type="checkbox" id="t${t}" onchange="updatePreview()">
-      <label class="talle-label" for="t${t}">${t}</label>
-      <div class="talle-agotado-wrap">
-        <input type="checkbox" id="a${t}">
-        <label class="talle-agotado-label" for="a${t}">agotado</label>
-      </div>`;
+    wrap.innerHTML = `<input type="checkbox" id="t${t}" onchange="updatePreview()"><label class="talle-label" for="t${t}">${t}</label><div class="talle-agotado-wrap"><input type="checkbox" id="a${t}"><label class="talle-agotado-label" for="a${t}">agotado</label></div>`;
     grid.appendChild(wrap);
   });
 }
@@ -763,9 +482,6 @@ function getTallesStr() {
     .join(',');
 }
 
-/* ══════════════════════════════
-   COLORES
-══════════════════════════════ */
 function addColor() {
   if (colorCount >= 5) return;
   colorCount++;
@@ -773,10 +489,7 @@ function addColor() {
   const wrap = document.getElementById('colorFields');
   const row = document.createElement('div');
   row.className = 'color-row'; row.id = 'cr'+i;
-  row.innerHTML = `
-    <input type="color" id="ch${i}" value="#7A5C3F" oninput="updatePreview()">
-    <input type="text" class="color-name-input" id="cn${i}" placeholder="Nombre (ej: Negro)" oninput="updatePreview()">
-    ${i>1?`<button onclick="removeColor(${i})" style="background:none;border:none;cursor:pointer;color:var(--sand);font-size:20px;padding:4px 8px">×</button>`:''}`;
+  row.innerHTML = `<input type="color" id="ch${i}" value="#7A5C3F" oninput="updatePreview()"><input type="text" class="color-name-input" id="cn${i}" placeholder="Nombre (ej: Negro)" oninput="updatePreview()">${i>1?`<button onclick="removeColor(${i})" style="background:none;border:none;cursor:pointer;color:var(--sand);font-size:20px;padding:4px 8px">×</button>`:''}`;
   wrap.appendChild(row);
   if (colorCount>=5) document.getElementById('addColorBtn').style.display='none';
   updatePreview();
@@ -798,28 +511,14 @@ function getColores() {
   return cols;
 }
 
-/* ══════════════════════════════
-   IMÁGENES — UPLOAD A DRIVE
-══════════════════════════════ */
 function generarImgSlots() {
   const grid = document.getElementById('imgGrid');
   grid.innerHTML = '';
   imgUrls = ['','','',''];
   for (let i=0;i<4;i++) {
     const slot = document.createElement('div');
-    slot.className = 'img-upload-slot';
-    slot.id = 'slot'+i;
-    slot.innerHTML = `
-      <div class="img-upload-num">${i+1}</div>
-      <input type="file" accept="image/*" onchange="subirImagen(this,${i})">
-      <img class="img-upload-preview" id="prev${i}">
-      <div class="upload-progress" id="prog${i}">
-        <div class="progress-bar-wrap"><div class="progress-bar" id="bar${i}"></div></div>
-        <div class="progress-text" id="progTxt${i}">Subiendo...</div>
-      </div>
-      <div class="img-upload-icon">📷</div>
-      <div class="img-upload-label">Tocá para subir<br>una foto</div>
-      <button class="img-remove-btn" onclick="quitarImg(${i},event)">×</button>`;
+    slot.className = 'img-upload-slot'; slot.id = 'slot'+i;
+    slot.innerHTML = `<div class="img-upload-num">${i+1}</div><input type="file" accept="image/*" onchange="subirImagen(this,${i})"><img class="img-upload-preview" id="prev${i}"><div class="upload-progress" id="prog${i}"><div class="progress-bar-wrap"><div class="progress-bar" id="bar${i}"></div></div><div class="progress-text" id="progTxt${i}">Subiendo...</div></div><div class="img-upload-icon">📷</div><div class="img-upload-label">Tocá para subir<br>una foto</div><button class="img-remove-btn" onclick="quitarImg(${i},event)">×</button>`;
     grid.appendChild(slot);
   }
 }
@@ -828,143 +527,72 @@ async function subirImagen(input, idx) {
   const file = input.files[0];
   if (!file) return;
   if (!accessToken) { showToast('Necesitás iniciar sesión primero','error'); return; }
-
-  const slot = document.getElementById('slot'+idx);
-  const prog = document.getElementById('prog'+idx);
-  const bar  = document.getElementById('bar'+idx);
-  const txt  = document.getElementById('progTxt'+idx);
-
-  prog.classList.add('show');
-  bar.style.width = '20%';
-  txt.textContent = 'Subiendo...';
-
+  const slot=document.getElementById('slot'+idx), prog=document.getElementById('prog'+idx), bar=document.getElementById('bar'+idx), txt=document.getElementById('progTxt'+idx);
+  prog.classList.add('show'); bar.style.width='20%'; txt.textContent='Subiendo...';
   try {
     const reader = new FileReader();
-    reader.onload = e => {
-      const prevEl = document.getElementById('prev'+idx);
-      prevEl.src = e.target.result;
-      prevEl.classList.add('visible');
-    };
+    reader.onload = e => { const p=document.getElementById('prev'+idx); p.src=e.target.result; p.classList.add('visible'); };
     reader.readAsDataURL(file);
-
-    bar.style.width = '50%';
-
+    bar.style.width='50%';
     const metadata = { name: file.name, mimeType: file.type };
     const formData = new FormData();
     formData.append('metadata', new Blob([JSON.stringify(metadata)], {type:'application/json'}));
     formData.append('file', file);
-
-    const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webContentLink,webViewLink', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${accessToken}` },
-      body: formData
-    });
-
-    bar.style.width = '80%';
+    const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', { method:'POST', headers:{ Authorization:`Bearer ${accessToken}` }, body:formData });
+    bar.style.width='80%';
     const data = await res.json();
-
-    if (!data.id) throw new Error('No se obtuvo ID del archivo');
-
-    await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
-      method: 'POST',
-      headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({ role:'reader', type:'anyone' })
-    });
-
-    const imgUrl = `https://lh3.googleusercontent.com/d/${data.id}`;
-    imgUrls[idx] = imgUrl;
-
-    bar.style.width = '100%';
-    txt.textContent = '✓ Subida';
+    if (!data.id) throw new Error('No se obtuvo ID');
+    await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, { method:'POST', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ role:'reader', type:'anyone' }) });
+    imgUrls[idx] = `https://lh3.googleusercontent.com/d/${data.id}`;
+    bar.style.width='100%'; txt.textContent='✓ Subida';
     slot.classList.add('has-img');
-
     setTimeout(() => { prog.classList.remove('show'); }, 800);
-
-    if (idx === 0) updatePreview();
-    showToast('Foto subida correctamente ✓', 'success');
-
-  } catch (err) {
+    if (idx===0) updatePreview();
+    showToast('Foto subida correctamente ✓','success');
+  } catch(err) {
     prog.classList.remove('show');
-    showToast('Error al subir la foto. Intentá de nuevo.', 'error');
+    showToast('Error al subir la foto. Intentá de nuevo.','error');
     console.error(err);
   }
 }
 
 function quitarImg(idx, e) {
   e.stopPropagation();
-  imgUrls[idx] = '';
-  const slot = document.getElementById('slot'+idx);
-  const prev = document.getElementById('prev'+idx);
+  imgUrls[idx]='';
+  const slot=document.getElementById('slot'+idx), prev=document.getElementById('prev'+idx);
   prev.src=''; prev.classList.remove('visible');
   slot.classList.remove('has-img');
   if (idx===0) updatePreview();
 }
 
-/* ══════════════════════════════
-   LIVE PREVIEW
-══════════════════════════════ */
 function updatePreview() {
-  const nombre = document.getElementById('fNombre')?.value||'';
-  const precio = document.getElementById('fPrecio')?.value||'';
-  const old    = document.getElementById('fPrecioOld')?.value||'';
-  const desc   = document.getElementById('fDescripcion')?.value||'';
-
-  document.getElementById('prevNombre').textContent = nombre||'Nombre del modelo';
-  document.getElementById('prevPrecio').textContent = precio||'$0';
-  document.getElementById('prevOld').textContent = old;
-  document.getElementById('prevDesc').textContent = desc||'La descripción aparece acá...';
-  document.getElementById('prevCat').textContent = categoriaActual ? categoriaActual.replace('-',' ') : '—';
-
-  const previewImg = document.getElementById('previewImg');
-  const placeholder = document.getElementById('previewPlaceholder');
-  const localPrev = document.getElementById('prev0');
-
-  if (localPrev && localPrev.src && localPrev.classList.contains('visible')) {
-    previewImg.src = localPrev.src;
-    previewImg.classList.add('visible');
-    placeholder.style.display='none';
-  } else if (imgUrls[0]) {
-    previewImg.src = imgUrls[0];
-    previewImg.classList.add('visible');
-    placeholder.style.display='none';
-  } else {
-    previewImg.classList.remove('visible');
-    placeholder.style.display='flex';
-  }
-
-  const tv = document.getElementById('prevTalles');
-  tv.innerHTML='';
-  TALLES_LIST.forEach(t => {
-    const c=document.getElementById('t'+t);
-    if(c&&c.checked){
-      const ag=document.getElementById('a'+t)?.checked;
-      const chip=document.createElement('div');
-      chip.className='preview-talle'+(ag?' agotado':'');
-      chip.textContent=t; tv.appendChild(chip);
-    }
-  });
-
-  const cv = document.getElementById('prevColors');
-  cv.innerHTML='';
-  for(let i=1;i<=5;i++){
-    const h=document.getElementById('ch'+i);
-    if(h){ const d=document.createElement('div'); d.className='preview-color'; d.style.background=h.value; cv.appendChild(d); }
-  }
+  const nombre=document.getElementById('fNombre')?.value||'';
+  const precio=document.getElementById('fPrecio')?.value||'';
+  const old=document.getElementById('fPrecioOld')?.value||'';
+  const desc=document.getElementById('fDescripcion')?.value||'';
+  document.getElementById('prevNombre').textContent=nombre||'Nombre del modelo';
+  document.getElementById('prevPrecio').textContent=precio||'$0';
+  document.getElementById('prevOld').textContent=old;
+  document.getElementById('prevDesc').textContent=desc||'La descripción aparece acá...';
+  document.getElementById('prevCat').textContent=categoriaActual?categoriaActual.replace('-',' '):'—';
+  const previewImg=document.getElementById('previewImg'), placeholder=document.getElementById('previewPlaceholder'), localPrev=document.getElementById('prev0');
+  if (localPrev&&localPrev.src&&localPrev.classList.contains('visible')) { previewImg.src=localPrev.src; previewImg.classList.add('visible'); placeholder.style.display='none'; }
+  else if (imgUrls[0]) { previewImg.src=imgUrls[0]; previewImg.classList.add('visible'); placeholder.style.display='none'; }
+  else { previewImg.classList.remove('visible'); placeholder.style.display='flex'; }
+  const tv=document.getElementById('prevTalles'); tv.innerHTML='';
+  TALLES_LIST.forEach(t => { const c=document.getElementById('t'+t); if(c&&c.checked){ const ag=document.getElementById('a'+t)?.checked; const chip=document.createElement('div'); chip.className='preview-talle'+(ag?' agotado':''); chip.textContent=t; tv.appendChild(chip); } });
+  const cv=document.getElementById('prevColors'); cv.innerHTML='';
+  for(let i=1;i<=5;i++){ const h=document.getElementById('ch'+i); if(h){ const d=document.createElement('div'); d.className='preview-color'; d.style.background=h.value; cv.appendChild(d); } }
 }
 
-/* ══════════════════════════════
-   GUARDAR EN SHEETS
-══════════════════════════════ */
 async function guardarProducto() {
   const btn = document.getElementById('submitBtn');
   const nombre = document.getElementById('fNombre').value.trim();
   const precio = document.getElementById('fPrecio').value.trim();
-
   if (!nombre) { showToast('Escribí el nombre del modelo','error'); return; }
   if (!precio) { showToast('Ingresá el precio','error'); return; }
   if (hojaActual==='productos' && !categoriaActual) { showToast('Elegí una categoría','error'); return; }
   if (!accessToken) { showToast('Sesión expirada. Volvé a entrar.','error'); return; }
-
   btn.classList.add('loading'); btn.disabled=true;
 
   const colores = getColores();
@@ -1017,80 +645,51 @@ async function guardarProducto() {
 
   try {
     let res;
-
     if (hojaActual === 'home') {
       res = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home%21A2%3AS2?valueInputOption=RAW`,
-        {
-          method: 'PUT',
-          headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
-          body: JSON.stringify({ values })
-        }
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`,
+        { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
       );
-    }else {
-  res = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
-    {
-      method: 'POST',
-      headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
-      body: JSON.stringify({
-        range: `${hojaActual}!A1`,
-        values
-      })
-    }
-  );
-        {
-          method: 'POST',
-          headers: { Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' },
-          body: JSON.stringify({ values })
-        }
+    } else {
+      res = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+        { method:'POST', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ range:`${hojaActual}!A1`, values }) }
       );
     }
-
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-
-    showToast('✓ Guardado en Google Sheets', 'success');
+    showToast('✓ Guardado en Google Sheets','success');
     limpiar();
-
   } catch(err) {
     console.error(err);
-    showToast('Error al guardar: '+err.message, 'error');
+    showToast('Error al guardar: '+err.message,'error');
   } finally {
     btn.classList.remove('loading'); btn.disabled=false;
   }
 }
-/* ══════════════════════════════
-   VER REGISTROS
-══════════════════════════════ */
+
 async function cargarVista(hoja, btn) {
   document.querySelectorAll('#tab-ver .hoja-tab').forEach(t=>t.classList.remove('active'));
   if(btn) btn.classList.add('active');
-
   const gid = GID_MAP[hoja];
   if(!gid){ document.getElementById('verEmpty').innerHTML='<div class="empty-icon">🔧</div><p>GID no configurado</p>'; return; }
-
   document.getElementById('verEmpty').innerHTML='<div style="display:flex;justify-content:center;padding:40px"><div style="width:32px;height:32px;border:2px solid var(--sand);border-top-color:var(--brown);border-radius:50%;animation:spin .8s linear infinite"></div></div>';
   document.getElementById('verEmpty').style.display='block';
   document.getElementById('verTable').style.display='none';
-
   try {
     const res = await fetch(`${SHEET_BASE}&gid=${gid}`);
     const text = await res.text();
     const rows = parsearCSV(text);
     if(rows.length<2) throw new Error('Sin datos');
-
     const headers=rows[0];
     document.getElementById('verThead').innerHTML='<tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr>';
-    const tbody=document.getElementById('verTbody');
-    tbody.innerHTML='';
+    const tbody=document.getElementById('verTbody'); tbody.innerHTML='';
     rows.slice(1).forEach(row=>{
       const tr=document.createElement('tr');
       row.forEach((cell,i)=>{
         const td=document.createElement('td');
         const h=(headers[i]||'').toLowerCase();
-        if((h.startsWith('imagen')||h==='imagen')&&cell.startsWith('http'))
-          td.innerHTML=`<img class="record-img" src="${cell}" onerror="this.style.display='none'">`;
+        if((h.startsWith('imagen')||h==='imagen')&&cell.startsWith('http')) td.innerHTML=`<img class="record-img" src="${cell}" onerror="this.style.display='none'">`;
         else if(h==='nombre') td.innerHTML=`<span class="record-name">${cell}</span>`;
         else if(h==='categoria') td.innerHTML=`<span class="record-cat">${cell}</span>`;
         else if(h==='precio') td.innerHTML=`<span class="record-price">${cell}</span>`;
@@ -1106,25 +705,15 @@ async function cargarVista(hoja, btn) {
   }
 }
 
-/* ══════════════════════════════
-   LIMPIAR
-══════════════════════════════ */
 function limpiar() {
-  ['fNombre','fSubtitulo','fDescripcion','fMateriales','fPrecio','fPrecioOld','fDescuento','fWa']
-    .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['fNombre','fSubtitulo','fDescripcion','fMateriales','fPrecio','fPrecioOld','fDescuento','fWa'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
   categoriaActual='';
-  TALLES_LIST.forEach(t=>{
-    const c=document.getElementById('t'+t); const a=document.getElementById('a'+t);
-    if(c) c.checked=false; if(a) a.checked=false;
-  });
+  TALLES_LIST.forEach(t=>{ const c=document.getElementById('t'+t); const a=document.getElementById('a'+t); if(c) c.checked=false; if(a) a.checked=false; });
   generarImgSlots();
   updatePreview();
 }
 
-/* ══════════════════════════════
-   TOAST
-══════════════════════════════ */
 function showToast(msg, type='success') {
   const t=document.getElementById('toast');
   t.className='toast '+type;
@@ -1134,9 +723,6 @@ function showToast(msg, type='success') {
   setTimeout(()=>t.classList.remove('show'),3500);
 }
 
-/* ══════════════════════════════
-   PARSE CSV
-══════════════════════════════ */
 function parsearCSV(texto) {
   const filas=[];
   texto.trim().split(/\r?\n/).forEach(linea=>{
