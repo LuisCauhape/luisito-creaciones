@@ -599,22 +599,21 @@ async function guardarProducto() {
   let values;
 
   if (hojaActual==='productos') {
-    values = [[
-      categoriaActual, nombre,
-      document.getElementById('fDescripcion').value.trim(),
-      document.getElementById('fMateriales').value.trim(),
-      precio,
-      document.getElementById('fPrecioOld').value.trim(),
-      document.getElementById('fDescuento').value.trim(),
-      getTallesStr(),
-      colores[0]?.nombre||'', colores[0]?.hex||'',
-      colores[1]?.nombre||'', colores[1]?.hex||'',
-      colores[2]?.nombre||'', colores[2]?.hex||'',
-      colores[3]?.nombre||'', colores[3]?.hex||'',
-      colores[4]?.nombre||'', colores[4]?.hex||'',
-      imgUrls[0], imgUrls[1], imgUrls[2], imgUrls[3],
-      document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
-    ]];
+   values = [[
+  categoriaActual, nombre,
+  document.getElementById('fDescripcion').value.trim(),
+  document.getElementById('fMateriales').value.trim(),
+  precio,
+  document.getElementById('fPrecioOld').value.trim(),
+  document.getElementById('fDescuento').value.trim(),
+  getTallesStr(),
+  colores[0]?.nombre||'', colores[0]?.hex||'',
+  colores[1]?.nombre||'', colores[1]?.hex||'',
+  colores[2]?.nombre||'', colores[2]?.hex||'',
+  imgUrls[0], imgUrls[1], imgUrls[2], imgUrls[3],
+  document.getElementById('fWa').value.trim()||'https://wa.me/5492227466087'
+]];
+   
   } else if (hojaActual==='ofertas') {
     values = [[nombre, precio,
       document.getElementById('fPrecioOld').value.trim(),
