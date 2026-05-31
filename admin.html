@@ -651,7 +651,7 @@ async function guardarProducto() {
         { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
       );
     } else {
-  const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + hojaActual + '!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS';
+ const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SHEET_ID + '/values/' + hojaActual + ' !A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS';
   res = await fetch(
     url,
     { method:'POST', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
