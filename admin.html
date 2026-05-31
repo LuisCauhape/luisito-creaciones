@@ -815,11 +815,11 @@ async function guardarProducto() {
       // MODO EDICIÓN: PUT para reemplazar la fila exacta
       const sheetRow = editRowIndex + 1; // +1 porque la fila 1 es el header
       const colFin = hojaActual === 'productos' ? 'S' : hojaActual === 'ofertas' ? 'G' : hojaActual === 'coleccion' ? 'D' : 'S';
-      const range = `${hojaActual}!A${sheetRow}:${colFin}${sheetRow}`;
-      res = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?valueInputOption=RAW`,
-        { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
-      );
+      const encodedRange = `'${hojaActual}'!A${sheetRow}:${colFin}${sheetRow}`;
+res = await fetch(
+  `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodedRange}?valueInputOption=RAW`,
+  { method:'PUT', headers:{ Authorization:`Bearer ${accessToken}`, 'Content-Type':'application/json' }, body:JSON.stringify({ values }) }
+);
     } else if (hojaActual === 'home') {
       res = await fetch(
         `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/home!A2:S2?valueInputOption=RAW`,
