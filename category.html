@@ -774,13 +774,9 @@ async function subirImagen(input, idx) {
     // Upload a Drive
     const fd = new FormData();
     fd.append('metadata', new Blob(
-  [JSON.stringify({ 
-    name: file.name, 
-    mimeType: file.type,
-    parents: ['1AbcBhKgHmdeEP9pGIu9ogbOjrF1uRpAO']
-  })],
-  { type: 'application/json' }
-));
+      [JSON.stringify({ name: file.name, mimeType: file.type })],
+      { type: 'application/json' }
+    ));
     fd.append('file', file);
 
     const res = await fetch(
